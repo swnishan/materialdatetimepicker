@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/O100"
+        android:layout_gravity="center_vertical"/>
+
+    <LinearLayout
+        android:id="@+id/llTimePicker"
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/gap_3"
+        android:layout_marginBottom="@dimen/gap_3">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHours"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingTop="@dimen/gap_9"
+            android:paddingBottom="@dimen/gap_9"
+            tools:listitem="@layout/item_time_picker"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:text=":" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMinute"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingTop="@dimen/gap_9"
+            android:paddingBottom="@dimen/gap_9"
+            tools:listitem="@layout/item_time_picker"/>
+
+    </LinearLayout>
+
+</merge>
