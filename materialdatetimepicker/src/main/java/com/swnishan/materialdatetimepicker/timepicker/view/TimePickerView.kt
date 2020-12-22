@@ -23,10 +23,10 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
     private val hours24 = (0..23).toList()
     private val hours12 = (1..12).toList()
     private val minute = (0..59).toList()
-    private val timePeriodAdapter = TimePeriodAdapter(listOf(TimePeriod.AM.name, TimePeriod.PM.name))
-    private val hour24Adapter = TimePickerAdapter(hours24)
-    private val hour12Adapter = TimePickerAdapter(hours12)
+
+    private var hourAdapter = TimePickerAdapter(hours24)
     private val minuteAdapter = TimePickerAdapter(minute)
+
     private val hourSnapHelper = LinearSnapHelper()
     private val minuteSnapHelper = LinearSnapHelper()
     private val timePeriodSnapHelper = LinearSnapHelper()
@@ -41,19 +41,19 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
             this
         )
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+        if(timeConvention==TimeConvention.HOURS_12)hourAdapter=TimePickerAdapter(hours12)
         rvTimePeriod.isVisible=timeConvention==TimeConvention.HOURS_12
         initTimeSelectionView()
         scrollToTime()
     }
 
     internal fun onTimePicked() {
-        pickerTime = pickerTime.withHour(hour24Adapter.getSelectedTime() % hours24.size)
+        pickerTime = pickerTime.withHour(hourAdapter.getSelectedTime() % hours24.size)
         pickerTime = pickerTime.withMinute(minuteAdapter.getSelectedTime() % minute.size)
         onTimePickedListener?.onTimePicked(pickerTime)
     }
 
     private fun initTimeSelectionView() {
-        val hourAdapter=getAdapterBasedOnClockType()
         rvHours.apply {
             setHasFixedSize(true)
             adapter = hourAdapter
@@ -70,7 +70,7 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
 
         rvTimePeriod.apply {
             setHasFixedSize(true)
-            adapter=timePeriodAdapter
+            adapter=TimePeriodAdapter(listOf(TimePeriod.AM.name, TimePeriod.PM.name))
             layoutManager=LinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
         }
@@ -86,13 +86,9 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
         rvHours.smoothScrollBy(0, 1)
         rvMinute.scrollToPosition(getScrollPosition(minute.size, pickerTime.minute))
         rvMinute.smoothScrollBy(0, 1)
-    }
-
-    private fun getAdapterBasedOnClockType(): TimePickerAdapter {
-        return when(timeConvention){
-            TimeConvention.HOURS_24->hour24Adapter
-            TimeConvention.HOURS_12->hour12Adapter
-        }
+        val position = if(pickerTime.hour>12) 1 else 0
+        rvTimePeriod.scrollToPosition(position)
+        rvTimePeriod.smoothScrollBy(0,1)
     }
 
     private fun getHoursBasedOnClockType(): List<Int> {
