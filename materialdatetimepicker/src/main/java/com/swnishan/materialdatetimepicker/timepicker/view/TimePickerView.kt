@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.OffsetDateTime
 import kotlin.math.absoluteValue
 
-class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0, val clockType: ClockType=ClockType.HOURS_24) :
+class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0, val timeConvention: TimeConvention=TimeConvention.HOURS_24) :
     FrameLayout(context, attributes, defStyleAttr) {
 
     private val hours24 = (0..23).toList()
@@ -69,7 +69,7 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
 
     private fun scrollToTime() {
         var scrollPosition= getScrollPosition(getHoursBasedOnClockType().size, pickerTime.hour)
-        if(clockType==ClockType.HOURS_12)scrollPosition-=1
+        if(timeConvention==TimeConvention.HOURS_12)scrollPosition-=1
         rvHours.scrollToPosition(scrollPosition)
         rvHours.smoothScrollBy(0, 1)
         rvMinute.scrollToPosition(getScrollPosition(minute.size, pickerTime.minute))
@@ -77,16 +77,16 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
     }
 
     private fun getAdapterBasedOnClockType(): TimePickerAdapter {
-        return when(clockType){
-            ClockType.HOURS_24->hour24Adapter
-            ClockType.HOURS_12->hour12Adapter
+        return when(timeConvention){
+            TimeConvention.HOURS_24->hour24Adapter
+            TimeConvention.HOURS_12->hour12Adapter
         }
     }
 
     private fun getHoursBasedOnClockType(): List<Int> {
-        return when(clockType){
-            ClockType.HOURS_24->hours24
-            ClockType.HOURS_12->hours12
+        return when(timeConvention){
+            TimeConvention.HOURS_24->hours24
+            TimeConvention.HOURS_12->hours12
         }
     }
 
@@ -132,7 +132,11 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
         fun onTimePicked(time: OffsetDateTime)
     }
 
-    enum class ClockType{
+    enum class TimeConvention{
         HOURS_24, HOURS_12
+    }
+
+    enum class Period{
+        AM,PM
     }
 }

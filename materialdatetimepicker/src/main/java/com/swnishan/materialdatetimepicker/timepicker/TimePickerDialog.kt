@@ -11,11 +11,11 @@ class TimePickerDialog : DialogFragment() {
 
     private var onTimePickedListener: TimePickerView.OnTimePickedListener? = null
     private var timePickerView: TimePickerView? = null
-    private var clockType = TimePickerView.ClockType.HOURS_24
+    private var clockType = TimePickerView.TimeConvention.HOURS_24
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireContext())
-        timePickerView = TimePickerView(context=requireContext(), clockType = clockType)
+        timePickerView = TimePickerView(context=requireContext(), timeConvention = clockType)
         timePickerView?.setOnTimePickedListener(onTimePickedListener)
 
         builder.apply {
@@ -28,8 +28,8 @@ class TimePickerDialog : DialogFragment() {
         return builder.create()
     }
 
-    fun setClockType(clockType: TimePickerView.ClockType){
-        this.clockType = clockType
+    fun setClockType(timeConvention: TimePickerView.TimeConvention){
+        this.clockType = timeConvention
     }
 
     object Builder{
@@ -56,8 +56,8 @@ class TimePickerDialog : DialogFragment() {
             return this
         }
 
-        fun setClockType(clockType: TimePickerView.ClockType): Builder {
-            timePickerDialog.setClockType(clockType)
+        fun setClockType(timeConvention: TimePickerView.TimeConvention): Builder {
+            timePickerDialog.setClockType(timeConvention)
             return this
         }
 

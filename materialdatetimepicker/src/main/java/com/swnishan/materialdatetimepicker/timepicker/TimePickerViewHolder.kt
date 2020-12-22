@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
 
 
-internal class TimePickerViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+internal class TimePickerViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(time: Int, isSelected: Boolean) {
         (view as TextView).text = String.format("%02d", time)
