@@ -1,88 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/gap_3"
+    android:paddingBottom="@dimen/gap_3"
     tools:parentTag="android.widget.FrameLayout">
 
     <View
         android:id="@+id/viewCenter"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
         android:background="@color/O100"
-        android:layout_gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/llTimePicker"
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHours"
+        android:layout_width="wrap_content"
         android:layout_height="144dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/gap_3"
-        android:layout_marginBottom="@dimen/gap_3"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/gap_9"
+        android:paddingBottom="@dimen/gap_9"
+        app:layout_constraintEnd_toStartOf="@id/tvHourTimeSeparator"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        tools:listitem="@layout/item_time_picker" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHours"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:paddingTop="@dimen/gap_9"
-            android:paddingBottom="@dimen/gap_9"
-            tools:listitem="@layout/item_time_picker"/>
+    <TextView
+        android:id="@+id/tvHourTimeSeparator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hour_min_separator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rvMinute"
+        app:layout_constraintStart_toEndOf="@id/rvHours"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:text="@string/hour_min_separator" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMinute"
+        android:layout_width="wrap_content"
+        android:layout_height="144dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/gap_9"
+        android:paddingBottom="@dimen/gap_9"
+        app:layout_constraintEnd_toStartOf="@id/rvTimePeriod"
+        app:layout_constraintStart_toEndOf="@id/tvHourTimeSeparator"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_time_picker" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMinute"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:paddingTop="@dimen/gap_9"
-            android:paddingBottom="@dimen/gap_9"
-            tools:listitem="@layout/item_time_picker"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTimePeriod"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:paddingTop="@dimen/gap_9"
-            android:paddingBottom="@dimen/gap_9"
-            tools:listitem="@layout/item_time_picker"
-            android:visibility="gone"/>
-
-    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTimePeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="144dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/gap_9"
+        android:paddingBottom="@dimen/gap_9"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rvMinute"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_time_picker" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
         android:alpha=".6"
         android:background="@color/white"
-        android:layout_gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/viewCenter"/>
+        app:layout_constraintBottom_toTopOf="@id/viewCenter"
+        app:layout_constraintEnd_toEndOf="@id/rvHours"
+        app:layout_constraintStart_toStartOf="@id/rvHours"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
         android:alpha=".6"
         android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/viewCenter"
+        app:layout_constraintEnd_toEndOf="@id/rvMinute"
+        app:layout_constraintStart_toStartOf="@id/rvMinute"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_gravity="center_vertical"
-        app:layout_constraintTop_toBottomOf="@id/viewCenter"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:alpha=".6"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@id/viewCenter"
+        app:layout_constraintEnd_toEndOf="@id/rvTimePeriod"
+        app:layout_constraintStart_toStartOf="@id/rvTimePeriod"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/rvHours"
+        app:layout_constraintStart_toStartOf="@id/rvHours"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewCenter" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/rvMinute"
+        app:layout_constraintStart_toStartOf="@id/rvMinute"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewCenter" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="@id/rvTimePeriod"
+        app:layout_constraintStart_toStartOf="@id/rvTimePeriod"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewCenter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
