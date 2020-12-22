@@ -6,10 +6,12 @@ import android.view.ContextThemeWrapper
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.timepicker.TimePeriodAdapter
 import com.swnishan.materialdatetimepicker.timepicker.TimePickerAdapter
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.OffsetDateTime
@@ -21,11 +23,13 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
     private val hours24 = (0..23).toList()
     private val hours12 = (1..12).toList()
     private val minute = (0..59).toList()
+    private val timePeriodAdapter = TimePeriodAdapter(listOf(TimePeriod.AM.name, TimePeriod.PM.name))
     private val hour24Adapter = TimePickerAdapter(hours24)
     private val hour12Adapter = TimePickerAdapter(hours12)
     private val minuteAdapter = TimePickerAdapter(minute)
     private val hourSnapHelper = LinearSnapHelper()
     private val minuteSnapHelper = LinearSnapHelper()
+    private val timePeriodSnapHelper = LinearSnapHelper()
 
     private var pickerTime: OffsetDateTime = OffsetDateTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
@@ -37,6 +41,7 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
             this
         )
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+        rvTimePeriod.isVisible=timeConvention==TimeConvention.HOURS_12
         initTimeSelectionView()
         scrollToTime()
     }
@@ -61,6 +66,13 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
             adapter = minuteAdapter
             layoutManager = LinearLayoutManager(context)
             minuteSnapHelper.attachToRecyclerView(this)
+        }
+
+        rvTimePeriod.apply {
+            setHasFixedSize(true)
+            adapter=timePeriodAdapter
+            layoutManager=LinearLayoutManager(context)
+            timePeriodSnapHelper.attachToRecyclerView(this)
         }
 
         rvHours.setOnScrollListener(hourSnapHelper, hourAdapter)
@@ -136,7 +148,7 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
         HOURS_24, HOURS_12
     }
 
-    enum class Period{
+    enum class TimePeriod{
         AM,PM
     }
 }

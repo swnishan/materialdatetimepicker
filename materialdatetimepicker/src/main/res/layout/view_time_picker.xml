@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
-            android:text=":" />
+            android:text="@string/hour_min_separator" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMinute"
@@ -48,6 +48,17 @@
             android:paddingTop="@dimen/gap_9"
             android:paddingBottom="@dimen/gap_9"
             tools:listitem="@layout/item_time_picker"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTimePeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:paddingTop="@dimen/gap_9"
+            android:paddingBottom="@dimen/gap_9"
+            tools:listitem="@layout/item_time_picker"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
