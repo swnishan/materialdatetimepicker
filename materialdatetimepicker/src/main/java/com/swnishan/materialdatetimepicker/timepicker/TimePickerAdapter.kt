@@ -18,7 +18,7 @@ internal class TimePickerAdapter(private val items: List<Int>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: TimePickerViewHolder, position: Int) {
         // Here get actual element from the items by position%items.size
-        holder.bind(items[position % items.size], selectedTime == position)
+        holder.bind(items[position % items.size])
     }
 
     /**
@@ -26,11 +26,6 @@ internal class TimePickerAdapter(private val items: List<Int>) : RecyclerView.Ad
      * So, it seems there's lots of items but the actual item count is items.size
      */
     override fun getItemCount(): Int = Int.MAX_VALUE
-
-    fun setSelectedTime(time: Int) {
-        this.selectedTime = time
-        notifyDataSetChanged()
-    }
 
     fun getSelectedTime() = selectedTime
 }

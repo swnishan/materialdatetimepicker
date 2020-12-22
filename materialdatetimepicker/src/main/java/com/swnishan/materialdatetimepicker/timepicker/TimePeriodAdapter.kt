@@ -17,15 +17,10 @@ internal class TimePeriodAdapter(private val items: List<String>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: TimePeriodViewHolder, position: Int) {
-        holder.bind(items[position], selectedTime == position)
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int = items.size
-
-    fun setSelectedTime(time: Int) {
-        this.selectedTime = time
-        notifyDataSetChanged()
-    }
 
     fun getSelectedTime() = selectedTime
 }

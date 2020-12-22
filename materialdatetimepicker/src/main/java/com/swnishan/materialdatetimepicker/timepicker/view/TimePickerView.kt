@@ -74,9 +74,6 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
             layoutManager=LinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
         }
-
-        rvHours.setOnScrollListener(hourSnapHelper, hourAdapter)
-        rvMinute.setOnScrollListener(minuteSnapHelper, minuteAdapter)
     }
 
     private fun scrollToTime() {
@@ -121,19 +118,6 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
     fun setTime(offsetDateTime: OffsetDateTime) {
         this.pickerTime = offsetDateTime
         scrollToTime()
-    }
-
-    private fun RecyclerView.setOnScrollListener(
-        snapHelper: LinearSnapHelper,
-        adapter: TimePickerAdapter
-    ) {
-        this.setOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val view = snapHelper.findSnapView(recyclerView.layoutManager) ?: return
-                val position = recyclerView.layoutManager?.getPosition(view)
-                adapter.setSelectedTime(position ?: -0)
-            }
-        })
     }
 
     interface OnTimePickedListener {

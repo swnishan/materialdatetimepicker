@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,10 +8,13 @@
     tools:parentTag="android.widget.FrameLayout">
 
     <View
+        android:id="@+id/viewCenter"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/O100"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <LinearLayout
         android:id="@+id/llTimePicker"
@@ -21,7 +24,9 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/gap_3"
-        android:layout_marginBottom="@dimen/gap_3">
+        android:layout_marginBottom="@dimen/gap_3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHours"
@@ -62,4 +67,22 @@
 
     </LinearLayout>
 
-</merge>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:alpha=".6"
+        android:background="@color/white"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/viewCenter"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:alpha=".6"
+        android:background="@color/white"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/viewCenter"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
