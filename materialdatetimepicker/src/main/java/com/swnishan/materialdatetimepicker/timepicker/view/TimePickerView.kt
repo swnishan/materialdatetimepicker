@@ -3,7 +3,6 @@ package com.swnishan.materialdatetimepicker.timepicker.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
@@ -16,12 +15,14 @@ import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.OffsetDateTime
 import kotlin.math.absoluteValue
 
-class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0) :
+class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0, val clockType: ClockType=ClockType.HOURS_24) :
     FrameLayout(context, attributes, defStyleAttr) {
 
-    private val hours = (0..23).toList()
+    private val hours24 = (0..23).toList()
+    private val hours12 = (1..12).toList()
     private val minute = (0..59).toList()
-    private val hourAdapter = TimePickerAdapter(hours)
+    private val hour24Adapter = TimePickerAdapter(hours24)
+    private val hour12Adapter = TimePickerAdapter(hours12)
     private val minuteAdapter = TimePickerAdapter(minute)
     private val hourSnapHelper = LinearSnapHelper()
     private val minuteSnapHelper = LinearSnapHelper()
@@ -41,12 +42,13 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
     }
 
     internal fun onTimePicked() {
-        pickerTime = pickerTime.withHour(hourAdapter.getSelectedTime() % hours.size)
+        pickerTime = pickerTime.withHour(hour24Adapter.getSelectedTime() % hours24.size)
         pickerTime = pickerTime.withMinute(minuteAdapter.getSelectedTime() % minute.size)
         onTimePickedListener?.onTimePicked(pickerTime)
     }
 
     private fun initTimeSelectionView() {
+        val hourAdapter=getAdapterBasedOnClockType()
         rvHours.apply {
             setHasFixedSize(true)
             adapter = hourAdapter
@@ -66,10 +68,26 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
     }
 
     private fun scrollToTime() {
-        rvHours.scrollToPosition(getScrollPosition(hours.size, pickerTime.hour))
+        var scrollPosition= getScrollPosition(getHoursBasedOnClockType().size, pickerTime.hour)
+        if(clockType==ClockType.HOURS_12)scrollPosition-=1
+        rvHours.scrollToPosition(scrollPosition)
         rvHours.smoothScrollBy(0, 1)
         rvMinute.scrollToPosition(getScrollPosition(minute.size, pickerTime.minute))
         rvMinute.smoothScrollBy(0, 1)
+    }
+
+    private fun getAdapterBasedOnClockType(): TimePickerAdapter {
+        return when(clockType){
+            ClockType.HOURS_24->hour24Adapter
+            ClockType.HOURS_12->hour12Adapter
+        }
+    }
+
+    private fun getHoursBasedOnClockType(): List<Int> {
+        return when(clockType){
+            ClockType.HOURS_24->hours24
+            ClockType.HOURS_12->hours12
+        }
     }
 
     /**
@@ -114,4 +132,7 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
         fun onTimePicked(time: OffsetDateTime)
     }
 
+    enum class ClockType{
+        HOURS_24, HOURS_12
+    }
 }
