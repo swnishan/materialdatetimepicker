@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_time_picker" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.swnishan.materialdatetimepicker.timepicker.view.LowFlingRecyclerView
         android:id="@+id/rvTimePeriod"
         android:layout_width="wrap_content"
         android:layout_height="144dp"

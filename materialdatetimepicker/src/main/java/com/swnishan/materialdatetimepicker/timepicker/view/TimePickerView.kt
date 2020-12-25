@@ -23,14 +23,17 @@ import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
 import kotlin.math.absoluteValue
 
-class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyleAttr: Int = 0, val timeConvention: TimeConvention=TimeConvention.HOURS_24) :
-    FrameLayout(context, attributes, defStyleAttr) {
+class TimePickerView: FrameLayout{
+
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
+    constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(context, attributeSet, defStyle)
 
     private val hours24 = (0..23).toList()
     private val hours12 = (1..12).toList()
     private val minute = (0..59).toList()
 
-    private var hourAdapter = TimePickerAdapter(hours24)
+    private val hourAdapter = TimePickerAdapter(hours24)
     private val minuteAdapter = TimePickerAdapter(minute)
 
     private val hourSnapHelper = LinearSnapHelper()
@@ -39,6 +42,7 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
 
     private var pickerTime: LocalTime = LocalTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
+    private var timeConvention: TimeConvention=TimeConvention.HOURS_24
 
     init {
         inflate(
@@ -47,9 +51,16 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
             this
         )
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-        if(timeConvention==TimeConvention.HOURS_12)hourAdapter=TimePickerAdapter(hours12)
-        rvTimePeriod.isVisible=timeConvention==TimeConvention.HOURS_12
+        setHours()
+        toggleTimeTimePeriodView()
         initTimeSelectionView()
+        scrollToTime()
+    }
+
+    internal fun setTimeConvention(timeConvention: TimeConvention){
+        this.timeConvention=timeConvention
+        setHours()
+        toggleTimeTimePeriodView()
         scrollToTime()
     }
 
@@ -57,6 +68,18 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
         pickerTime = pickerTime.withHour(hourAdapter.getSelectedTime() % hours24.size)
         pickerTime = pickerTime.withMinute(minuteAdapter.getSelectedTime() % minute.size)
 //        onTimePickedListener?.onTimePicked(pickerTime)
+    }
+
+    private fun setHours(){
+        val hours = when (timeConvention) {
+            TimeConvention.HOURS_24 -> hours24
+            TimeConvention.HOURS_12 -> hours12
+        }
+        hourAdapter.setTimes(hours)
+    }
+
+    private fun toggleTimeTimePeriodView(){
+        rvTimePeriod.isVisible=timeConvention==TimeConvention.HOURS_12
     }
 
     private fun initTimeSelectionView() {
@@ -145,10 +168,8 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
     }
 
     /**
-     * @see TimePickerAdapter
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
-     * Then user can scroll to both ways like repeatable list.
      */
     private fun getScrollPosition(listSize: Int, time: Int): Int {
         var scrollPosition = Int.MAX_VALUE / 2

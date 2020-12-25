@@ -15,7 +15,8 @@ class TimePickerDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireContext())
-        timePickerView = TimePickerView(context=requireContext(), timeConvention = clockType)
+        timePickerView = TimePickerView(context=requireContext())
+        timePickerView?.setTimeConvention(clockType)
         timePickerView?.setOnTimePickedListener(onTimePickedListener)
 
         builder.apply {

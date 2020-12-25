@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
 
-internal class TimePickerAdapter(private val items: List<Int>) : RecyclerView.Adapter<TimePickerViewHolder>() {
+internal class TimePickerAdapter(private var items: List<Int>) : RecyclerView.Adapter<TimePickerViewHolder>() {
 
     private var selectedTime: Int = 0
 
@@ -26,6 +26,11 @@ internal class TimePickerAdapter(private val items: List<Int>) : RecyclerView.Ad
      * So, it seems there's lots of items but the actual item count is items.size
      */
     override fun getItemCount(): Int = Int.MAX_VALUE
+
+    fun setTimes(items: List<Int>){
+        this.items = items
+        notifyDataSetChanged()
+    }
 
     fun getSelectedTime() = selectedTime
 }
