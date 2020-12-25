@@ -19,7 +19,6 @@ import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.timepicker.TimePeriodAdapter
 import com.swnishan.materialdatetimepicker.timepicker.TimePickerAdapter
 import kotlinx.android.synthetic.main.view_time_picker.view.*
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
 import kotlin.math.absoluteValue
@@ -133,12 +132,9 @@ class TimePickerView(context: Context, attributes: AttributeSet? = null, defStyl
         var scrollPosition= getScrollPosition(getHoursBasedOnClockType().size, pickerTime.hour)
         if(timeConvention==TimeConvention.HOURS_12)scrollPosition-=1
         rvHours.scrollToPosition(scrollPosition)
-        rvHours.smoothScrollBy(0, 1)
         rvMinute.scrollToPosition(getScrollPosition(minute.size, pickerTime.minute))
-        rvMinute.smoothScrollBy(0, 1)
         val position = if(pickerTime.hour>11) 1 else 0
         rvTimePeriod.scrollToPosition(position)
-        rvTimePeriod.smoothScrollBy(0,1)
     }
 
     private fun getHoursBasedOnClockType(): List<Int> {
