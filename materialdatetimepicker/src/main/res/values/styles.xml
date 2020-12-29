@@ -3,7 +3,16 @@
 
     <style name="Widget.MaterialTimePicker" parent="">
         <item name="materialTimePickerHighlighterColor">?attr/colorPrimary</item>
+        <item name="materialTimePickerTextAppearance">@style/TextAppearance.MaterialTimePicker</item>
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="Base.TextAppearance.MaterialDateTimePicker" parent="">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.MaterialTimePicker" parent="Base.TextAppearance.MaterialDateTimePicker"/>
 
 </resources>

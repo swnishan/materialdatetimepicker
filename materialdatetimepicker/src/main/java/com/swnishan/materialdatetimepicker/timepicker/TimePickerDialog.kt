@@ -23,7 +23,7 @@ class TimePickerDialog : DialogFragment() {
         val builder = MaterialAlertDialogBuilder(requireContext(), themeRes)
         val timePickerViewStyle = builder.context.resolveThemeAttr(R.attr.materialTimePickerViewStyle)
         val timePickerThemeContext = ContextThemeWrapper(builder.context, timePickerViewStyle)
-        timePickerView = TimePickerView(context=timePickerThemeContext)
+        timePickerView = TimePickerView(context=builder.context)
         timePickerView?.setTimeConvention(clockType)
         timePickerView?.setOnTimePickedListener(onTimePickedListener)
 

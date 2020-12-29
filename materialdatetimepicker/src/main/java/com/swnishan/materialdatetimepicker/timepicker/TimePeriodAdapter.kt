@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
 
-internal class TimePeriodAdapter(private val items: List<String>) : RecyclerView.Adapter<TimePeriodViewHolder>() {
+internal class TimePeriodAdapter(private val items: List<String>, private val textAppearance: Int) : RecyclerView.Adapter<TimePeriodViewHolder>() {
 
     private var selectedTime: Int = 0
 
@@ -17,7 +17,7 @@ internal class TimePeriodAdapter(private val items: List<String>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: TimePeriodViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], textAppearance)
     }
 
     override fun getItemCount(): Int = items.size

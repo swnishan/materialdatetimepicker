@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/gap_3"
     android:paddingBottom="@dimen/gap_3"
+    android:id="@+id/clContainer"
     tools:parentTag="android.widget.FrameLayout">
 
     <View

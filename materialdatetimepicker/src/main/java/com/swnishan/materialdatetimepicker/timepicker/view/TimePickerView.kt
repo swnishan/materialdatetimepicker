@@ -1,20 +1,18 @@
 package com.swnishan.materialdatetimepicker.timepicker.view
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.ColorStateListDrawable
-import android.os.Build
 import android.util.AttributeSet
+import android.view.ContextThemeWrapper
 import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +39,7 @@ class TimePickerView: FrameLayout{
     }
 
     init {
-        inflate(context, R.layout.view_time_picker, this)
+        inflate(ContextThemeWrapper(context, R.style.Widget_MaterialTimePicker), R.layout.view_time_picker, this)
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     }
 
@@ -61,7 +59,13 @@ class TimePickerView: FrameLayout{
                     R.styleable.MaterialTimePickerView_materialTimePickerHighlighterColor,
                     ContextCompat.getColor(context,R.color.O100)
                 )
+                textAppearance = this.getResourceId(
+                    R.styleable.MaterialTimePickerView_materialTimePickerTextAppearance,
+                    R.style.TextAppearance_MaterialTimePicker
+                )
+
                 viewCenter.setBackgroundColor(highlightColor)
+                TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
 
                 if(background is ColorDrawable){
                     val backgroundColor=(background as ColorDrawable).color
@@ -71,6 +75,7 @@ class TimePickerView: FrameLayout{
                     viewBottomShadeHour.setBackgroundColor(backgroundColor)
                     viewBottomShadeMinute.setBackgroundColor(backgroundColor)
                     viewBottomShadeTimePeriod.setBackgroundColor(backgroundColor)
+                    clContainer.setBackgroundColor(backgroundColor)
                 }
 
             } finally {
@@ -79,12 +84,13 @@ class TimePickerView: FrameLayout{
         }
     }
 
+    private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
     private val hours24 = (0..23).toList()
     private val hours12 = (1..12).toList()
     private val minute = (0..59).toList()
 
-    private val hourAdapter = TimePickerAdapter(hours24)
-    private val minuteAdapter = TimePickerAdapter(minute)
+    private val hourAdapter = TimePickerAdapter(hours24, textAppearance)
+    private val minuteAdapter = TimePickerAdapter(minute, textAppearance)
 
     private val hourSnapHelper = LinearSnapHelper()
     private val minuteSnapHelper = LinearSnapHelper()
@@ -140,7 +146,7 @@ class TimePickerView: FrameLayout{
 
         rvTimePeriod.apply {
             setHasFixedSize(true)
-            adapter=TimePeriodAdapter(listOf(TimePeriod.AM.name, TimePeriod.PM.name))
+            adapter=TimePeriodAdapter(listOf(TimePeriod.AM.name, TimePeriod.PM.name), textAppearance)
             layoutManager=LinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
             addListeners()

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
 
-internal class TimePickerAdapter(private var items: List<Int>) : RecyclerView.Adapter<TimePickerViewHolder>() {
+internal class TimePickerAdapter(private var items: List<Int>, private val textAppearance: Int) : RecyclerView.Adapter<TimePickerViewHolder>() {
 
     private var selectedTime: Int = 0
 
@@ -18,7 +18,7 @@ internal class TimePickerAdapter(private var items: List<Int>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: TimePickerViewHolder, position: Int) {
         // Here get actual element from the items by position%items.size
-        holder.bind(items[position % items.size])
+        holder.bind(items[position % items.size], textAppearance)
     }
 
     /**
