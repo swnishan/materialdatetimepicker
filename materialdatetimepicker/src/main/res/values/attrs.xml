@@ -4,6 +4,10 @@
     <declare-styleable name="MaterialTimePickerView">
         <attr name="materialTimePickerTextAppearance" format="reference"/>
         <attr name="materialTimePickerHighlighterColor" format="color"/>
+        <attr name="materialTimePickerTimeConvention" format="enum">
+            <enum name="HOURS_24" value="0"/>
+            <enum name="HOURS_12" value="1"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="MaterialTimePickerOverlay">

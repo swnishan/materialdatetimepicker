@@ -63,6 +63,10 @@ class TimePickerView: FrameLayout{
                     R.styleable.MaterialTimePickerView_materialTimePickerTextAppearance,
                     R.style.TextAppearance_MaterialTimePicker
                 )
+                timeConvention = TimeConvention.values()[this.getInt(
+                    R.styleable.MaterialTimePickerView_materialTimePickerTimeConvention,
+                    0
+                )]
 
                 viewCenter.setBackgroundColor(highlightColor)
                 TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
