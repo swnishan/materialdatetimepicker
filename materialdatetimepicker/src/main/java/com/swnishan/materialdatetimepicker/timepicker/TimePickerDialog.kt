@@ -1,10 +1,15 @@
 package com.swnishan.materialdatetimepicker.timepicker
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
+import androidx.annotation.AttrRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.timepicker.view.TimePickerView
 
 class TimePickerDialog : DialogFragment() {
@@ -12,10 +17,13 @@ class TimePickerDialog : DialogFragment() {
     private var onTimePickedListener: TimePickerView.OnTimePickedListener? = null
     private var timePickerView: TimePickerView? = null
     private var clockType = TimePickerView.TimeConvention.HOURS_24
+    private var themeRes= R.style.ThemeOverlay_Dialog_MaterialTimePicker
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = MaterialAlertDialogBuilder(requireContext())
-        timePickerView = TimePickerView(context=requireContext())
+        val builder = MaterialAlertDialogBuilder(requireContext(), themeRes)
+        val timePickerViewStyle = builder.context.resolveThemeAttr(R.attr.materialTimePickerViewStyle)
+        val timePickerThemeContext = ContextThemeWrapper(builder.context, timePickerViewStyle)
+        timePickerView = TimePickerView(context=timePickerThemeContext)
         timePickerView?.setTimeConvention(clockType)
         timePickerView?.setOnTimePickedListener(onTimePickedListener)
 
@@ -29,8 +37,18 @@ class TimePickerDialog : DialogFragment() {
         return builder.create()
     }
 
+    private fun Context.resolveThemeAttr(@AttrRes attr: Int): Int = TypedValue().let { typedValue ->
+        theme.resolveAttribute(attr, typedValue, true)
+        typedValue.resourceId
+    }
+
     fun setClockType(timeConvention: TimePickerView.TimeConvention){
         this.clockType = timeConvention
+    }
+
+    override fun setStyle(style: Int, theme: Int) {
+        themeRes=theme
+        super.setStyle(style, theme)
     }
 
     object Builder{

@@ -1,14 +1,19 @@
 package com.swnishan.materialdatetimepicker.timepicker.view
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.ColorStateListDrawable
+import android.os.Build
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
 import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -26,8 +31,53 @@ import kotlin.math.absoluteValue
 class TimePickerView: FrameLayout{
 
     constructor(context: Context) : this(context, null)
-    constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
-    constructor(context: Context, attributeSet: AttributeSet?, defStyle: Int) : super(context, attributeSet, defStyle)
+    constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, R.attr.materialTimePickerViewStyle)
+    constructor(context: Context, attributeSet: AttributeSet?, defAttributeSet: Int) : super(context, attributeSet, defAttributeSet){
+        setCustomAttributes(attributeSet, defAttributeSet,R.style.Widget_MaterialTimePicker)
+        setHours()
+        toggleTimeTimePeriodView()
+        initTimeSelectionView()
+        scrollToTime()
+    }
+
+    init {
+        inflate(context, R.layout.view_time_picker, this)
+        layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    }
+
+    private fun setCustomAttributes(
+        attributeSet: AttributeSet?,
+        defAttributeSet: Int,
+        defStyle: Int
+    ) {
+        context.theme.obtainStyledAttributes(
+            attributeSet,
+            R.styleable.MaterialTimePickerView,
+            defAttributeSet,
+            defStyle
+        ).apply {
+            try {
+                val highlightColor = this.getColor(
+                    R.styleable.MaterialTimePickerView_materialTimePickerHighlighterColor,
+                    ContextCompat.getColor(context,R.color.O100)
+                )
+                viewCenter.setBackgroundColor(highlightColor)
+
+                if(background is ColorDrawable){
+                    val backgroundColor=(background as ColorDrawable).color
+                    viewTopShadeHour.setBackgroundColor(backgroundColor)
+                    viewTopShadeMinute.setBackgroundColor(backgroundColor)
+                    viewTopShadeTimePeriod.setBackgroundColor(backgroundColor)
+                    viewBottomShadeHour.setBackgroundColor(backgroundColor)
+                    viewBottomShadeMinute.setBackgroundColor(backgroundColor)
+                    viewBottomShadeTimePeriod.setBackgroundColor(backgroundColor)
+                }
+
+            } finally {
+                recycle()
+            }
+        }
+    }
 
     private val hours24 = (0..23).toList()
     private val hours12 = (1..12).toList()
@@ -44,18 +94,7 @@ class TimePickerView: FrameLayout{
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention=TimeConvention.HOURS_24
 
-    init {
-        inflate(
-            ContextThemeWrapper(context,R.style.TimePickerStyle),
-            R.layout.view_time_picker,
-            this
-        )
-        layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-        setHours()
-        toggleTimeTimePeriodView()
-        initTimeSelectionView()
-        scrollToTime()
-    }
+
 
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention
