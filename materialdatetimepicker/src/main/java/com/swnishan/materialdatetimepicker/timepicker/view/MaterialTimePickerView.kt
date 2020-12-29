@@ -1,7 +1,9 @@
 package com.swnishan.materialdatetimepicker.timepicker.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.MotionEvent
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
@@ -26,7 +29,7 @@ import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
 import kotlin.math.absoluteValue
 
-class TimePickerView: FrameLayout{
+class MaterialTimePickerView: FrameLayout{
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, R.attr.materialTimePickerViewStyle)
@@ -39,7 +42,7 @@ class TimePickerView: FrameLayout{
     }
 
     init {
-        inflate(ContextThemeWrapper(context, R.style.Widget_MaterialTimePicker), R.layout.view_time_picker, this)
+        inflate(context, R.layout.view_time_picker, this)
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     }
 
@@ -48,44 +51,46 @@ class TimePickerView: FrameLayout{
         defAttributeSet: Int,
         defStyle: Int
     ) {
-        context.theme.obtainStyledAttributes(
+        context.obtainStyledAttributes(
             attributeSet,
             R.styleable.MaterialTimePickerView,
             defAttributeSet,
             defStyle
         ).apply {
-            try {
-                val highlightColor = this.getColor(
-                    R.styleable.MaterialTimePickerView_materialTimePickerHighlighterColor,
-                    ContextCompat.getColor(context,R.color.O100)
-                )
-                textAppearance = this.getResourceId(
-                    R.styleable.MaterialTimePickerView_materialTimePickerTextAppearance,
-                    R.style.TextAppearance_MaterialTimePicker
-                )
-                timeConvention = TimeConvention.values()[this.getInt(
-                    R.styleable.MaterialTimePickerView_materialTimePickerTimeConvention,
-                    0
-                )]
+            val highlightColor = this.getColor(
+                R.styleable.MaterialTimePickerView_materialTimePickerHighlighterColor,
+                ContextCompat.getColor(context, R.color.O100)
+            )
 
-                viewCenter.setBackgroundColor(highlightColor)
-                TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
+            val background = this.getDrawable(
+                R.styleable.MaterialTimePickerView_android_background
+            )
 
-                if(background is ColorDrawable){
-                    val backgroundColor=(background as ColorDrawable).color
-                    viewTopShadeHour.setBackgroundColor(backgroundColor)
-                    viewTopShadeMinute.setBackgroundColor(backgroundColor)
-                    viewTopShadeTimePeriod.setBackgroundColor(backgroundColor)
-                    viewBottomShadeHour.setBackgroundColor(backgroundColor)
-                    viewBottomShadeMinute.setBackgroundColor(backgroundColor)
-                    viewBottomShadeTimePeriod.setBackgroundColor(backgroundColor)
-                    clContainer.setBackgroundColor(backgroundColor)
-                }
+            textAppearance = this.getResourceId(
+                R.styleable.MaterialTimePickerView_materialTimePickerTextAppearance,
+                R.style.TextAppearance_MaterialTimePicker
+            )
 
-            } finally {
-                recycle()
+            timeConvention = TimeConvention.values()[this.getInt(
+                R.styleable.MaterialTimePickerView_materialTimePickerTimeConvention,
+                0
+            )]
+
+            viewCenter.setBackgroundColor(highlightColor)
+            TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
+
+            if (background is ColorDrawable) {
+                val backgroundColor = background.color
+                viewTopShadeHour.setBackgroundColor(backgroundColor)
+                viewTopShadeMinute.setBackgroundColor(backgroundColor)
+                viewTopShadeTimePeriod.setBackgroundColor(backgroundColor)
+                viewBottomShadeHour.setBackgroundColor(backgroundColor)
+                viewBottomShadeMinute.setBackgroundColor(backgroundColor)
+                viewBottomShadeTimePeriod.setBackgroundColor(backgroundColor)
+                clContainer.setBackgroundColor(backgroundColor)
             }
-        }
+
+        }.recycle()
     }
 
     private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
