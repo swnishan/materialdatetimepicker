@@ -3,7 +3,7 @@
 
     <style name="Widget.MaterialTimePicker" parent="">
         <item name="materialTimePickerHighlighterColor">?attr/colorPrimary</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/lightBlack</item>
     </style>
 
 </resources>
