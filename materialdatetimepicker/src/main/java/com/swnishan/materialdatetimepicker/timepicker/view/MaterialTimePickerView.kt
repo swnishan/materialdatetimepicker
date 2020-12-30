@@ -1,18 +1,16 @@
 package com.swnishan.materialdatetimepicker.timepicker.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
+import android.util.Log
 import android.view.MotionEvent
-import android.view.MotionEvent.*
+import android.view.MotionEvent.ACTION_DOWN
+import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
@@ -27,14 +25,23 @@ import com.swnishan.materialdatetimepicker.timepicker.TimePickerAdapter
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
+import java.util.*
 import kotlin.math.absoluteValue
 
 class MaterialTimePickerView: FrameLayout{
 
     constructor(context: Context) : this(context, null)
-    constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, R.attr.materialTimePickerViewStyle)
-    constructor(context: Context, attributeSet: AttributeSet?, defAttributeSet: Int) : super(context, attributeSet, defAttributeSet){
-        setCustomAttributes(attributeSet, defAttributeSet,R.style.Widget_MaterialTimePicker)
+    constructor(context: Context, attributeSet: AttributeSet?) : this(
+        context,
+        attributeSet,
+        R.attr.materialTimePickerViewStyle
+    )
+    constructor(context: Context, attributeSet: AttributeSet?, defAttributeSet: Int) : super(
+        context,
+        attributeSet,
+        defAttributeSet
+    ){
+        setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialTimePicker)
         setHours()
         toggleTimeTimePeriodView()
         initTimeSelectionView()
@@ -109,8 +116,6 @@ class MaterialTimePickerView: FrameLayout{
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention=TimeConvention.HOURS_24
 
-
-
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention
         setHours()
@@ -119,9 +124,29 @@ class MaterialTimePickerView: FrameLayout{
     }
 
     internal fun onTimePicked() {
-        pickerTime = pickerTime.withHour(hourAdapter.getSelectedTime() % hours24.size)
-        pickerTime = pickerTime.withMinute(minuteAdapter.getSelectedTime() % minute.size)
-//        onTimePickedListener?.onTimePicked(pickerTime)
+        onTimePickedListener?.onTimePicked(
+            OffsetDateTime.now().withHour(getHour()).withMinute(getMinute()).withSecond(0)
+                .withNano(0).toInstant().toEpochMilli()
+        )
+    }
+
+    fun getHour():Int{
+        val hourView=hourSnapHelper.findSnapView(rvHours.layoutManager)?:return 0
+        val hour=rvHours.getChildAdapterPosition(hourView)
+        return when(timeConvention){
+            TimeConvention.HOURS_24 -> hour % hours24.size
+            TimeConvention.HOURS_12 -> {
+                val timePeriodView = hourSnapHelper.findSnapView(rvTimePeriod.layoutManager) ?: return 0
+                val timePeriodPosition = rvTimePeriod.getChildAdapterPosition(timePeriodView)
+                val timePeriod = TimePeriod.values()[timePeriodPosition]
+                return (hour % hours12.size)+1 + if (timePeriod == TimePeriod.PM) 12 else 0
+            }
+        }
+    }
+
+    fun getMinute(): Int {
+        val minuteView=hourSnapHelper.findSnapView(rvMinute.layoutManager)?:return 0
+        return rvMinute.getChildAdapterPosition(minuteView)%minute.size
     }
 
     private fun setHours(){
@@ -155,28 +180,34 @@ class MaterialTimePickerView: FrameLayout{
 
         rvTimePeriod.apply {
             setHasFixedSize(true)
-            adapter=TimePeriodAdapter(listOf(TimePeriod.AM.name, TimePeriod.PM.name), textAppearance)
+            adapter=TimePeriodAdapter(
+                listOf(TimePeriod.AM.name, TimePeriod.PM.name),
+                textAppearance
+            )
             layoutManager=LinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
             addListeners()
         }
     }
 
-    private fun animateShadeView(view: View, duration:Long, alpha: Float): Boolean {
+    private fun animateShadeView(view: View, duration: Long, alpha: Float): Boolean {
         when(view.id){
-            R.id.rvHours->{
+            R.id.rvHours -> {
                 listOf(viewTopShadeHour, viewBottomShadeHour).forEach {
-                    it.animate().alpha(alpha).setDuration(duration).withEndAction { it.alpha=alpha }.start()
+                    it.animate().alpha(alpha).setDuration(duration)
+                        .withEndAction { it.alpha = alpha }.start()
                 }
             }
-            R.id.rvMinute->{
+            R.id.rvMinute -> {
                 listOf(viewTopShadeMinute, viewBottomShadeMinute).forEach {
-                    it.animate().alpha(alpha).setDuration(duration).withEndAction { it.alpha=alpha }.start()
+                    it.animate().alpha(alpha).setDuration(duration)
+                        .withEndAction { it.alpha = alpha }.start()
                 }
             }
-            R.id.rvTimePeriod->{
+            R.id.rvTimePeriod -> {
                 listOf(viewTopShadeTimePeriod, viewBottomShadeTimePeriod).forEach {
-                    it.animate().alpha(alpha).setDuration(duration).withEndAction { it.alpha=alpha }.start()
+                    it.animate().alpha(alpha).setDuration(duration)
+                        .withEndAction { it.alpha = alpha }.start()
                 }
             }
         }
@@ -184,10 +215,14 @@ class MaterialTimePickerView: FrameLayout{
     }
 
     private fun RecyclerView.addListeners(){
-        addOnItemTouchListener(object : RecyclerView.OnItemTouchListener{
+        addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                if(e.action== ACTION_DOWN)animateShadeView(rv, 300, .2f)
-                else if (e.action== ACTION_UP && rv.scrollState==SCROLL_STATE_IDLE)animateShadeView(rv, 1000, .7f)
+                if (e.action == ACTION_DOWN) animateShadeView(rv, 300, .2f)
+                else if (e.action == ACTION_UP && rv.scrollState == SCROLL_STATE_IDLE) animateShadeView(
+                    rv,
+                    1000,
+                    .7f
+                )
                 return false
             }
 
@@ -197,9 +232,9 @@ class MaterialTimePickerView: FrameLayout{
         })
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                when(newState){
-                    SCROLL_STATE_DRAGGING->animateShadeView(recyclerView, 300, .3f)
-                    SCROLL_STATE_IDLE->animateShadeView(recyclerView, 1000, .7f)
+                when (newState) {
+                    SCROLL_STATE_DRAGGING -> animateShadeView(recyclerView, 300, .3f)
+                    SCROLL_STATE_IDLE -> animateShadeView(recyclerView, 1000, .7f)
                 }
             }
         })
@@ -216,8 +251,8 @@ class MaterialTimePickerView: FrameLayout{
 
     private fun getHoursBasedOnClockType(): List<Int> {
         return when(timeConvention){
-            TimeConvention.HOURS_24->hours24
-            TimeConvention.HOURS_12->hours12
+            TimeConvention.HOURS_24 -> hours24
+            TimeConvention.HOURS_12 -> hours12
         }
     }
 
@@ -239,13 +274,13 @@ class MaterialTimePickerView: FrameLayout{
         this.onTimePickedListener = onTimePickedListener
     }
 
-//    fun setTime(offsetDateTime: OffsetDateTime) {
-//        this.pickerTime = offsetDateTime
-//        scrollToTime()
-//    }
+    fun setTime(hour: Int, minute: Int) {
+        pickerTime = pickerTime.withHour(hour).withMinute(minute)
+        scrollToTime()
+    }
 
     interface OnTimePickedListener {
-        fun onTimePicked(time: OffsetDateTime)
+        fun onTimePicked(time: Long)
     }
 
     enum class TimeConvention{

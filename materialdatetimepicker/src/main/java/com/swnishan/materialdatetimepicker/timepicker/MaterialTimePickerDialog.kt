@@ -26,6 +26,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         materialTimePickerView = MaterialTimePickerView(context=timePickerThemeContext)
         materialTimePickerView?.setTimeConvention(clockType)
         materialTimePickerView?.setOnTimePickedListener(onTimePickedListener)
+        materialTimePickerView?.setTime(10,10)
 
         builder.apply {
             setView(materialTimePickerView)
@@ -50,6 +51,10 @@ class MaterialTimePickerDialog : DialogFragment() {
         themeRes=theme
         super.setStyle(style, theme)
     }
+
+    fun getHour()=materialTimePickerView?.getHour()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+
+    fun getMinute()=materialTimePickerView?.getMinute()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
     fun setOnTimePickListener(listener:MaterialTimePickerView.OnTimePickedListener?) {
          onTimePickedListener=listener

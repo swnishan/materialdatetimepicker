@@ -7,8 +7,6 @@ import com.swnishan.materialdatetimepicker.R
 
 internal class TimePickerAdapter(private var items: List<Int>, private val textAppearance: Int) : RecyclerView.Adapter<TimePickerViewHolder>() {
 
-    private var selectedTime: Int = 0
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimePickerViewHolder {
         return TimePickerViewHolder(
             LayoutInflater.from(parent.context)
@@ -31,6 +29,4 @@ internal class TimePickerAdapter(private var items: List<Int>, private val textA
         this.items = items
         notifyDataSetChanged()
     }
-
-    fun getSelectedTime() = selectedTime
 }
