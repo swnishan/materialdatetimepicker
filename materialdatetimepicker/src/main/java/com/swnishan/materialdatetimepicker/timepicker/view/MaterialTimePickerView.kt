@@ -3,7 +3,6 @@ package com.swnishan.materialdatetimepicker.timepicker.view
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.MotionEvent.ACTION_UP
@@ -11,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
@@ -25,7 +25,6 @@ import com.swnishan.materialdatetimepicker.timepicker.TimePickerAdapter
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
-import java.util.*
 import kotlin.math.absoluteValue
 
 class MaterialTimePickerView: FrameLayout{
@@ -136,10 +135,7 @@ class MaterialTimePickerView: FrameLayout{
         return when(timeConvention){
             TimeConvention.HOURS_24 -> hour % hours24.size
             TimeConvention.HOURS_12 -> {
-                val timePeriodView = hourSnapHelper.findSnapView(rvTimePeriod.layoutManager) ?: return 0
-                val timePeriodPosition = rvTimePeriod.getChildAdapterPosition(timePeriodView)
-                val timePeriod = TimePeriod.values()[timePeriodPosition]
-                return (hour % hours12.size)+1 + if (timePeriod == TimePeriod.PM) 12 else 0
+                return (hour % hours12.size)+1 + if (getTimePeriod() == TimePeriod.PM) 12 else 0
             }
         }
     }
@@ -147,6 +143,12 @@ class MaterialTimePickerView: FrameLayout{
     fun getMinute(): Int {
         val minuteView=hourSnapHelper.findSnapView(rvMinute.layoutManager)?:return 0
         return rvMinute.getChildAdapterPosition(minuteView)%minute.size
+    }
+
+    private fun getTimePeriod(): TimePeriod {
+        val timePeriodView = hourSnapHelper.findSnapView(rvTimePeriod.layoutManager) ?: return TimePeriod.PM
+        val timePeriodPosition = rvTimePeriod.getChildAdapterPosition(timePeriodView)
+        return TimePeriod.values()[timePeriodPosition]
     }
 
     private fun setHours(){
@@ -245,7 +247,7 @@ class MaterialTimePickerView: FrameLayout{
         if(timeConvention==TimeConvention.HOURS_12)scrollPosition-=1
         rvHours.scrollToPosition(scrollPosition)
         rvMinute.scrollToPosition(getScrollPosition(minute.size, pickerTime.minute))
-        val position = if(pickerTime.hour>11) 1 else 0
+        val position = if(pickerTime.hour>=12) 1 else 0
         rvTimePeriod.scrollToPosition(position)
     }
 
@@ -274,8 +276,12 @@ class MaterialTimePickerView: FrameLayout{
         this.onTimePickedListener = onTimePickedListener
     }
 
-    fun setTime(hour: Int, minute: Int) {
-        pickerTime = pickerTime.withHour(hour).withMinute(minute)
+    fun setTime(hour: Int, @IntRange(from = 0, to = 60) minute: Int) {
+        val setHour=when(timeConvention){
+            TimeConvention.HOURS_24->hour
+            TimeConvention.HOURS_12->hour%12+if (getTimePeriod() == TimePeriod.PM) 12 else 0
+        }
+        pickerTime = pickerTime.withHour(setHour).withMinute(minute)
         scrollToTime()
     }
 
