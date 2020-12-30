@@ -19,7 +19,7 @@ class MaterialTimePickerDialog : DialogFragment() {
 
     private var onTimePickedListener: MaterialTimePickerView.OnTimePickedListener? = null
     private var materialTimePickerView: MaterialTimePickerView? = null
-    private var clockType = MaterialTimePickerView.TimeConvention.HOURS_24
+    private var timeConvention = MaterialTimePickerView.TimeConvention.HOURS_24
     private var pickerTime: LocalTime = LocalTime.now()
     private var themeRes= R.style.ThemeOverlay_Dialog_MaterialTimePicker
 
@@ -28,7 +28,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         val timePickerViewStyle = builder.context.resolveThemeAttr(R.attr.materialTimePickerViewStyle)
         val timePickerThemeContext = ContextThemeWrapper(builder.context, timePickerViewStyle)
         materialTimePickerView = MaterialTimePickerView(context=timePickerThemeContext)
-        materialTimePickerView?.setTimeConvention(clockType)
+        materialTimePickerView?.setTimeConvention(timeConvention)
         materialTimePickerView?.setTime(pickerTime.hour, pickerTime.minute)
         materialTimePickerView?.setOnTimePickedListener(onTimePickedListener)
 
@@ -60,7 +60,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         val minute=bundle.getInt(ARG_MINUTE, pickerTime.minute)
         pickerTime=pickerTime.withHour(hour).withMinute(minute)
 
-        clockType=MaterialTimePickerView.TimeConvention.valueOf(bundle.getString(ARG_TIME_CONVENTION, clockType.name))
+        timeConvention=MaterialTimePickerView.TimeConvention.valueOf(bundle.getString(ARG_TIME_CONVENTION, timeConvention.name))
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
@@ -69,7 +69,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         bundle.putInt(ARG_THEME, themeRes)
         bundle.putInt(ARG_HOUR, materialTimePickerView?.getHour()?:pickerTime.hour)
         bundle.putInt(ARG_MINUTE, materialTimePickerView?.getMinute()?:pickerTime.minute)
-        bundle.putString(ARG_TIME_CONVENTION, clockType.name)
+        bundle.putString(ARG_TIME_CONVENTION, timeConvention.name)
     }
 
      override fun setStyle(style: Int, theme: Int) {
@@ -104,7 +104,7 @@ class MaterialTimePickerDialog : DialogFragment() {
             return this
         }
 
-        fun setClockType(timeConvention: MaterialTimePickerView.TimeConvention): Builder {
+        fun setTimeConvention(timeConvention: MaterialTimePickerView.TimeConvention): Builder {
             bundle.putString(ARG_TIME_CONVENTION, timeConvention.name)
             return this
         }
