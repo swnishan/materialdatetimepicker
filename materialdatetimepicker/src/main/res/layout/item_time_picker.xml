@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<com.google.android.material.textview.MaterialTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tvTime"
     android:layout_width="wrap_content"
-    android:layout_height="48dp"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:background="@color/transparent"
     android:paddingStart="@dimen/gap_3"
     android:paddingEnd="@dimen/gap_3"
-    android:minWidth="70dp"
+    android:paddingTop="@dimen/gap_2"
+    android:paddingBottom="@dimen/gap_2"
     tools:text="99" />

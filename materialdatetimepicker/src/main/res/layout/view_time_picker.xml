@@ -20,56 +20,53 @@
     <com.swnishan.materialdatetimepicker.timepicker.view.LowFlingRecyclerView
         android:id="@+id/rvHours"
         android:layout_width="wrap_content"
-        android:layout_height="144dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingTop="@dimen/gap_6"
-        android:paddingBottom="@dimen/gap_6"
         app:layout_constraintEnd_toStartOf="@id/tvHourTimeSeparator"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/transparent"
         tools:listitem="@layout/item_time_picker" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvHourTimeSeparator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hour_min_separator"
-        android:background="@color/transparent"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rvMinute"
-        app:layout_constraintStart_toEndOf="@id/rvHours"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/rvHours" />
 
     <com.swnishan.materialdatetimepicker.timepicker.view.LowFlingRecyclerView
         android:id="@+id/rvMinute"
         android:layout_width="wrap_content"
-        android:layout_height="144dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingTop="@dimen/gap_6"
-        android:paddingBottom="@dimen/gap_6"
         android:background="@color/transparent"
         app:layout_constraintEnd_toStartOf="@id/rvTimePeriod"
         app:layout_constraintStart_toEndOf="@id/tvHourTimeSeparator"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_time_picker" />
 
     <com.swnishan.materialdatetimepicker.timepicker.view.LowFlingRecyclerView
         android:id="@+id/rvTimePeriod"
         android:layout_width="wrap_content"
-        android:layout_height="144dp"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:paddingTop="@dimen/gap_6"
-        android:paddingBottom="@dimen/gap_6"
         android:visibility="visible"
         android:background="@color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/rvMinute"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_time_picker" />
 
     <View

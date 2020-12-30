@@ -3,6 +3,7 @@
 
     <style name="Widget.MaterialTimePicker" parent="">
         <item name="materialTimePickerHighlighterColor">?attr/colorPrimary</item>
+        <item name="materialTimePickerTextAppearance">@style/TextAppearance.MaterialTimePicker</item>
         <item name="materialTimePickerTimeConvention">HOURS_12</item>
         <item name="android:background">@color/lightBlack</item>
     </style>
