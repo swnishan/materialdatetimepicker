@@ -3,8 +3,6 @@ package com.swnishan.materialdatetimepicker.timepicker.view
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.MotionEvent.ACTION_UP
@@ -14,9 +12,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.annotation.IntRange
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +28,7 @@ import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
 import kotlin.math.absoluteValue
 
-class MaterialTimePickerView: FrameLayout{
+class MaterialTimePickerView: ConstraintLayout{
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(
@@ -68,9 +64,14 @@ class MaterialTimePickerView: FrameLayout{
             defAttributeSet,
             defStyle
         ).apply {
-            val highlightColor = this.getColor(
+            val highlighterColor = this.getColor(
                 R.styleable.MaterialTimePickerView_materialTimePickerHighlighterColor,
                 ContextCompat.getColor(context, R.color.O100)
+            )
+
+            val highlighterHeight = this.getDimension(
+                R.styleable.MaterialTimePickerView_materialTimePickerHighlighterHeight,
+                60f
             )
 
             val background = this.getDrawable(
@@ -87,7 +88,8 @@ class MaterialTimePickerView: FrameLayout{
                 0
             )]
 
-            viewCenter.setBackgroundColor(highlightColor)
+            viewCenter.setBackgroundColor(highlighterColor)
+            viewCenter.layoutParams.height=highlighterHeight.toInt()
             TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
 
             if (background is ColorDrawable) {
@@ -98,7 +100,7 @@ class MaterialTimePickerView: FrameLayout{
                 viewBottomShadeHour.setBackgroundColor(backgroundColor)
                 viewBottomShadeMinute.setBackgroundColor(backgroundColor)
                 viewBottomShadeTimePeriod.setBackgroundColor(backgroundColor)
-                clContainer.setBackgroundColor(backgroundColor)
+                setBackgroundColor(backgroundColor)
             }
 
         }.recycle()
