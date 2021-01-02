@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.PickerModel
 
-internal class TimePickerAdapter(private var items: List<Int>, private val textAppearance: Int) : RecyclerView.Adapter<TimePickerViewHolder>() {
+internal class TimePickerAdapter(private var items: List<PickerModel>, private val textAppearance: Int) : RecyclerView.Adapter<TimePickerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimePickerViewHolder {
         return TimePickerViewHolder(
@@ -25,7 +26,7 @@ internal class TimePickerAdapter(private var items: List<Int>, private val textA
      */
     override fun getItemCount(): Int = Int.MAX_VALUE
 
-    fun setTimes(items: List<Int>){
+    fun setTimes(items: List<PickerModel>){
         this.items = items
         notifyDataSetChanged()
     }
