@@ -21,7 +21,7 @@ import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.toLocalDate
 import com.swnishan.materialdatetimepicker.common.toLong
-import com.swnishan.materialdatetimepicker.timepicker.adapter.TimePickerAdapter
+import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import org.threeten.bp.LocalDate
 import kotlin.math.absoluteValue
@@ -102,9 +102,9 @@ class MaterialDatePickerView: ConstraintLayout{
     private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, String.format("%02d", value),value)}
     private val days = (0..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
 
-    private val yearAdapter = TimePickerAdapter(years, textAppearance)
-    private val monthAdapter = TimePickerAdapter(months, textAppearance)
-    private val dayAdapter = TimePickerAdapter(days, textAppearance)
+    private val yearAdapter = PickerAdapter(years, textAppearance)
+    private val monthAdapter = PickerAdapter(months, textAppearance)
+    private val dayAdapter = PickerAdapter(days, textAppearance)
 
     private val yearSnapHelper = LinearSnapHelper()
     private val monthSnapHelper = LinearSnapHelper()
@@ -214,7 +214,7 @@ class MaterialDatePickerView: ConstraintLayout{
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
      */
-    private fun getScrollPosition(adapter:TimePickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
+    private fun getScrollPosition(adapter: PickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
         var scrollPosition = adapter.itemCount/2
         val position = scrollPosition % list.size
 

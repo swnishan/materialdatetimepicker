@@ -22,8 +22,7 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.Utils
-import com.swnishan.materialdatetimepicker.timepicker.adapter.TimePeriodAdapter
-import com.swnishan.materialdatetimepicker.timepicker.adapter.TimePickerAdapter
+import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
@@ -113,8 +112,8 @@ class MaterialTimePickerView: ConstraintLayout{
     private val hours12 = (1..12).mapIndexed { index, value -> TimeModel.Hour(index, String.format("%02d", value), value) }
     private val minutes = (0..59).mapIndexed { index, value -> TimeModel.Minute(index, String.format("%02d", value), value) }
 
-    private val hourAdapter = TimePickerAdapter(hours24, textAppearance)
-    private val minuteAdapter = TimePickerAdapter(minutes, textAppearance)
+    private val hourAdapter = PickerAdapter(hours24, textAppearance)
+    private val minuteAdapter = PickerAdapter(minutes, textAppearance)
 
     private val hourSnapHelper = LinearSnapHelper()
     private val minuteSnapHelper = LinearSnapHelper()
@@ -191,9 +190,10 @@ class MaterialTimePickerView: ConstraintLayout{
 
         rvTimePeriod.apply {
             setHasFixedSize(true)
-            adapter= TimePeriodAdapter(
-                listOf(TimePeriod.AM.name, TimePeriod.PM.name),
-                textAppearance
+            adapter= PickerAdapter(
+                listOf(TimePeriod.AM, TimePeriod.PM).mapIndexed { index, timePeriod -> TimeModel.TimePeriod(index, timePeriod.name, timePeriod.ordinal) },
+                textAppearance,
+                PickerAdapter.ScrollOptions.SCROLL_ITEM_LIMIT
             )
             layoutManager=LinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
@@ -252,14 +252,14 @@ class MaterialTimePickerView: ConstraintLayout{
     }
 
     private fun scrollToTime() {
-        var scrollPosition= getScrollPosition(hourAdapter,getHoursBasedOnClockType() as List<PickerModel>,getHourModel(pickerTime.hour))
+        val scrollPosition= getScrollPosition(hourAdapter,getHoursBasedOnClockType(),getHourModel(pickerTime.hour))
         rvHours.scrollToPosition(scrollPosition)
         rvMinute.scrollToPosition(getScrollPosition(minuteAdapter, minutes, getMinuteModel(pickerTime.minute)))
         val position = if(pickerTime.hour>=12) 1 else 0
         rvTimePeriod.scrollToPosition(position)
     }
 
-    private fun getHoursBasedOnClockType(): List<TimeModel> {
+    private fun getHoursBasedOnClockType(): List<TimeModel.Hour> {
         return when(timeConvention){
             TimeConvention.HOURS_24 -> hours24
             TimeConvention.HOURS_12 -> hours12
@@ -277,7 +277,7 @@ class MaterialTimePickerView: ConstraintLayout{
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
      */
-    private fun getScrollPosition(adapter:TimePickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
+    private fun getScrollPosition(adapter: PickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
         var scrollPosition = adapter.itemCount/2
         val position = scrollPosition % list.size
 
