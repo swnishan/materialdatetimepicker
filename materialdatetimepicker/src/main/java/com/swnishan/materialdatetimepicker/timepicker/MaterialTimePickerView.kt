@@ -51,7 +51,7 @@ class MaterialTimePickerView: ConstraintLayout{
     init {
         inflate(context, R.layout.view_time_picker, this)
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-        setPadding(0,Utils.dimenToPx(context,R.dimen.time_picker_view_padding_top),0, Utils.dimenToPx(context,R.dimen.time_picker_view_padding_bottom))
+        setPadding(0,Utils.dimenToPx(context,R.dimen.date_picker_view_padding_top),0, Utils.dimenToPx(context,R.dimen.date_picker_view_padding_bottom))
     }
 
     private fun setCustomAttributes(

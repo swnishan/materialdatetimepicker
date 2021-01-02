@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
-        android:id="@+id/rvYears"
+        android:id="@+id/rvDays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
@@ -36,14 +36,14 @@
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:background="@color/transparent"
-        app:layout_constraintEnd_toStartOf="@id/rvDays"
-        app:layout_constraintStart_toEndOf="@id/rvYears"
+        app:layout_constraintEnd_toStartOf="@id/rvYears"
+        app:layout_constraintStart_toEndOf="@id/rvDays"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_picker" />
 
     <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
-        android:id="@+id/rvDays"
+        android:id="@+id/rvYears"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
