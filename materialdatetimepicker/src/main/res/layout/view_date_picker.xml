@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/clContainer"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <View
+        android:id="@+id/viewCenter"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
+        android:id="@+id/rvYears"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toStartOf="@id/rvMonths"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/transparent"
+        tools:listitem="@layout/item_time_picker" />
+
+    <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
+        android:id="@+id/rvMonths"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toStartOf="@id/rvDays"
+        app:layout_constraintStart_toEndOf="@id/rvYears"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_time_picker" />
+
+    <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
+        android:id="@+id/rvDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:visibility="visible"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rvMonths"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_time_picker" />
+
+    <View
+        android:id="@+id/viewTopShadeYear"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        app:layout_constraintBottom_toTopOf="@id/viewCenter"
+        app:layout_constraintEnd_toEndOf="@id/rvYears"
+        app:layout_constraintStart_toStartOf="@id/rvYears"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewTopShadeMonth"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        app:layout_constraintBottom_toTopOf="@id/viewCenter"
+        app:layout_constraintEnd_toEndOf="@id/rvMonths"
+        app:layout_constraintStart_toStartOf="@id/rvMonths"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewTopShadeTimeDay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        app:layout_constraintBottom_toTopOf="@id/viewCenter"
+        app:layout_constraintEnd_toEndOf="@id/rvDays"
+        app:layout_constraintStart_toStartOf="@id/rvDays"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/viewBottomShadeYear"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        app:layout_constraintEnd_toEndOf="@id/rvYears"
+        app:layout_constraintStart_toStartOf="@id/rvYears"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewCenter" />
+
+    <View
+        android:id="@+id/viewBottomShadeMonth"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        app:layout_constraintEnd_toEndOf="@id/rvMonths"
+        app:layout_constraintStart_toStartOf="@id/rvMonths"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewCenter" />
+
+    <View
+        android:id="@+id/viewBottomShadeTimeDay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:alpha=".6"
+        app:layout_constraintEnd_toEndOf="@id/rvDays"
+        app:layout_constraintStart_toStartOf="@id/rvDays"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewCenter" />
+
+</merge>
