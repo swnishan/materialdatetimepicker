@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.swnishan.materialdatetimepicker.timepicker.view.LowFlingRecyclerView
+    <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
         android:id="@+id/rvHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toStartOf="@id/rvMinute"
         app:layout_constraintStart_toEndOf="@id/rvHours" />
 
-    <com.swnishan.materialdatetimepicker.timepicker.view.LowFlingRecyclerView
+    <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
         android:id="@+id/rvMinute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_time_picker" />
 
-    <com.swnishan.materialdatetimepicker.timepicker.view.LowFlingRecyclerView
+    <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
         android:id="@+id/rvTimePeriod"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

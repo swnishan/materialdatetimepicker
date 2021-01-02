@@ -1,10 +1,7 @@
-package com.swnishan.materialdatetimepicker.timepicker.view
+package com.swnishan.materialdatetimepicker.common
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
@@ -35,7 +32,7 @@ class LowFlingRecyclerView: RecyclerView {
         super.onMeasure(widthMeasureSpec, if(measuredItemHeight>0)measuredItemHeight else heightMeasureSpec)
     }
 
-    internal fun setItemHeightUpdateListener(listener:OnItemHeightUpdateListener){
+    internal fun setItemHeightUpdateListener(listener: OnItemHeightUpdateListener){
         this.onHeightUpdateListener=listener
     }
 

@@ -12,7 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swnishan.materialdatetimepicker.R
-import com.swnishan.materialdatetimepicker.timepicker.view.MaterialTimePickerView
 import org.threeten.bp.LocalTime
 
 class MaterialTimePickerDialog : DialogFragment() {
@@ -60,7 +59,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         val minute=bundle.getInt(ARG_MINUTE, pickerTime.minute)
         pickerTime=pickerTime.withHour(hour).withMinute(minute)
 
-        timeConvention=MaterialTimePickerView.TimeConvention.valueOf(bundle.getString(ARG_TIME_CONVENTION, timeConvention.name))
+        timeConvention= MaterialTimePickerView.TimeConvention.valueOf(bundle.getString(ARG_TIME_CONVENTION, timeConvention.name))
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
@@ -81,7 +80,7 @@ class MaterialTimePickerDialog : DialogFragment() {
 
     fun getMinute()=materialTimePickerView?.getMinute()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
-    fun setOnTimePickListener(listener:MaterialTimePickerView.OnTimePickedListener?) {
+    fun setOnTimePickListener(listener: MaterialTimePickerView.OnTimePickedListener?) {
          onTimePickedListener=listener
     }
 

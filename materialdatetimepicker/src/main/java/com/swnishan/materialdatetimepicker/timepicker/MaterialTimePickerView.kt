@@ -1,4 +1,4 @@
-package com.swnishan.materialdatetimepicker.timepicker.view
+package com.swnishan.materialdatetimepicker.timepicker
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
@@ -9,7 +9,6 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.FrameLayout
 import androidx.annotation.IntRange
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -22,8 +21,8 @@ import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.Utils
-import com.swnishan.materialdatetimepicker.timepicker.TimePeriodAdapter
-import com.swnishan.materialdatetimepicker.timepicker.TimePickerAdapter
+import com.swnishan.materialdatetimepicker.timepicker.adapter.TimePeriodAdapter
+import com.swnishan.materialdatetimepicker.timepicker.adapter.TimePickerAdapter
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
@@ -122,7 +121,7 @@ class MaterialTimePickerView: ConstraintLayout{
 
     private var pickerTime: LocalTime = LocalTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
-    private var timeConvention: TimeConvention=TimeConvention.HOURS_24
+    private var timeConvention: TimeConvention = TimeConvention.HOURS_24
 
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention
@@ -169,7 +168,7 @@ class MaterialTimePickerView: ConstraintLayout{
     }
 
     private fun toggleTimeTimePeriodView(){
-        rvTimePeriod.isVisible=timeConvention==TimeConvention.HOURS_12
+        rvTimePeriod.isVisible=timeConvention== TimeConvention.HOURS_12
     }
 
     private fun initTimeSelectionView() {
@@ -191,7 +190,7 @@ class MaterialTimePickerView: ConstraintLayout{
 
         rvTimePeriod.apply {
             setHasFixedSize(true)
-            adapter=TimePeriodAdapter(
+            adapter= TimePeriodAdapter(
                 listOf(TimePeriod.AM.name, TimePeriod.PM.name),
                 textAppearance
             )
@@ -253,7 +252,7 @@ class MaterialTimePickerView: ConstraintLayout{
 
     private fun scrollToTime() {
         var scrollPosition= getScrollPosition(getHoursBasedOnClockType().size, pickerTime.hour)
-        if(timeConvention==TimeConvention.HOURS_12)scrollPosition-=1
+        if(timeConvention== TimeConvention.HOURS_12)scrollPosition-=1
         rvHours.scrollToPosition(scrollPosition)
         rvMinute.scrollToPosition(getScrollPosition(minute.size, pickerTime.minute))
         val position = if(pickerTime.hour>=12) 1 else 0
@@ -287,8 +286,8 @@ class MaterialTimePickerView: ConstraintLayout{
 
     fun setTime(hour: Int, @IntRange(from = 0, to = 60) minute: Int) {
         val setHour=when(timeConvention){
-            TimeConvention.HOURS_24->hour
-            TimeConvention.HOURS_12->hour%12+if (getTimePeriod() == TimePeriod.PM) 12 else 0
+            TimeConvention.HOURS_24 ->hour
+            TimeConvention.HOURS_12 ->hour%12+if (getTimePeriod() == TimePeriod.PM) 12 else 0
         }
         pickerTime = pickerTime.withHour(setHour).withMinute(minute)
         scrollToTime()

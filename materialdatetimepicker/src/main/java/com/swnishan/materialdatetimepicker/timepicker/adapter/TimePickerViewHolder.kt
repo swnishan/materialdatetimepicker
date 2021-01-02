@@ -1,4 +1,4 @@
-package com.swnishan.materialdatetimepicker.timepicker
+package com.swnishan.materialdatetimepicker.timepicker.adapter
 
 import android.view.View
 import android.widget.TextView
