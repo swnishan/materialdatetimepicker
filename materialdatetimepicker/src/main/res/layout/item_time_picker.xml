@@ -7,8 +7,8 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:background="@color/transparent"
-    android:paddingStart="@dimen/gap_3"
-    android:paddingEnd="@dimen/gap_3"
-    android:paddingTop="@dimen/gap_2"
-    android:paddingBottom="@dimen/gap_2"
+    android:paddingStart="@dimen/time_picker_item_padding_start"
+    android:paddingEnd="@dimen/time_picker_item_padding_end"
+    android:paddingTop="@dimen/time_picker_item_padding_top"
+    android:paddingBottom="@dimen/time_picker_item_padding_bottom"
     tools:text="99" />

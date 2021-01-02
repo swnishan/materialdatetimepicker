@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.timepicker.TimePeriodAdapter
 import com.swnishan.materialdatetimepicker.timepicker.TimePickerAdapter
 import kotlinx.android.synthetic.main.view_time_picker.view.*
@@ -51,6 +52,7 @@ class MaterialTimePickerView: ConstraintLayout{
     init {
         inflate(context, R.layout.view_time_picker, this)
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+        setPadding(0,Utils.dimenToPx(context,R.dimen.time_picker_view_padding_top),0, Utils.dimenToPx(context,R.dimen.time_picker_view_padding_bottom))
     }
 
     private fun setCustomAttributes(

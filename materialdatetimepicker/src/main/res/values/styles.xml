@@ -3,17 +3,31 @@
 
     <style name="Widget.MaterialTimePicker" parent="">
         <item name="materialTimePickerHighlighterColor">?attr/colorPrimary</item>
-        <item name="materialTimePickerHighlighterHeight">60dp</item>
+        <item name="materialTimePickerHighlighterHeight">50dp</item>
         <item name="materialTimePickerTextAppearance">@style/TextAppearance.MaterialTimePicker</item>
         <item name="materialTimePickerTimeConvention">HOURS_12</item>
         <item name="android:background">@color/white</item>
     </style>
 
     <style name="Base.TextAppearance.MaterialDateTimePicker" parent="">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextAppearance.MaterialTimePicker" parent="Base.TextAppearance.MaterialDateTimePicker"/>
+
+    <style name="Base.MaterialDateTimePicker.Dialog.Title" parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialTimePicker.Dialog.Title</item>
+    </style>
+
+    <style name="MaterialDateTimePicker.Dialog.Title" parent="Base.MaterialDateTimePicker.Dialog.Title"/>
+
+    <style name="Base.TextAppearance.MaterialDateTimePicker.Dialog.Title" parent="">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextAppearance.MaterialTimePicker.Dialog.Title" parent="Base.TextAppearance.MaterialDateTimePicker.Dialog.Title"/>
+
 
 </resources>

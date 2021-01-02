@@ -13,4 +13,14 @@
     <dimen name="gap_8">64dp</dimen>
     <dimen name="gap_9">72dp</dimen>
 
+    <!--    Time picker ite-->
+    <dimen name="time_picker_item_padding_start">24dp</dimen>
+    <dimen name="time_picker_item_padding_end">24dp</dimen>
+    <dimen name="time_picker_item_padding_top">16dp</dimen>
+    <dimen name="time_picker_item_padding_bottom">16dp</dimen>
+
+    <!--    Time picker view-->
+    <dimen name="time_picker_view_padding_top">20dp</dimen>
+    <dimen name="time_picker_view_padding_bottom">20dp</dimen>
+
 </resources>

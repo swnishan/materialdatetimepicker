@@ -2,6 +2,7 @@
 
     <style name="ThemeOverlay.Dialog.MaterialTimePicker" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="materialTimePickerViewStyle">@style/Widget.MaterialTimePicker</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialDateTimePicker.Dialog.Title</item>
         <item name="android:background">@color/lightBlack</item>
     </style>
 
