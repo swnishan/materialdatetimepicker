@@ -1,4 +1,4 @@
-package com.swnishan.materialdatetimepicker.timepicker.adapter
+package com.swnishan.materialdatetimepicker.common.adapter
 
 import android.view.View
 import android.widget.TextView
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.common.PickerModel
 
 
-internal class TimePickerViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+internal class PickerViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(model: PickerModel, textAppearance: Int) {
         (view as TextView).text = model.displayValue

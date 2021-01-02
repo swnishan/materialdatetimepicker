@@ -1,4 +1,4 @@
-package com.swnishan.materialdatetimepicker.timepicker.adapter
+package com.swnishan.materialdatetimepicker.common.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,16 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.PickerModel
 
-internal class TimePickerAdapter(private var items: List<PickerModel>, private val textAppearance: Int) : RecyclerView.Adapter<TimePickerViewHolder>() {
+internal class PickerAdapter(private var items: List<PickerModel>, private val textAppearance: Int, private val scrollOption: ScrollOptions=ScrollOptions.SCROLL_INT_MAX) : RecyclerView.Adapter<PickerViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimePickerViewHolder {
-        return TimePickerViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PickerViewHolder {
+        return PickerViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_time_picker, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: TimePickerViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PickerViewHolder, position: Int) {
         // Here get actual element from the items by position%items.size
         holder.bind(items[position % items.size], textAppearance)
     }
@@ -24,10 +24,14 @@ internal class TimePickerAdapter(private var items: List<PickerModel>, private v
      * To make recycler view repeatable here set the item count as Int.MAX_VALUE.
      * So, it seems there's lots of items but the actual item count is items.size
      */
-    override fun getItemCount(): Int = Int.MAX_VALUE
+    override fun getItemCount(): Int = if(scrollOption==ScrollOptions.SCROLL_INT_MAX) Int.MAX_VALUE else items.size
 
     fun setTimes(items: List<PickerModel>){
         this.items = items
         notifyDataSetChanged()
+    }
+
+    enum class ScrollOptions{
+        SCROLL_INT_MAX, SCROLL_ITEM_LIMIT
     }
 }
