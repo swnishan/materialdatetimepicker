@@ -11,7 +11,7 @@ internal class PickerAdapter(private var items: List<PickerModel>, private val t
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PickerViewHolder {
         return PickerViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_time_picker, parent, false)
+                .inflate(R.layout.item_picker, parent, false)
         )
     }
 

@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/transparent"
-        tools:listitem="@layout/item_time_picker" />
+        tools:listitem="@layout/item_picker" />
 
     <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
         android:id="@+id/rvMonths"
@@ -40,7 +40,7 @@
         app:layout_constraintStart_toEndOf="@id/rvYears"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_time_picker" />
+        tools:listitem="@layout/item_picker" />
 
     <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
         android:id="@+id/rvDays"
@@ -54,7 +54,7 @@
         app:layout_constraintStart_toEndOf="@id/rvMonths"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_time_picker" />
+        tools:listitem="@layout/item_picker" />
 
     <View
         android:id="@+id/viewTopShadeYear"

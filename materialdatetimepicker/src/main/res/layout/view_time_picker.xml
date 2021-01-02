@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/transparent"
-        tools:listitem="@layout/item_time_picker" />
+        tools:listitem="@layout/item_picker" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvHourTimeSeparator"
@@ -52,7 +52,7 @@
         app:layout_constraintStart_toEndOf="@id/tvHourTimeSeparator"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_time_picker" />
+        tools:listitem="@layout/item_picker" />
 
     <com.swnishan.materialdatetimepicker.common.LowFlingRecyclerView
         android:id="@+id/rvTimePeriod"
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toEndOf="@id/rvMinute"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_time_picker" />
+        tools:listitem="@layout/item_picker" />
 
     <View
         android:id="@+id/viewTopShadeHour"
