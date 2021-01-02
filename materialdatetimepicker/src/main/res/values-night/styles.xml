@@ -9,6 +9,13 @@
         <item name="android:background">@color/lightBlack</item>
     </style>
 
+    <style name="Widget.MaterialDatePicker" parent="" >
+        <item name="materialDatePickerHighlighterColor">?attr/colorPrimary</item>
+        <item name="materialDatePickerHighlighterHeight">50dp</item>
+        <item name="materialDatePickerTextAppearance">@style/TextAppearance.MaterialTimePicker</item>
+        <item name="android:background">@color/lightBlack</item>
+    </style>
+
     <style name="Base.TextAppearance.MaterialDateTimePicker" parent="">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>

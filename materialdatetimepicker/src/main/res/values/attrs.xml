@@ -12,8 +12,19 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="MaterialDatePickerView">
+        <attr name="materialDatePickerTextAppearance" format="reference"/>
+        <attr name="materialDatePickerHighlighterColor" format="color"/>
+        <attr name="materialDatePickerHighlighterHeight" format="dimension"/>
+        <attr name="android:background"/>
+    </declare-styleable>
+
     <declare-styleable name="MaterialTimePickerOverlay">
         <attr name="materialTimePickerViewStyle" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="MaterialTimeDateOverlay">
+        <attr name="materialDatePickerViewStyle" format="reference"/>
     </declare-styleable>
 
 </resources>
