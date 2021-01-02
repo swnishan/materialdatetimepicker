@@ -164,7 +164,7 @@ class MaterialTimePickerView: ConstraintLayout{
             TimeConvention.HOURS_24 -> hours24
             TimeConvention.HOURS_12 -> hours12
         }
-        hourAdapter.setTimes(hours)
+        hourAdapter.updateItems(hours)
     }
 
     private fun toggleTimeTimePeriodView(){

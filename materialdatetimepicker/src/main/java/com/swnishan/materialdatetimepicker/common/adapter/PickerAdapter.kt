@@ -26,7 +26,7 @@ internal class PickerAdapter(private var items: List<PickerModel>, private val t
      */
     override fun getItemCount(): Int = if(scrollOption==ScrollOptions.SCROLL_INT_MAX) Int.MAX_VALUE else items.size
 
-    fun setTimes(items: List<PickerModel>){
+    fun updateItems(items: List<PickerModel>){
         this.items = items
         notifyDataSetChanged()
     }

@@ -23,6 +23,7 @@ import com.swnishan.materialdatetimepicker.common.toLocalDate
 import com.swnishan.materialdatetimepicker.common.toLong
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import kotlinx.android.synthetic.main.view_date_picker.view.*
+import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
 import kotlin.math.absoluteValue
 
@@ -41,6 +42,7 @@ class MaterialDatePickerView: ConstraintLayout{
     ){
         setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialDatePicker)
         initDateSelectionView()
+        updateDaysAdapter()
         scrollToDate()
     }
 
@@ -100,7 +102,7 @@ class MaterialDatePickerView: ConstraintLayout{
     private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
     private val years = (1950..2100).mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
     private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, String.format("%02d", value),value)}
-    private val days = (0..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
+    private var days = (1..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
 
     private val yearAdapter = PickerAdapter(years, textAppearance)
     private val monthAdapter = PickerAdapter(months, textAppearance)
@@ -146,6 +148,11 @@ class MaterialDatePickerView: ConstraintLayout{
             daySnapHelper.attachToRecyclerView(this)
             addListeners()
         }
+    }
+
+    private fun updateDaysAdapter() {
+        days=(1..pickerDate.month.length(pickerDate.isLeapYear)).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
+        dayAdapter.updateItems(days)
     }
 
     private fun animateShadeView(view: View, duration: Long, alpha: Float): Boolean {
@@ -194,23 +201,68 @@ class MaterialDatePickerView: ConstraintLayout{
                     SCROLL_STATE_DRAGGING -> animateShadeView(recyclerView, 300, .3f)
                     SCROLL_STATE_IDLE -> animateShadeView(recyclerView, 1000, .7f)
                 }
+
+                if(newState==SCROLL_STATE_IDLE){
+                    when(recyclerView){
+                        rvYears->{
+                            pickerDate=pickerDate.withYear(getYear())
+                            if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size){
+                                updateDaysAdapter()
+                                scrollToDay()
+                            }
+                        }
+
+                        rvMonths->{
+                            pickerDate=pickerDate.withMonth(getMonth())
+                            if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size) {
+                                updateDaysAdapter()
+                                scrollToDay()
+                            }
+                        }
+
+                        rvDays->{
+                            pickerDate=pickerDate.withDayOfMonth(getDay())
+                        }
+                    }
+                }
             }
         })
     }
 
-    private fun scrollToDate() {
-        rvYears.scrollToPosition(getScrollPosition(yearAdapter,years, getYear(pickerDate.year)))
-        rvMonths.scrollToPosition(getScrollPosition(monthAdapter,months, getMonth(pickerDate.monthValue)))
-        rvDays.scrollToPosition(getScrollPosition(dayAdapter,days, getDay(pickerDate.dayOfMonth)))
+    fun getDay(): Int {
+        val view = daySnapHelper.findSnapView(rvDays.layoutManager) ?: return 0
+        return days[(rvDays.getChildAdapterPosition(view) % days.size)].day
     }
 
-    private fun getYear(year: Int) = years.firstOrNull { it.year == year }
+    fun getMonth(): Int {
+        val view=monthSnapHelper.findSnapView(rvMonths.layoutManager)?:return 0
+        return months[(rvMonths.getChildAdapterPosition(view)%months.size)].month
+    }
+
+    fun getYear(): Int {
+        val view=yearSnapHelper.findSnapView(rvYears.layoutManager)?:return 0
+        return years[(rvYears.getChildAdapterPosition(view)%years.size)].year
+    }
+
+    private fun scrollToDate() {
+        scrollToYear()
+        scrollToMonth()
+        scrollToDay()
+    }
+
+    private fun scrollToYear()=rvYears.scrollToPosition(getScrollPosition(yearAdapter,years, getYearModel(pickerDate.year)))
+
+    private fun scrollToMonth()=rvMonths.scrollToPosition(getScrollPosition(monthAdapter,months, getMonthModel(pickerDate.monthValue)))
+
+    private fun scrollToDay()=rvDays.scrollToPosition(getScrollPosition(dayAdapter,days, getDayModel(pickerDate.dayOfMonth)))
+
+    private fun getYearModel(year: Int) = years.firstOrNull { it.year == year }
         ?: throw ArrayIndexOutOfBoundsException("Cannot find given Year in given years range (size: ${years.size} index: $year)")
 
-    private fun getMonth(month: Int) = months.firstOrNull { it.month == month }
+    private fun getMonthModel(month: Int) = months.firstOrNull { it.month == month }
         ?: throw ArrayIndexOutOfBoundsException("Cannot find given Month in given months range (size: ${months.size} index: $month)")
 
-    private fun getDay(day: Int) = days.firstOrNull { it.day == day }
+    private fun getDayModel(day: Int) = days.firstOrNull { it.day == day }
         ?: throw ArrayIndexOutOfBoundsException("Cannot find given Day in given days range (size: ${days.size} index: $day)")
 
     /**
