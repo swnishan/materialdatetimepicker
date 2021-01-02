@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.toLocalDate
 import com.swnishan.materialdatetimepicker.common.toLong
@@ -97,16 +98,16 @@ class MaterialDatePickerView: ConstraintLayout{
     }
 
     private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
-    private val years = (1950..2050).toList()
-    private val months = (1..12).toList()
-    private val days = (0..31).toList()
+    private val years = (1950..2100).mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
+    private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, String.format("%02d", value),value)}
+    private val days = (0..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
 
-    private val hourAdapter = TimePickerAdapter(years, textAppearance)
-    private val minuteAdapter = TimePickerAdapter(months, textAppearance)
-    private val daysAdapter = TimePickerAdapter(days, textAppearance)
+    private val yearAdapter = TimePickerAdapter(years, textAppearance)
+    private val monthAdapter = TimePickerAdapter(months, textAppearance)
+    private val dayAdapter = TimePickerAdapter(days, textAppearance)
 
-    private val hourSnapHelper = LinearSnapHelper()
-    private val minuteSnapHelper = LinearSnapHelper()
+    private val yearSnapHelper = LinearSnapHelper()
+    private val monthSnapHelper = LinearSnapHelper()
     private val daySnapHelper = LinearSnapHelper()
 
     private var pickerDate: LocalDate = LocalDate.now()
@@ -117,30 +118,30 @@ class MaterialDatePickerView: ConstraintLayout{
     }
 
     fun getDate():Long{
-        val hourView=hourSnapHelper.findSnapView(rvYears.layoutManager)?:return 0
+        val hourView=yearSnapHelper.findSnapView(rvYears.layoutManager)?:return 0
         return rvYears.getChildAdapterPosition(hourView).toLong()
     }
 
     private fun initDateSelectionView() {
         rvYears.apply {
             setHasFixedSize(true)
-            adapter = hourAdapter
+            adapter = yearAdapter
             layoutManager = LinearLayoutManager(context)
-            hourSnapHelper.attachToRecyclerView(this)
+            yearSnapHelper.attachToRecyclerView(this)
             addListeners()
         }
 
         rvMonths.apply {
             setHasFixedSize(true)
-            adapter = minuteAdapter
+            adapter = monthAdapter
             layoutManager = LinearLayoutManager(context)
-            minuteSnapHelper.attachToRecyclerView(this)
+            monthSnapHelper.attachToRecyclerView(this)
             addListeners()
         }
 
         rvDays.apply {
             setHasFixedSize(true)
-            adapter= daysAdapter
+            adapter= dayAdapter
             layoutManager=LinearLayoutManager(context)
             daySnapHelper.attachToRecyclerView(this)
             addListeners()
@@ -198,22 +199,27 @@ class MaterialDatePickerView: ConstraintLayout{
     }
 
     private fun scrollToDate() {
-        rvYears.scrollToPosition(getScrollPosition(months.size, pickerDate.year))
-        rvMonths.scrollToPosition(getScrollPosition(months.size, pickerDate.monthValue))
-        rvDays.scrollToPosition(getScrollPosition(months.size, pickerDate.dayOfMonth))
+        rvYears.scrollToPosition(getScrollPosition(yearAdapter,years, getYear(pickerDate.year)))
+        rvMonths.scrollToPosition(getScrollPosition(monthAdapter,months, getMonth(pickerDate.monthValue)))
+        rvDays.scrollToPosition(getScrollPosition(dayAdapter,days, getDay(pickerDate.dayOfMonth)))
     }
-    
+
+    private fun getYear(year:Int)= years.firstOrNull { it.year == year }?:throw ArrayIndexOutOfBoundsException("Cannot find given Year in given years range")
+
+    private fun getMonth(month:Int)= months.firstOrNull { it.month == month }?:throw ArrayIndexOutOfBoundsException("Cannot find given Month in given months range")
+
+    private fun getDay(day:Int)= days.firstOrNull { it.day == day }?:throw ArrayIndexOutOfBoundsException("Cannot find given Day in given days range")
 
     /**
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
      */
-    private fun getScrollPosition(listSize: Int, time: Int): Int {
-        var scrollPosition = Int.MAX_VALUE / 2
-        val position = scrollPosition % listSize
+    private fun getScrollPosition(adapter:TimePickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
+        var scrollPosition = adapter.itemCount/2
+        val position = scrollPosition % list.size
 
-        val diff = (time - position).absoluteValue
-        if (time > position) scrollPosition += diff else scrollPosition -= diff
+        val diff = (model.index - position).absoluteValue
+        if (model.index > position) scrollPosition += diff else scrollPosition -= diff
 
         return scrollPosition
     }

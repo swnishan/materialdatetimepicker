@@ -108,9 +108,9 @@ class MaterialTimePickerView: ConstraintLayout{
     }
 
     private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
-    private val hours24 = (0..23).toList()
-    private val hours12 = (1..12).toList()
-    private val minute = (0..59).toList()
+    private val hours24 = (0..23).mapIndexed { index, value -> TimeModel.Hour(index, String.format("%02d", value), value) }
+    private val hours12 = (1..12).mapIndexed { index, value -> TimeModel.Hour(index, String.format("%02d", value), value) }
+    private val minute = (0..59).mapIndexed { index, value -> TimeModel.Minute(index, String.format("%02d", value), value) }
 
     private val hourAdapter = TimePickerAdapter(hours24, textAppearance)
     private val minuteAdapter = TimePickerAdapter(minute, textAppearance)
@@ -259,7 +259,7 @@ class MaterialTimePickerView: ConstraintLayout{
         rvTimePeriod.scrollToPosition(position)
     }
 
-    private fun getHoursBasedOnClockType(): List<Int> {
+    private fun getHoursBasedOnClockType(): List<TimeModel> {
         return when(timeConvention){
             TimeConvention.HOURS_24 -> hours24
             TimeConvention.HOURS_12 -> hours12
