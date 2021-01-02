@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Widget.MaterialTimePicker" parent="">
+    <style name="Base.Widget.MaterialDateTimePicker" parent="">
         <item name="highlighterColor">?attr/colorPrimary</item>
         <item name="highlighterHeight">50dp</item>
         <item name="android:textAppearance">@style/TextAppearance.MaterialTimePicker</item>
+        <item name="android:background">@color/lightBlack</item>
+    </style>
+
+    <style name="Widget.MaterialTimePicker" parent="Base.Widget.MaterialDateTimePicker">
         <item name="timeConvention">HOURS_12</item>
-        <item name="android:background">@color/lightBlack</item>
     </style>
 
-    <style name="Widget.MaterialDatePicker" parent="" >
-        <item name="highlighterColor">?attr/colorPrimary</item>
-        <item name="highlighterHeight">50dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialTimePicker</item>
-        <item name="android:background">@color/lightBlack</item>
-    </style>
+    <style name="Widget.MaterialDatePicker" parent="Base.Widget.MaterialDateTimePicker" />
 
     <style name="Base.TextAppearance.MaterialDateTimePicker" parent="">
         <item name="android:textSize">18sp</item>
