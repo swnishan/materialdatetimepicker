@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.timepicker.adapter.TimePeriodAdapter
 import com.swnishan.materialdatetimepicker.timepicker.adapter.TimePickerAdapter
@@ -110,10 +111,10 @@ class MaterialTimePickerView: ConstraintLayout{
     private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
     private val hours24 = (0..23).mapIndexed { index, value -> TimeModel.Hour(index, String.format("%02d", value), value) }
     private val hours12 = (1..12).mapIndexed { index, value -> TimeModel.Hour(index, String.format("%02d", value), value) }
-    private val minute = (0..59).mapIndexed { index, value -> TimeModel.Minute(index, String.format("%02d", value), value) }
+    private val minutes = (0..59).mapIndexed { index, value -> TimeModel.Minute(index, String.format("%02d", value), value) }
 
     private val hourAdapter = TimePickerAdapter(hours24, textAppearance)
-    private val minuteAdapter = TimePickerAdapter(minute, textAppearance)
+    private val minuteAdapter = TimePickerAdapter(minutes, textAppearance)
 
     private val hourSnapHelper = LinearSnapHelper()
     private val minuteSnapHelper = LinearSnapHelper()
@@ -150,7 +151,7 @@ class MaterialTimePickerView: ConstraintLayout{
 
     fun getMinute(): Int {
         val minuteView=hourSnapHelper.findSnapView(rvMinute.layoutManager)?:return 0
-        return rvMinute.getChildAdapterPosition(minuteView)%minute.size
+        return rvMinute.getChildAdapterPosition(minuteView)%minutes.size
     }
 
     private fun getTimePeriod(): TimePeriod {
@@ -251,10 +252,9 @@ class MaterialTimePickerView: ConstraintLayout{
     }
 
     private fun scrollToTime() {
-        var scrollPosition= getScrollPosition(getHoursBasedOnClockType().size, pickerTime.hour)
-        if(timeConvention== TimeConvention.HOURS_12)scrollPosition-=1
+        var scrollPosition= getScrollPosition(hourAdapter,getHoursBasedOnClockType() as List<PickerModel>,getHourModel(pickerTime.hour))
         rvHours.scrollToPosition(scrollPosition)
-        rvMinute.scrollToPosition(getScrollPosition(minute.size, pickerTime.minute))
+        rvMinute.scrollToPosition(getScrollPosition(minuteAdapter, minutes, getMinuteModel(pickerTime.minute)))
         val position = if(pickerTime.hour>=12) 1 else 0
         rvTimePeriod.scrollToPosition(position)
     }
@@ -266,16 +266,23 @@ class MaterialTimePickerView: ConstraintLayout{
         }
     }
 
+    private fun getHourModel(hour: Int)=when(timeConvention){
+        TimeConvention.HOURS_24->hours24.firstOrNull { it.hour==hour%24 }?:throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 24 hours range (size: ${hours24.size} index: $hour)")
+        TimeConvention.HOURS_12->hours12.firstOrNull { it.hour==hour%12 }?:throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 12 hours range (size: ${hours12.size} index: $hour)")
+    }
+
+    private fun getMinuteModel(minute:Int)=minutes.firstOrNull { it.minute==minute }?:throw ArrayIndexOutOfBoundsException("Cannot find given Minute in given minutes range (size: ${minutes.size} index: $minute)")
+
     /**
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
      */
-    private fun getScrollPosition(listSize: Int, time: Int): Int {
-        var scrollPosition = Int.MAX_VALUE / 2
-        val position = scrollPosition % listSize
+    private fun getScrollPosition(adapter:TimePickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
+        var scrollPosition = adapter.itemCount/2
+        val position = scrollPosition % list.size
 
-        val diff = (time - position).absoluteValue
-        if (time > position) scrollPosition += diff else scrollPosition -= diff
+        val diff = (model.index - position).absoluteValue
+        if (model.index > position) scrollPosition += diff else scrollPosition -= diff
 
         return scrollPosition
     }
