@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="MaterialDateTimePicker">
+        <attr name="highlighterColor" format="color"/>
+        <attr name="highlighterHeight" format="dimension"/>
+    </declare-styleable>
+
     <declare-styleable name="MaterialTimePickerView">
-        <attr name="materialTimePickerTextAppearance" format="reference"/>
-        <attr name="materialTimePickerHighlighterColor" format="color"/>
-        <attr name="materialTimePickerHighlighterHeight" format="dimension"/>
+        <attr name="highlighterColor"/>
+        <attr name="highlighterHeight" />
         <attr name="android:background"/>
-        <attr name="materialTimePickerTimeConvention" format="enum">
+        <attr name="android:textAppearance"/>
+        <attr name="timeConvention" format="enum">
             <enum name="HOURS_24" value="0"/>
             <enum name="HOURS_12" value="1"/>
         </attr>
     </declare-styleable>
 
     <declare-styleable name="MaterialDatePickerView">
-        <attr name="materialDatePickerTextAppearance" format="reference"/>
-        <attr name="materialDatePickerHighlighterColor" format="color"/>
-        <attr name="materialDatePickerHighlighterHeight" format="dimension"/>
+        <attr name="highlighterColor"/>
+        <attr name="highlighterHeight"/>
         <attr name="android:background"/>
+        <attr name="android:textAppearance"/>
     </declare-styleable>
 
     <declare-styleable name="MaterialTimePickerOverlay">

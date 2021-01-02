@@ -66,12 +66,12 @@ class MaterialTimePickerView: ConstraintLayout{
             defStyle
         ).apply {
             val highlighterColor = this.getColor(
-                R.styleable.MaterialTimePickerView_materialTimePickerHighlighterColor,
+                R.styleable.MaterialTimePickerView_highlighterColor,
                 ContextCompat.getColor(context, R.color.O100)
             )
 
             val highlighterHeight = this.getDimension(
-                R.styleable.MaterialTimePickerView_materialTimePickerHighlighterHeight,
+                R.styleable.MaterialTimePickerView_highlighterHeight,
                 60f
             )
 
@@ -80,12 +80,12 @@ class MaterialTimePickerView: ConstraintLayout{
             )
 
             textAppearance = this.getResourceId(
-                R.styleable.MaterialTimePickerView_materialTimePickerTextAppearance,
+                R.styleable.MaterialTimePickerView_android_textAppearance,
                 R.style.TextAppearance_MaterialTimePicker
             )
 
             timeConvention = TimeConvention.values()[this.getInt(
-                R.styleable.MaterialTimePickerView_materialTimePickerTimeConvention,
+                R.styleable.MaterialTimePickerView_timeConvention,
                 0
             )]
 

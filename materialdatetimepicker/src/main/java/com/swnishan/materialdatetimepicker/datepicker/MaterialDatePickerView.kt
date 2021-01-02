@@ -61,12 +61,12 @@ class MaterialDatePickerView: ConstraintLayout{
             defStyle
         ).apply {
             val highlighterColor = this.getColor(
-                R.styleable.MaterialDatePickerView_materialDatePickerHighlighterColor,
+                R.styleable.MaterialDatePickerView_highlighterColor,
                 ContextCompat.getColor(context, R.color.O100)
             )
 
             val highlighterHeight = this.getDimension(
-                R.styleable.MaterialDatePickerView_materialDatePickerHighlighterHeight,
+                R.styleable.MaterialDatePickerView_highlighterHeight,
                 60f
             )
 
@@ -75,7 +75,7 @@ class MaterialDatePickerView: ConstraintLayout{
             )
 
             textAppearance = this.getResourceId(
-                R.styleable.MaterialDatePickerView_materialDatePickerTextAppearance,
+                R.styleable.MaterialDatePickerView_android_textAppearance,
                 R.style.TextAppearance_MaterialTimePicker
             )
 
@@ -97,8 +97,8 @@ class MaterialDatePickerView: ConstraintLayout{
     }
 
     private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
-    private val years = (0..100).toList()
-    private val months = (0..12).toList()
+    private val years = (1950..2050).toList()
+    private val months = (1..12).toList()
     private val days = (0..31).toList()
 
     private val hourAdapter = TimePickerAdapter(years, textAppearance)
