@@ -204,11 +204,14 @@ class MaterialDatePickerView: ConstraintLayout{
         rvDays.scrollToPosition(getScrollPosition(dayAdapter,days, getDay(pickerDate.dayOfMonth)))
     }
 
-    private fun getYear(year:Int)= years.firstOrNull { it.year == year }?:throw ArrayIndexOutOfBoundsException("Cannot find given Year in given years range")
+    private fun getYear(year: Int) = years.firstOrNull { it.year == year }
+        ?: throw ArrayIndexOutOfBoundsException("Cannot find given Year in given years range (size: ${years.size} index: $year)")
 
-    private fun getMonth(month:Int)= months.firstOrNull { it.month == month }?:throw ArrayIndexOutOfBoundsException("Cannot find given Month in given months range")
+    private fun getMonth(month: Int) = months.firstOrNull { it.month == month }
+        ?: throw ArrayIndexOutOfBoundsException("Cannot find given Month in given months range (size: ${months.size} index: $month)")
 
-    private fun getDay(day:Int)= days.firstOrNull { it.day == day }?:throw ArrayIndexOutOfBoundsException("Cannot find given Day in given days range")
+    private fun getDay(day: Int) = days.firstOrNull { it.day == day }
+        ?: throw ArrayIndexOutOfBoundsException("Cannot find given Day in given days range (size: ${days.size} index: $day)")
 
     /**
      * Here we get the scroll position with relative to middle position of list of items
