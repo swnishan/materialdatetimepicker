@@ -23,12 +23,13 @@ import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
+import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
 import kotlin.math.absoluteValue
 
-class MaterialTimePickerView: ConstraintLayout{
+class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(
@@ -72,7 +73,7 @@ class MaterialTimePickerView: ConstraintLayout{
 
             val highlighterHeight = this.getDimension(
                 R.styleable.MaterialTimePickerView_highlighterHeight,
-                60f
+                50f
             )
 
             val background = this.getDrawable(
@@ -201,28 +202,12 @@ class MaterialTimePickerView: ConstraintLayout{
         }
     }
 
-    private fun animateShadeView(view: View, duration: Long, alpha: Float): Boolean {
+    private fun animateShadeView(view: View, duration: Long, alpha: Float) {
         when(view.id){
-            R.id.rvHours -> {
-                listOf(viewTopShadeHour, viewBottomShadeHour).forEach {
-                    it.animate().alpha(alpha).setDuration(duration)
-                        .withEndAction { it.alpha = alpha }.start()
-                }
-            }
-            R.id.rvMinute -> {
-                listOf(viewTopShadeMinute, viewBottomShadeMinute).forEach {
-                    it.animate().alpha(alpha).setDuration(duration)
-                        .withEndAction { it.alpha = alpha }.start()
-                }
-            }
-            R.id.rvTimePeriod -> {
-                listOf(viewTopShadeTimePeriod, viewBottomShadeTimePeriod).forEach {
-                    it.animate().alpha(alpha).setDuration(duration)
-                        .withEndAction { it.alpha = alpha }.start()
-                }
-            }
+            R.id.rvHours -> super.animateShadeView(listOf(viewTopShadeHour, viewBottomShadeHour),duration, alpha)
+            R.id.rvMinute -> super.animateShadeView(listOf(viewTopShadeMinute, viewBottomShadeMinute),duration, alpha)
+            R.id.rvTimePeriod -> super.animateShadeView(listOf(viewTopShadeTimePeriod, viewBottomShadeTimePeriod),duration, alpha)
         }
-        return true
     }
 
     private fun RecyclerView.addListeners(){
@@ -275,20 +260,6 @@ class MaterialTimePickerView: ConstraintLayout{
 
     private fun getMinuteModel(minute: Int) = minutes.firstOrNull { it.minute == minute }
         ?: throw ArrayIndexOutOfBoundsException("Cannot find given Minute in given minutes range (size: ${minutes.size} index: $minute)")
-
-    /**
-     * Here we get the scroll position with relative to middle position of list of items
-     * since we set the adapter count as Int.MAX_VALUE
-     */
-    private fun getScrollPosition(adapter: PickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
-        var scrollPosition = adapter.itemCount/2
-        val position = scrollPosition % list.size
-
-        val diff = (model.index - position).absoluteValue
-        if (model.index > position) scrollPosition += diff else scrollPosition -= diff
-
-        return scrollPosition
-    }
 
     fun setOnTimePickedListener(onTimePickedListener: OnTimePickedListener?) {
         this.onTimePickedListener = onTimePickedListener

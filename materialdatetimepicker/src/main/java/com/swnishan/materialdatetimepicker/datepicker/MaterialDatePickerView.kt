@@ -22,12 +22,14 @@ import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.toLocalDate
 import com.swnishan.materialdatetimepicker.common.toLong
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
+import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
+import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalDate
 import kotlin.math.absoluteValue
 
-class MaterialDatePickerView: ConstraintLayout{
+class MaterialDatePickerView: BaseMaterialDateTimePickerView{
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(
@@ -70,7 +72,7 @@ class MaterialDatePickerView: ConstraintLayout{
 
             val highlighterHeight = this.getDimension(
                 R.styleable.MaterialDatePickerView_highlighterHeight,
-                60f
+                50f
             )
 
             val background = this.getDrawable(
@@ -155,28 +157,12 @@ class MaterialDatePickerView: ConstraintLayout{
         dayAdapter.updateItems(days)
     }
 
-    private fun animateShadeView(view: View, duration: Long, alpha: Float): Boolean {
+    private fun animateShadeView(view: View, duration: Long, alpha: Float) {
         when(view.id){
-            R.id.rvYears -> {
-                listOf(viewTopShadeYear, viewBottomShadeYear).forEach {
-                    it.animate().alpha(alpha).setDuration(duration)
-                        .withEndAction { it.alpha = alpha }.start()
-                }
-            }
-            R.id.rvMonths -> {
-                listOf(viewTopShadeMonth, viewBottomShadeMonth).forEach {
-                    it.animate().alpha(alpha).setDuration(duration)
-                        .withEndAction { it.alpha = alpha }.start()
-                }
-            }
-            R.id.rvDays -> {
-                listOf(viewTopShadeTimeDay, viewBottomShadeTimeDay).forEach {
-                    it.animate().alpha(alpha).setDuration(duration)
-                        .withEndAction { it.alpha = alpha }.start()
-                }
-            }
+            R.id.rvYears -> super.animateShadeView(listOf(viewTopShadeYear, viewBottomShadeYear),duration, alpha)
+            R.id.rvMonths -> super.animateShadeView(listOf(viewTopShadeMonth, viewBottomShadeMonth),duration, alpha)
+            R.id.rvDays -> super.animateShadeView(listOf(viewTopShadeTimeDay, viewBottomShadeTimeDay),duration, alpha)
         }
-        return true
     }
 
     private fun RecyclerView.addListeners(){
@@ -264,20 +250,6 @@ class MaterialDatePickerView: ConstraintLayout{
 
     private fun getDayModel(day: Int) = days.firstOrNull { it.day == day }
         ?: throw ArrayIndexOutOfBoundsException("Cannot find given Day in given days range (size: ${days.size} index: $day)")
-
-    /**
-     * Here we get the scroll position with relative to middle position of list of items
-     * since we set the adapter count as Int.MAX_VALUE
-     */
-    private fun getScrollPosition(adapter: PickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
-        var scrollPosition = adapter.itemCount/2
-        val position = scrollPosition % list.size
-
-        val diff = (model.index - position).absoluteValue
-        if (model.index > position) scrollPosition += diff else scrollPosition -= diff
-
-        return scrollPosition
-    }
 
     fun setOnTimePickedListener(onDatePickedListener: OnDatePickedListener?) {
         this.onDatePickedListener = onDatePickedListener
