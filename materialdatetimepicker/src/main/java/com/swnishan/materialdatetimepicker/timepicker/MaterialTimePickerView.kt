@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.IntRange
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
@@ -20,14 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
-import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
-import kotlin.math.absoluteValue
 
 class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
@@ -113,12 +110,12 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private val hours12 = (1..12).mapIndexed { index, value -> TimeModel.Hour(index, String.format("%02d", value), value) }
     private val minutes = (0..59).mapIndexed { index, value -> TimeModel.Minute(index, String.format("%02d", value), value) }
 
-    private val hourAdapter = PickerAdapter(hours24, textAppearance)
-    private val minuteAdapter = PickerAdapter(minutes, textAppearance)
-
     private val hourSnapHelper = LinearSnapHelper()
     private val minuteSnapHelper = LinearSnapHelper()
     private val timePeriodSnapHelper = LinearSnapHelper()
+
+    private val hourAdapter = PickerAdapter(hours24, textAppearance){position-> onItemClicked(position, rvHours) }
+    private val minuteAdapter = PickerAdapter(minutes, textAppearance){position-> onItemClicked(position, rvMinute) }
 
     private var pickerTime: LocalTime = LocalTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
@@ -195,7 +192,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                 listOf(TimePeriod.AM, TimePeriod.PM).mapIndexed { index, timePeriod -> TimeModel.TimePeriod(index, timePeriod.name, timePeriod.ordinal) },
                 textAppearance,
                 PickerAdapter.ScrollOptions.SCROLL_ITEM_LIMIT
-            )
+            ){position-> onItemClicked(position, rvTimePeriod) }
             layoutManager=LinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
             addListeners()

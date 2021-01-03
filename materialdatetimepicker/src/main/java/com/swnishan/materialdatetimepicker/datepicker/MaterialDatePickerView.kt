@@ -25,7 +25,6 @@ import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
-import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalDate
 import kotlin.math.absoluteValue
 
@@ -106,9 +105,9 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, String.format("%02d", value),value)}
     private var days = (1..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
 
-    private val yearAdapter = PickerAdapter(years, textAppearance)
-    private val monthAdapter = PickerAdapter(months, textAppearance)
-    private val dayAdapter = PickerAdapter(days, textAppearance)
+    private val yearAdapter = PickerAdapter(years, textAppearance){position-> onItemClicked(position, rvYears) }
+    private val monthAdapter = PickerAdapter(months, textAppearance){position-> onItemClicked(position, rvMonths) }
+    private val dayAdapter = PickerAdapter(days, textAppearance){position-> onItemClicked(position, rvDays) }
 
     private val yearSnapHelper = LinearSnapHelper()
     private val monthSnapHelper = LinearSnapHelper()

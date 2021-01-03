@@ -9,8 +9,16 @@ import com.swnishan.materialdatetimepicker.common.PickerModel
 
 internal class PickerViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(model: PickerModel, textAppearance: Int) {
+    fun bind(
+        model: PickerModel,
+        textAppearance: Int,
+        position: Int,
+        onClickItem: (position: Int) -> Unit
+    ) {
         (view as TextView).text = model.displayValue
         TextViewCompat.setTextAppearance(view, textAppearance)
+        view.setOnClickListener {
+            onClickItem.invoke(position)
+        }
     }
 }
