@@ -20,7 +20,7 @@ class MaterialDatePickerDialog : DialogFragment() {
     private var onDatePickedListener: MaterialDatePickerView.OnDatePickedListener? = null
     private var materialDatePickerView: MaterialDatePickerView? = null
     private var pickerDate: LocalDate = LocalDate.now()
-    private var themeRes= R.style.ThemeOverlay_Dialog_MaterialTimePicker
+    private var themeRes= R.style.ThemeOverlay_Dialog_MaterialDatePicker
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireContext(), themeRes)
