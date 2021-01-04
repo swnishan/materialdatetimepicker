@@ -9,7 +9,6 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -26,6 +25,9 @@ import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePicke
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
+import org.threeten.bp.Month
+import org.threeten.bp.format.TextStyle
+import java.util.*
 import kotlin.math.absoluteValue
 
 class MaterialDatePickerView: BaseMaterialDateTimePickerView{
@@ -100,9 +102,13 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         }.recycle()
     }
 
-    private var textAppearance:Int= R.style.TextAppearance_MaterialTimePicker
+    private var dateFormat=DateFormat.DD_MMMM_YYYY
+    private var textAppearance:Int= R.style.TextAppearance_MaterialDatePicker
+    private var pickerDate: LocalDate = LocalDate.now()
+    private var onDatePickedListener: OnDatePickedListener? = null
+
     private val years = (1950..2100).mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
-    private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, String.format("%02d", value),value)}
+    private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, getMonthDisplayText(value), value)}
     private var days = (1..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
 
     private val yearAdapter = PickerAdapter(years, textAppearance){position-> onItemClicked(position, rvYears) }
@@ -112,9 +118,6 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     private val yearSnapHelper = LinearSnapHelper()
     private val monthSnapHelper = LinearSnapHelper()
     private val daySnapHelper = LinearSnapHelper()
-
-    private var pickerDate: LocalDate = LocalDate.now()
-    private var onDatePickedListener: OnDatePickedListener? = null
 
     internal fun onTimePicked() {
         onDatePickedListener?.onDatePicked(pickerDate.toLong())
@@ -235,6 +238,20 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         scrollToDay()
     }
 
+    private fun getMonthDisplayText(month:Int): String {
+        return when(dateFormat){
+            DateFormat.DD_MMMM_YYYY->{
+                Month.of(month).getDisplayName(TextStyle.FULL, Locale.getDefault())
+            }
+            DateFormat.DD_MMM_YYYY->{
+                Month.of(month).getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            }
+            DateFormat.DD_MM_YYYY->{
+                String.format("%02d", month)
+            }
+        }
+    }
+
     private fun scrollToYear()=rvYears.scrollToPosition(getScrollPosition(yearAdapter,years, getYearModel(pickerDate.year)))
 
     private fun scrollToMonth()=rvMonths.scrollToPosition(getScrollPosition(monthAdapter,months, getMonthModel(pickerDate.monthValue)))
@@ -263,4 +280,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         fun onDatePicked(date: Long)
     }
 
+    enum class DateFormat{
+        DD_MMMM_YYYY, DD_MMM_YYYY, DD_MM_YYYY
+    }
 }
