@@ -32,10 +32,6 @@ class LowFlingRecyclerView: RecyclerView {
         super.onMeasure(widthMeasureSpec, if(measuredItemHeight>0)measuredItemHeight else heightMeasureSpec)
     }
 
-    internal fun setItemHeightUpdateListener(listener: OnItemHeightUpdateListener){
-        this.onHeightUpdateListener=listener
-    }
-
     internal interface OnItemHeightUpdateListener{
         fun onUpdate(measuredHeight:Int)
     }

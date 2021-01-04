@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.SlowLinearLayoutManager
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
@@ -173,7 +174,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         rvHours.apply {
             setHasFixedSize(true)
             adapter = hourAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context)
             hourSnapHelper.attachToRecyclerView(this)
             addListeners()
         }
@@ -181,7 +182,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         rvMinute.apply {
             setHasFixedSize(true)
             adapter = minuteAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context)
             minuteSnapHelper.attachToRecyclerView(this)
             addListeners()
         }
@@ -193,7 +194,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                 textAppearance,
                 PickerAdapter.ScrollOptions.SCROLL_ITEM_LIMIT
             ){position-> onItemClicked(position, rvTimePeriod) }
-            layoutManager=LinearLayoutManager(context)
+            layoutManager=SlowLinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
             addListeners()
         }

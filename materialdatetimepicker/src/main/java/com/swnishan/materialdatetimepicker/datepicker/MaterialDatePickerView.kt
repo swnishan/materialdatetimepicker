@@ -16,10 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
-import com.swnishan.materialdatetimepicker.common.PickerModel
-import com.swnishan.materialdatetimepicker.common.Utils
-import com.swnishan.materialdatetimepicker.common.toLocalDate
-import com.swnishan.materialdatetimepicker.common.toLong
+import com.swnishan.materialdatetimepicker.common.*
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
@@ -132,7 +129,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         rvYears.apply {
             setHasFixedSize(true)
             adapter = yearAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context)
             yearSnapHelper.attachToRecyclerView(this)
             addListeners()
         }
@@ -140,7 +137,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         rvMonths.apply {
             setHasFixedSize(true)
             adapter = monthAdapter
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context)
             monthSnapHelper.attachToRecyclerView(this)
             addListeners()
         }
@@ -148,7 +145,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         rvDays.apply {
             setHasFixedSize(true)
             adapter= dayAdapter
-            layoutManager=LinearLayoutManager(context)
+            layoutManager=SlowLinearLayoutManager(context)
             daySnapHelper.attachToRecyclerView(this)
             addListeners()
         }
