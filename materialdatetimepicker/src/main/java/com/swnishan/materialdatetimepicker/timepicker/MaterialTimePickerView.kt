@@ -251,7 +251,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private fun getHourModel(hour: Int)=when(timeConvention){
         TimeConvention.HOURS_24 -> hours24.firstOrNull { it.hour == hour % 24 }
             ?: throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 24 hours range (size: ${hours24.size} index: $hour)")
-        TimeConvention.HOURS_12 -> hours12.firstOrNull { it.hour == hour % 12 }
+        TimeConvention.HOURS_12 -> hours12.firstOrNull { it.hour == if(hour==0) hour+12 else hour % 12 }
             ?: throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 12 hours range (size: ${hours12.size} index: $hour)")
     }
 
