@@ -16,6 +16,7 @@
     <style name="Base.TextAppearance.MaterialDateTimePicker" parent="">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="TextAppearance.MaterialTimePicker" parent="Base.TextAppearance.MaterialDateTimePicker"/>
