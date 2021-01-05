@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
@@ -36,7 +37,12 @@ open class BaseMaterialDateTimePickerView:ConstraintLayout{
         }
     }
 
-    internal fun onItemClicked(position: Int, rv: RecyclerView){
+    internal open fun onItemClicked(position: Int, rv: RecyclerView){
         rv.smoothScrollToPosition(position)
+    }
+
+    internal fun LinearSnapHelper.getSnapPosition(rv:RecyclerView): Int {
+        val view=findSnapView(rv.layoutManager)?:return 0
+        return rv.getChildAdapterPosition(view)
     }
 }

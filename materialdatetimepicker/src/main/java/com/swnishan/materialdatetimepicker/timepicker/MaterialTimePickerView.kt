@@ -13,12 +13,12 @@ import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.SlowLinearLayoutManager
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
@@ -41,7 +41,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         defAttributeSet
     ){
         setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialTimePicker)
-        setHours()
+        updateHoursAdapter()
         toggleTimeTimePeriodView()
         initTimeSelectionView()
         scrollToTime()
@@ -90,6 +90,8 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
             viewCenter.setBackgroundColor(highlighterColor)
             viewCenter.layoutParams.height=highlighterHeight.toInt()
+            viewCenterOverlay.setBackgroundColor(highlighterColor)
+            viewCenterOverlay.layoutParams.height=highlighterHeight.toInt()
             TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
 
             if (background is ColorDrawable) {
@@ -121,10 +123,11 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private var pickerTime: LocalTime = LocalTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
+    private var timePeriod: TimePeriod = TimePeriod.PM
 
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention
-        setHours()
+        updateHoursAdapter()
         toggleTimeTimePeriodView()
         scrollToTime()
     }
@@ -137,28 +140,20 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     }
 
     fun getHour():Int{
-        val hourView=hourSnapHelper.findSnapView(rvHours.layoutManager)?:return 0
-        val hour=rvHours.getChildAdapterPosition(hourView)
+        val position=hourSnapHelper.getSnapPosition(rvHours)
         return when(timeConvention){
-            TimeConvention.HOURS_24 -> hour % hours24.size
+            TimeConvention.HOURS_24 -> position % hours24.size
             TimeConvention.HOURS_12 -> {
-                return (hour % hours12.size) + if (getTimePeriod() == TimePeriod.PM) 12 else 0
+                return (position % hours12.size) + if (getTimePeriod() == TimePeriod.PM) 12 else 0
             }
         }
     }
 
-    fun getMinute(): Int {
-        val minuteView=hourSnapHelper.findSnapView(rvMinute.layoutManager)?:return 0
-        return rvMinute.getChildAdapterPosition(minuteView)%minutes.size
-    }
+    fun getMinute(): Int = minuteSnapHelper.getSnapPosition(rvMinute)%minutes.size
 
-    private fun getTimePeriod(): TimePeriod {
-        val timePeriodView = hourSnapHelper.findSnapView(rvTimePeriod.layoutManager) ?: return TimePeriod.PM
-        val timePeriodPosition = rvTimePeriod.getChildAdapterPosition(timePeriodView)
-        return TimePeriod.values()[timePeriodPosition]
-    }
+    private fun getTimePeriod(): TimePeriod = TimePeriod.values()[timePeriodSnapHelper.getSnapPosition(rvTimePeriod)]
 
-    private fun setHours(){
+    private fun updateHoursAdapter(){
         val hours = when (timeConvention) {
             TimeConvention.HOURS_24 -> hours24
             TimeConvention.HOURS_12 -> hours12
@@ -230,6 +225,14 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                     SCROLL_STATE_DRAGGING -> animateShadeView(recyclerView, 300, .3f)
                     SCROLL_STATE_IDLE -> animateShadeView(recyclerView, 1000, .7f)
                 }
+
+                if(newState==SCROLL_STATE_IDLE){
+                    when(recyclerView.id){
+                        R.id.rvHours-> pickerTime=pickerTime.withHour(getHour())
+                        R.id.rvMinute-> pickerTime=pickerTime.withMinute(getMinute())
+                        R.id.rvTimePeriod-> timePeriod=getTimePeriod()
+                    }
+                }
             }
         })
     }
@@ -252,7 +255,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private fun getHourModel(hour: Int)=when(timeConvention){
         TimeConvention.HOURS_24 -> hours24.firstOrNull { it.hour == hour % 24 }
             ?: throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 24 hours range (size: ${hours24.size} index: $hour)")
-        TimeConvention.HOURS_12 -> hours12.firstOrNull { it.hour == if(hour==0) hour+12 else hour % 12 }
+        TimeConvention.HOURS_12 -> hours12.firstOrNull { it.hour == if(hour==0 || hour==12) 12 else hour % 12 }
             ?: throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 12 hours range (size: ${hours12.size} index: $hour)")
     }
 
