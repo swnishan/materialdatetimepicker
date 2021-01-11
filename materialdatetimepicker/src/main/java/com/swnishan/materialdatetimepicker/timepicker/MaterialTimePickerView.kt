@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
-import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.SlowLinearLayoutManager
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
@@ -90,8 +89,6 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
             viewCenter.setBackgroundColor(highlighterColor)
             viewCenter.layoutParams.height=highlighterHeight.toInt()
-            viewCenterOverlay.setBackgroundColor(highlighterColor)
-            viewCenterOverlay.layoutParams.height=highlighterHeight.toInt()
             TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
 
             if (background is ColorDrawable) {
@@ -123,7 +120,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private var pickerTime: LocalTime = LocalTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
-    private var timePeriod: TimePeriod = TimePeriod.PM
+    private var timePeriod: TimePeriod = TimePeriod.AM
 
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention
@@ -144,7 +141,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         return when(timeConvention){
             TimeConvention.HOURS_24 -> position % hours24.size
             TimeConvention.HOURS_12 -> {
-                return (position % hours12.size) + if (getTimePeriod() == TimePeriod.PM) 12 else 0
+                return (hourAdapter.getModelAtPosition(position) as TimeModel.Hour).hour + if (getTimePeriod() == TimePeriod.PM) 12 else 0
             }
         }
     }

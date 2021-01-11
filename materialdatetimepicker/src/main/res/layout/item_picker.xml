@@ -5,6 +5,7 @@
     android:id="@+id/tvDisplayValue"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:singleLine="true"
     android:gravity="center"
     android:background="@color/transparent"
     android:paddingStart="@dimen/picker_item_padding_start"
