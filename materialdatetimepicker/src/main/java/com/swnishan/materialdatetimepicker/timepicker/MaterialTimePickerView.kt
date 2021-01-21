@@ -25,6 +25,7 @@ import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePicke
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
+import kotlin.math.min
 
 class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
@@ -41,7 +42,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     ){
         setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialTimePicker)
         updateHoursAdapter()
-        toggleTimeTimePeriodView()
+        toggleTimePeriodView()
         initTimeSelectionView()
         scrollToTime()
     }
@@ -120,12 +121,12 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private var pickerTime: LocalTime = LocalTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
-    private var timePeriod: TimePeriod = TimePeriod.AM
+    private var timePeriod: TimePeriod = if(pickerTime.hour>=12) TimePeriod.PM else TimePeriod.AM
 
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention
         updateHoursAdapter()
-        toggleTimeTimePeriodView()
+        toggleTimePeriodView()
         scrollToTime()
     }
 
@@ -148,7 +149,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
     fun getMinute(): Int = minuteSnapHelper.getSnapPosition(rvMinute)%minutes.size
 
-    private fun getTimePeriod(): TimePeriod = TimePeriod.values()[timePeriodSnapHelper.getSnapPosition(rvTimePeriod)]
+    fun getTimePeriod(): TimePeriod = TimePeriod.values()[timePeriodSnapHelper.getSnapPosition(rvTimePeriod)]
 
     private fun updateHoursAdapter(){
         val hours = when (timeConvention) {
@@ -158,7 +159,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         hourAdapter.updateItems(hours)
     }
 
-    private fun toggleTimeTimePeriodView(){
+    private fun toggleTimePeriodView(){
         rvTimePeriod.isVisible=timeConvention== TimeConvention.HOURS_12
     }
 
@@ -235,10 +236,22 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     }
 
     private fun scrollToTime() {
+        scrollToHour()
+        scrollToMinute()
+        scrollToTimePeriod()
+    }
+
+    private fun scrollToHour(){
         val scrollPosition= getScrollPosition(hourAdapter,getHoursBasedOnClockType(),getHourModel(pickerTime.hour))
         rvHours.scrollToPosition(scrollPosition)
+    }
+
+    private fun scrollToMinute(){
         rvMinute.scrollToPosition(getScrollPosition(minuteAdapter, minutes, getMinuteModel(pickerTime.minute)))
-        val position = if(pickerTime.hour>=12) 1 else 0
+    }
+
+    private fun scrollToTimePeriod(){
+        val position = if(timePeriod==TimePeriod.PM) 1 else 0
         rvTimePeriod.scrollToPosition(position)
     }
 
@@ -263,13 +276,35 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         this.onTimePickedListener = onTimePickedListener
     }
 
-    fun setTime(hour: Int, @IntRange(from = 0, to = 60) minute: Int) {
+    fun setTime(@IntRange(from =0 ,to=23)hour: Int, @IntRange(from = 0, to = 60) minute: Int) {
+        setHour(hour)
+        setMinute(minute)
+        scrollToMinute()
+    }
+
+    fun setHour(@IntRange(from =0 ,to=23)hour: Int){
         val setHour=when(timeConvention){
             TimeConvention.HOURS_24 ->hour
-            TimeConvention.HOURS_12 ->hour%12+if (getTimePeriod() == TimePeriod.PM) 12 else 0
+            TimeConvention.HOURS_12 ->hour%12+if (timePeriod == TimePeriod.PM) 12 else 0
         }
-        pickerTime = pickerTime.withHour(setHour).withMinute(minute)
-        scrollToTime()
+        pickerTime = pickerTime.withHour(setHour)
+        scrollToHour()
+    }
+
+    fun setMinute(@IntRange(from = 0, to = 60) minute: Int) {
+        pickerTime = pickerTime.withMinute(minute)
+        scrollToMinute()
+    }
+
+    fun setTimePeriod(timePeriod: TimePeriod){
+        if (timePeriod == this.timePeriod) return
+        this.timePeriod = timePeriod
+        pickerTime=when{
+            pickerTime.hour < 12 && timePeriod == TimePeriod.PM->pickerTime.plusHours(12)
+            pickerTime.hour >= 12 && timePeriod == TimePeriod.AM->pickerTime.minusHours(12)
+            else->pickerTime
+        }
+        scrollToTimePeriod()
     }
 
     interface OnTimePickedListener {

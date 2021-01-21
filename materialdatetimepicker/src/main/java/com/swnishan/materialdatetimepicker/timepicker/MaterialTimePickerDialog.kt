@@ -19,6 +19,7 @@ class MaterialTimePickerDialog : DialogFragment() {
     private var onTimePickedListener: MaterialTimePickerView.OnTimePickedListener? = null
     private var materialTimePickerView: MaterialTimePickerView? = null
     private var timeConvention = MaterialTimePickerView.TimeConvention.HOURS_24
+    private var timePeriod: MaterialTimePickerView.TimePeriod = MaterialTimePickerView.TimePeriod.AM
     private var pickerTime: LocalTime = LocalTime.now()
     private var themeRes= R.style.ThemeOverlay_Dialog_MaterialTimePicker
 
@@ -60,6 +61,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         pickerTime=pickerTime.withHour(hour).withMinute(minute)
 
         timeConvention= MaterialTimePickerView.TimeConvention.valueOf(bundle.getString(ARG_TIME_CONVENTION, timeConvention.name))
+        timePeriod= MaterialTimePickerView.TimePeriod.valueOf(bundle.getString(ARG_TIME_PERIOD, timePeriod.name))
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
@@ -69,6 +71,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         bundle.putInt(ARG_HOUR, materialTimePickerView?.getHour()?:pickerTime.hour)
         bundle.putInt(ARG_MINUTE, materialTimePickerView?.getMinute()?:pickerTime.minute)
         bundle.putString(ARG_TIME_CONVENTION, timeConvention.name)
+        bundle.putString(ARG_TIME_PERIOD, timePeriod.name)
     }
 
      override fun setStyle(style: Int, theme: Int) {
@@ -79,6 +82,8 @@ class MaterialTimePickerDialog : DialogFragment() {
     fun getHour()=materialTimePickerView?.getHour()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
     fun getMinute()=materialTimePickerView?.getMinute()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+
+    fun getTimePeriod()=materialTimePickerView?.getTimePeriod()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
     fun setOnTimePickListener(listener: MaterialTimePickerView.OnTimePickedListener?) {
          onTimePickedListener=listener
@@ -108,6 +113,21 @@ class MaterialTimePickerDialog : DialogFragment() {
             return this
         }
 
+        fun setHour(@IntRange(from =0 ,to=23)hour: Int): Builder {
+            bundle.putInt(ARG_HOUR, hour)
+            return this
+        }
+
+        fun setMinute(@IntRange(from = 0, to = 60) minute: Int): Builder {
+            bundle.putInt(ARG_MINUTE, minute)
+            return this
+        }
+
+        fun setTimePeriod(timePeriod: MaterialTimePickerView.TimePeriod):Builder{
+            bundle.putString(ARG_TIME_PERIOD,timePeriod.name)
+            return this
+        }
+
         fun setTime(@IntRange(from =0 ,to=23)hour: Int, @IntRange(from = 0, to = 60) minute: Int): Builder {
             bundle.putInt(ARG_HOUR, hour)
             bundle.putInt(ARG_MINUTE, minute)
@@ -133,6 +153,7 @@ class MaterialTimePickerDialog : DialogFragment() {
         private const val ARG_TIME_CONVENTION = "arg_time_convention"
         private const val ARG_HOUR = "arg_hour"
         private const val ARG_MINUTE = "arg_minute"
+        private const val ARG_TIME_PERIOD = "arg_time_period"
     }
 
 }
