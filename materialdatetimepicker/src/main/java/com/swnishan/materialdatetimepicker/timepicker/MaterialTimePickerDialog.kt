@@ -29,7 +29,8 @@ class MaterialTimePickerDialog : DialogFragment() {
         val timePickerThemeContext = ContextThemeWrapper(builder.context, timePickerViewStyle)
         materialTimePickerView = MaterialTimePickerView(context=timePickerThemeContext)
         materialTimePickerView?.setTimeConvention(timeConvention)
-        materialTimePickerView?.setTime(pickerTime.hour, pickerTime.minute)
+        materialTimePickerView?.setHour(pickerTime.hour)
+        materialTimePickerView?.setMinute(pickerTime.minute)
         materialTimePickerView?.setOnTimePickedListener(onTimePickedListener)
 
         builder.apply {
@@ -127,12 +128,6 @@ class MaterialTimePickerDialog : DialogFragment() {
 
         fun setTimePeriod(timePeriod: MaterialTimePickerView.TimePeriod):Builder{
             bundle.putString(ARG_TIME_PERIOD,timePeriod.name)
-            return this
-        }
-
-        fun setTime(@IntRange(from =0 ,to=23)hour: Int, @IntRange(from = 0, to = 60) minute: Int): Builder {
-            bundle.putInt(ARG_HOUR, hour)
-            bundle.putInt(ARG_MINUTE, minute)
             return this
         }
 

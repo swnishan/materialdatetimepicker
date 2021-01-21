@@ -118,7 +118,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private val hourAdapter = PickerAdapter(hours24, textAppearance){position-> onItemClicked(position, rvHours) }
     private val minuteAdapter = PickerAdapter(minutes, textAppearance){position-> onItemClicked(position, rvMinute) }
 
-    private var pickerTime: LocalTime = LocalTime.now()
+    private var pickerTime: LocalTime = LocalTime.now().withHour(23)
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
     private var timePeriod: TimePeriod = if(pickerTime.hour>=12) TimePeriod.PM else TimePeriod.AM
@@ -276,13 +276,8 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         this.onTimePickedListener = onTimePickedListener
     }
 
-    fun setTime(@IntRange(from =0 ,to=23)hour: Int, @IntRange(from = 0, to = 60) minute: Int) {
-        setHour(hour)
-        setMinute(minute)
-        scrollToMinute()
-    }
-
     fun setHour(@IntRange(from =0 ,to=23)hour: Int){
+        setTimePeriod(if(hour>=12)TimePeriod.PM else TimePeriod.AM)
         val setHour=when(timeConvention){
             TimeConvention.HOURS_24 ->hour
             TimeConvention.HOURS_12 ->hour%12+if (timePeriod == TimePeriod.PM) 12 else 0
