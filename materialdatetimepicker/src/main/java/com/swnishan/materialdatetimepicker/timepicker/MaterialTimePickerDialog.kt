@@ -85,6 +85,8 @@ class MaterialTimePickerDialog : DialogFragment() {
 
     fun getTimePeriod()=materialTimePickerView?.getTimePeriod()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
+    fun getTime()=materialTimePickerView?.getTime()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+
     fun setOnTimePickListener(listener: MaterialTimePickerView.OnTimePickedListener?) {
          onTimePickedListener=listener
     }

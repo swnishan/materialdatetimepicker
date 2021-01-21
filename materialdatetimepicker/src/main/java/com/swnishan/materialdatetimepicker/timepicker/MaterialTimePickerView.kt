@@ -131,10 +131,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     }
 
     internal fun onTimePicked() {
-        onTimePickedListener?.onTimePicked(
-            OffsetDateTime.now().withHour(getHour()).withMinute(getMinute()).withSecond(0)
-                .withNano(0).toInstant().toEpochMilli()
-        )
+        onTimePickedListener?.onTimePicked(getTime())
     }
 
     fun getHour():Int{
@@ -150,6 +147,9 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     fun getMinute(): Int = minuteSnapHelper.getSnapPosition(rvMinute)%minutes.size
 
     fun getTimePeriod(): TimePeriod = TimePeriod.values()[timePeriodSnapHelper.getSnapPosition(rvTimePeriod)]
+
+    fun getTime()=OffsetDateTime.now().withHour(pickerTime.hour).withMinute(pickerTime.minute).withSecond(0)
+        .withNano(0).toInstant().toEpochMilli()
 
     private fun updateHoursAdapter(){
         val hours = when (timeConvention) {
