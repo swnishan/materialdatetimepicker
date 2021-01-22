@@ -82,6 +82,10 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
                 R.style.TextAppearance_MaterialTimePicker
             )
 
+            pickerDate=pickerDate.withYear(this.getInt(R.styleable.MaterialDatePickerView_defaultYear, pickerDate.year))
+            pickerDate=pickerDate.withMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultMonth, pickerDate.monthValue))
+            pickerDate=pickerDate.withDayOfMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultDay, pickerDate.dayOfMonth))
+
             viewCenter.setBackgroundColor(highlighterColor)
             viewCenter.layoutParams.height=highlighterHeight.toInt()
 
