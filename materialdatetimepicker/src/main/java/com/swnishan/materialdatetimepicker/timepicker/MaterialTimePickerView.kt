@@ -88,6 +88,16 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                 0
             )]
 
+            val hour = this.getInt(R.styleable.MaterialTimePickerView_defaultHour, pickerTime.hour)
+            if(hour>23 || hour<0) throw ArrayIndexOutOfBoundsException("Given default hour is invalid. Hour should be in between 0 to 23")
+
+            pickerTime=pickerTime.withHour(hour)
+
+            val minute = this.getInt(R.styleable.MaterialTimePickerView_defaultMinute, pickerTime.minute)
+            if(minute>59 || hour<0) throw ArrayIndexOutOfBoundsException("Given default minute is invalid. Minute should be in between 0 to 59")
+
+            pickerTime=pickerTime.withMinute(minute)
+
             viewCenter.setBackgroundColor(highlighterColor)
             viewCenter.layoutParams.height=highlighterHeight.toInt()
             TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
