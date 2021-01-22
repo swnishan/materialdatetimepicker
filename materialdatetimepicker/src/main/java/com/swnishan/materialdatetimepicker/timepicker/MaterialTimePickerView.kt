@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.MaterialDateTimePickerException
 import com.swnishan.materialdatetimepicker.common.SlowLinearLayoutManager
 import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
@@ -89,12 +90,12 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
             )]
 
             val hour = this.getInt(R.styleable.MaterialTimePickerView_defaultHour, pickerTime.hour)
-            if(hour>23 || hour<0) throw ArrayIndexOutOfBoundsException("Given default hour is invalid. Hour should be in between 0 to 23")
+            if(hour>23 || hour<0) throw MaterialDateTimePickerException("Given default hour is invalid. Hour should be in between 0 to 23")
 
             pickerTime=pickerTime.withHour(hour)
 
             val minute = this.getInt(R.styleable.MaterialTimePickerView_defaultMinute, pickerTime.minute)
-            if(minute>59 || hour<0) throw ArrayIndexOutOfBoundsException("Given default minute is invalid. Minute should be in between 0 to 59")
+            if(minute>59 || hour<0) throw MaterialDateTimePickerException("Given default minute is invalid. Minute should be in between 0 to 59")
 
             pickerTime=pickerTime.withMinute(minute)
 
@@ -274,13 +275,13 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
     private fun getHourModel(hour: Int)=when(timeConvention){
         TimeConvention.HOURS_24 -> hours24.firstOrNull { it.hour == hour % 24 }
-            ?: throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 24 hours range (size: ${hours24.size} index: $hour)")
+            ?: throw MaterialDateTimePickerException("Cannot find given Hour in given 24 hours range (size: ${hours24.size} index: $hour)")
         TimeConvention.HOURS_12 -> hours12.firstOrNull { it.hour == if(hour==0 || hour==12) 12 else hour % 12 }
-            ?: throw ArrayIndexOutOfBoundsException("Cannot find given Hour in given 12 hours range (size: ${hours12.size} index: $hour)")
+            ?: throw MaterialDateTimePickerException("Cannot find given Hour in given 12 hours range (size: ${hours12.size} index: $hour)")
     }
 
     private fun getMinuteModel(minute: Int) = minutes.firstOrNull { it.minute == minute }
-        ?: throw ArrayIndexOutOfBoundsException("Cannot find given Minute in given minutes range (size: ${minutes.size} index: $minute)")
+        ?: throw MaterialDateTimePickerException("Cannot find given Minute in given minutes range (size: ${minutes.size} index: $minute)")
 
     fun setOnTimePickedListener(onTimePickedListener: OnTimePickedListener?) {
         this.onTimePickedListener = onTimePickedListener

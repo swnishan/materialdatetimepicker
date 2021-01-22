@@ -8,4 +8,4 @@ import org.threeten.bp.ZoneId
 fun LocalDate.toLong() = LocalDateTime.of(this.year, this.monthValue, this.dayOfMonth, 0, 0, 0)
     .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-fun Long.toLocalDate()= Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
+fun Long.toLocalDate(): LocalDate = Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()

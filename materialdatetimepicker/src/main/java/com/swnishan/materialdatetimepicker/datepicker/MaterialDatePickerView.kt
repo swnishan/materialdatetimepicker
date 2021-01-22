@@ -88,7 +88,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             yearsRange=(minYear..maxYear)
 
             val year=this.getInt(R.styleable.MaterialDatePickerView_defaultYear, pickerDate.year)
-            if(year<minYear || year>maxYear) throw RuntimeException("Given year ($year) out of the year range. Year should be in between $minYear to $maxYear")
+            if(year<minYear || year>maxYear) throw MaterialDateTimePickerException("Given year ($year) out of the year range. Year should be in between $minYear to $maxYear")
 
             pickerDate=pickerDate.withYear(year)
             pickerDate=pickerDate.withMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultMonth, pickerDate.monthValue))
@@ -269,13 +269,13 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     private fun scrollToDay()=rvDays.scrollToPosition(getScrollPosition(dayAdapter,days, getDayModel(pickerDate.dayOfMonth)))
 
     private fun getYearModel(year: Int) = years.firstOrNull { it.year == year }
-        ?: throw ArrayIndexOutOfBoundsException("Cannot find given Year in given years range (size: ${years.size} index: $year)")
+        ?: throw MaterialDateTimePickerException("Cannot find given Year in given years range (size: ${years.size} index: $year)")
 
     private fun getMonthModel(month: Int) = months.firstOrNull { it.month == month }
-        ?: throw ArrayIndexOutOfBoundsException("Cannot find given Month in given months range (size: ${months.size} index: $month)")
+        ?: throw MaterialDateTimePickerException("Cannot find given Month in given months range (size: ${months.size} index: $month)")
 
     private fun getDayModel(day: Int) = days.firstOrNull { it.day == day }
-        ?: throw ArrayIndexOutOfBoundsException("Cannot find given Day in given days range (size: ${days.size} index: $day)")
+        ?: throw MaterialDateTimePickerException("Cannot find given Day in given days range (size: ${days.size} index: $day)")
 
     fun setOnTimePickedListener(onDatePickedListener: OnDatePickedListener?) {
         this.onDatePickedListener = onDatePickedListener
