@@ -43,6 +43,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     ){
         setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialDatePicker)
         initDateSelectionView()
+        updateYearsAdapter()
         updateDaysAdapter()
         scrollToDate()
     }
@@ -84,11 +85,11 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             )
 
             val minYear=this.getInt(R.styleable.MaterialDatePickerView_minYear, 1950)
-            val maxYear=this.getInt(R.styleable.MaterialDatePickerView_minYear, 2100)
+            val maxYear=this.getInt(R.styleable.MaterialDatePickerView_maxYear, 2100)
             yearsRange=(minYear..maxYear)
 
             val year=this.getInt(R.styleable.MaterialDatePickerView_defaultYear, pickerDate.year)
-            if(year<minYear || year>maxYear) throw MaterialDateTimePickerException("Given year ($year) out of the year range. Year should be in between $minYear to $maxYear")
+            if(year<minYear || year>maxYear) throw MaterialDateTimePickerException("Default year ($year) out of the year range. It should be in between $minYear to $maxYear")
 
             pickerDate=pickerDate.withYear(year)
             pickerDate=pickerDate.withMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultMonth, pickerDate.monthValue))
@@ -117,7 +118,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     private var onDatePickedListener: OnDatePickedListener? = null
 
     private var yearsRange=(1950..2100)
-    private val years = yearsRange.mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
+    private var years = yearsRange.mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
     private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, getMonthDisplayText(value), value)}
     private var days = (1..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
 
@@ -162,6 +163,11 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             daySnapHelper.attachToRecyclerView(this)
             addListeners()
         }
+    }
+
+    private fun updateYearsAdapter(){
+        years=yearsRange.mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
+        yearAdapter.updateItems(years)
     }
 
     private fun updateDaysAdapter() {
