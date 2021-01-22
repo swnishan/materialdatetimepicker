@@ -21,6 +21,7 @@ class MaterialDatePickerDialog : DialogFragment() {
     private var materialDatePickerView: MaterialDatePickerView? = null
     private var pickerDate: LocalDate = LocalDate.now()
     private var themeRes= R.style.ThemeOverlay_Dialog_MaterialDatePicker
+    private var dateFormat= MaterialDatePickerView.DateFormat.DD_MMMM_YYYY
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireContext(), themeRes)
@@ -28,6 +29,7 @@ class MaterialDatePickerDialog : DialogFragment() {
         val datePickerThemeContext = ContextThemeWrapper(builder.context, datePickerViewStyle)
         materialDatePickerView = MaterialDatePickerView(context=datePickerThemeContext)
         materialDatePickerView?.setDate(pickerDate.toLong())
+        materialDatePickerView?.setDateFormat(dateFormat)
         materialDatePickerView?.setOnTimePickedListener(onDatePickedListener)
 
         builder.apply {
@@ -57,6 +59,8 @@ class MaterialDatePickerDialog : DialogFragment() {
         val date =bundle.getLong(ARG_DATE,pickerDate.toLong())
         pickerDate=date.toLocalDate()
 
+        this.dateFormat=MaterialDatePickerView.DateFormat.valueOf(bundle.getString(ARG_DATE_FORMAT, dateFormat.name))
+
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
@@ -64,6 +68,7 @@ class MaterialDatePickerDialog : DialogFragment() {
 
         bundle.putInt(ARG_THEME, themeRes)
         bundle.putLong(ARG_DATE, materialDatePickerView?.getDate()?:pickerDate.toLong())
+        bundle.putString(ARG_DATE_FORMAT, dateFormat.name)
     }
 
      override fun setStyle(style: Int, theme: Int) {
@@ -72,6 +77,12 @@ class MaterialDatePickerDialog : DialogFragment() {
     }
 
     fun getDate()=materialDatePickerView?.getDate()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+
+    fun getYear()=materialDatePickerView?.getYear()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+
+    fun getMonth()=materialDatePickerView?.getMonth()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+
+    fun getDayOfMonth()=materialDatePickerView?.getDayOfMonth()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
     fun setOnDatePickListener(listener: MaterialDatePickerView.OnDatePickedListener?) {
          onDatePickedListener=listener
@@ -101,6 +112,11 @@ class MaterialDatePickerDialog : DialogFragment() {
             return this
         }
 
+        fun setDateFormat(dateFormat: MaterialDatePickerView.DateFormat): Builder {
+            bundle.putString(ARG_DATE_FORMAT, dateFormat.name)
+            return this
+        }
+
         fun setTheme(@StyleRes themeRes:Int): Builder {
             bundle.putInt(ARG_THEME, themeRes)
             return this
@@ -118,6 +134,7 @@ class MaterialDatePickerDialog : DialogFragment() {
         private const val ARG_TITLE = "arg_title"
         private const val ARG_THEME = "arg_theme"
         private const val ARG_DATE = "arg_date"
+        private const val ARG_DATE_FORMAT = "arg_date_format"
     }
 
 }

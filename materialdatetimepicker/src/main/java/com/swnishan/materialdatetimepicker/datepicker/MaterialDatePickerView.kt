@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
@@ -24,9 +23,7 @@ import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
 import org.threeten.bp.Month
 import org.threeten.bp.format.TextStyle
-import java.lang.RuntimeException
 import java.util.*
-import kotlin.math.absoluteValue
 
 class MaterialDatePickerView: BaseMaterialDateTimePickerView{
 
@@ -119,7 +116,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
 
     private var yearsRange=(1950..2100)
     private var years = yearsRange.mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
-    private val months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, getMonthDisplayText(value), value)}
+    private var months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, getMonthDisplayText(value), value)}
     private var days = (1..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
 
     private val yearAdapter = PickerAdapter(years, textAppearance){position-> onItemClicked(position, rvYears) }
@@ -168,6 +165,11 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     private fun updateYearsAdapter(){
         years=yearsRange.mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
         yearAdapter.updateItems(years)
+    }
+
+    private fun updateMonthsAdapter(){
+        months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, getMonthDisplayText(value), value)}
+        monthAdapter.updateItems(months)
     }
 
     private fun updateDaysAdapter() {
@@ -225,7 +227,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
                         }
 
                         rvDays->{
-                            pickerDate=pickerDate.withDayOfMonth(getDay())
+                            pickerDate=pickerDate.withDayOfMonth(getDayOfMonth())
                         }
                     }
                 }
@@ -233,7 +235,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         })
     }
 
-    fun getDay(): Int {
+    fun getDayOfMonth(): Int {
         val view = daySnapHelper.findSnapView(rvDays.layoutManager) ?: return 0
         return days[(rvDays.getChildAdapterPosition(view) % days.size)].day
     }
@@ -290,6 +292,12 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     fun setDate(date:Long) {
         pickerDate = date.toLocalDate()
         scrollToDate()
+    }
+
+    fun setDateFormat(dateFormat: DateFormat){
+        this.dateFormat=dateFormat
+        updateMonthsAdapter()
+//        scrollToMonth()
     }
 
     fun interface OnDatePickedListener {
