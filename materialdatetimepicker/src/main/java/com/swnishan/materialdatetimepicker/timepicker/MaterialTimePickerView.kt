@@ -129,7 +129,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private val hourAdapter = PickerAdapter(hours24, textAppearance){position-> onItemClicked(position, rvHours) }
     private val minuteAdapter = PickerAdapter(minutes, textAppearance){position-> onItemClicked(position, rvMinute) }
 
-    private var pickerTime: LocalTime = LocalTime.now().withHour(23)
+    private var pickerTime: LocalTime = LocalTime.now()
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
     private var timePeriod: TimePeriod = if(pickerTime.hour>=12) TimePeriod.PM else TimePeriod.AM
