@@ -286,7 +286,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         scrollToDate()
     }
 
-    interface OnDatePickedListener {
+    fun interface OnDatePickedListener {
         fun onDatePicked(date: Long)
     }
 

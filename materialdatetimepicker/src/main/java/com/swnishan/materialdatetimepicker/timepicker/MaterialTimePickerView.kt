@@ -313,7 +313,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         scrollToTimePeriod()
     }
 
-    interface OnTimePickedListener {
+    fun interface OnTimePickedListener {
         fun onTimePicked(time: Long)
     }
 
