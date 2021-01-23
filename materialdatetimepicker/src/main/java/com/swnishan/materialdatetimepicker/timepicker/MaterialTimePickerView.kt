@@ -225,14 +225,15 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         }
     }
 
-    private fun updateTimeWhenScroll(viewId:Int)=when(viewId){
-        R.id.rvHours-> pickerTime=pickerTime.withHour(getHour())
-        R.id.rvMinute-> pickerTime=pickerTime.withMinute(getMinute())
-        R.id.rvTimePeriod-> {
-            timePeriod=getTimePeriod()
-            pickerTime=pickerTime.withHour(getHour())
+    private fun updateTimeWhenScroll(viewId:Int){
+        when(viewId){
+            R.id.rvHours-> pickerTime=pickerTime.withHour(getHour())
+            R.id.rvMinute-> pickerTime=pickerTime.withMinute(getMinute())
+            R.id.rvTimePeriod-> {
+                timePeriod=getTimePeriod()
+                pickerTime=pickerTime.withHour(getHour())
+            }
         }
-        else->pickerTime=pickerTime
     }
 
     private fun scrollToTime() {

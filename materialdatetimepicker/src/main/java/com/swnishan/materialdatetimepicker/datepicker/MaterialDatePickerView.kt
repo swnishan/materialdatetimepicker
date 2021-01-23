@@ -18,7 +18,6 @@ import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.*
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
-import com.swnishan.materialdatetimepicker.timepicker.MaterialTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
@@ -169,7 +168,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             adapter = yearAdapter
             layoutManager = SlowLinearLayoutManager(context)
             yearSnapHelper.attachToRecyclerView(this)
-            addListeners()
+            addListeners{viewId -> updateDateWhenScroll(viewId) }
         }
 
         rvMonths.apply {
@@ -177,7 +176,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             adapter = monthAdapter
             layoutManager = SlowLinearLayoutManager(context)
             monthSnapHelper.attachToRecyclerView(this)
-            addListeners()
+            addListeners{viewId -> updateDateWhenScroll(viewId) }
         }
 
         rvDays.apply {
@@ -185,7 +184,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             adapter= dayAdapter
             layoutManager=SlowLinearLayoutManager(context)
             daySnapHelper.attachToRecyclerView(this)
-            addListeners()
+            addListeners{viewId -> updateDateWhenScroll(viewId) }
         }
     }
 
@@ -204,62 +203,36 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         dayAdapter.updateItems(days)
     }
 
-    private fun animateShadeView(view: View, duration: Long, alpha: Float) {
+    override fun fadeView(view: RecyclerView, duration: Long, alpha: Float) {
         when(view.id){
-            R.id.rvYears -> super.animateShadeView(listOf(viewTopShadeYear, viewBottomShadeYear),duration, alpha)
-            R.id.rvMonths -> super.animateShadeView(listOf(viewTopShadeMonth, viewBottomShadeMonth),duration, alpha)
-            R.id.rvDays -> super.animateShadeView(listOf(viewTopShadeTimeDay, viewBottomShadeTimeDay),duration, alpha)
+            R.id.rvYears -> super.startFadeAnimation(listOf(viewTopShadeYear, viewBottomShadeYear),duration, alpha)
+            R.id.rvMonths -> super.startFadeAnimation(listOf(viewTopShadeMonth, viewBottomShadeMonth),duration, alpha)
+            R.id.rvDays -> super.startFadeAnimation(listOf(viewTopShadeTimeDay, viewBottomShadeTimeDay),duration, alpha)
         }
     }
 
-    private fun RecyclerView.addListeners(){
-        addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                if (e.action == ACTION_DOWN) animateShadeView(rv, fadeInDuration, fadeInAlpha)
-                else if (e.action == ACTION_UP && rv.scrollState == SCROLL_STATE_IDLE) animateShadeView(
-                    rv,
-                    fadeOutDuration,
-                    fadeOutAlpha
-                )
-                return false
-            }
-
-            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-        })
-        addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                when (newState) {
-                    SCROLL_STATE_DRAGGING -> animateShadeView(recyclerView, fadeInDuration, fadeInAlpha)
-                    SCROLL_STATE_IDLE -> animateShadeView(recyclerView, fadeOutDuration, fadeOutAlpha)
-                }
-
-                if(newState==SCROLL_STATE_IDLE){
-                    when(recyclerView){
-                        rvYears->{
-                            pickerDate=pickerDate.withYear(getYear())
-                            if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size){
-                                updateDaysAdapter()
-                                scrollToDay()
-                            }
-                        }
-
-                        rvMonths->{
-                            pickerDate=pickerDate.withMonth(getMonth())
-                            if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size) {
-                                updateDaysAdapter()
-                                scrollToDay()
-                            }
-                        }
-
-                        rvDays->{
-                            pickerDate=pickerDate.withDayOfMonth(getDayOfMonth())
-                        }
-                    }
+    private fun updateDateWhenScroll(viewId:Int){
+        when(viewId){
+            R.id.rvYears->{
+                pickerDate=pickerDate.withYear(getYear())
+                if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size){
+                    updateDaysAdapter()
+                    scrollToDay()
                 }
             }
-        })
+
+            R.id.rvMonths->{
+                pickerDate=pickerDate.withMonth(getMonth())
+                if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size) {
+                    updateDaysAdapter()
+                    scrollToDay()
+                }
+            }
+
+            R.id.rvDays->{
+                pickerDate=pickerDate.withDayOfMonth(getDayOfMonth())
+            }
+        }
     }
 
     fun getDayOfMonth(): Int {
