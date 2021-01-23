@@ -90,22 +90,22 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
             )]
 
             fadeInDuration=this.getInt(
-                R.styleable.MaterialDatePickerView_fadeInDuration,
+                R.styleable.MaterialTimePickerView_fadeInDuration,
                 fadeInDuration.toInt()
             ).toLong()
 
             fadeOutDuration=this.getInt(
-                R.styleable.MaterialDatePickerView_fadeOutDuration,
+                R.styleable.MaterialTimePickerView_fadeOutDuration,
                 fadeOutDuration.toInt()
             ).toLong()
 
             fadeInAlpha=this.getFloat(
-                R.styleable.MaterialDatePickerView_fadeInAlpha,
+                R.styleable.MaterialTimePickerView_fadeInAlpha,
                 fadeInAlpha
             )
 
             fadeOutAlpha=this.getFloat(
-                R.styleable.MaterialDatePickerView_fadeOutAlpha,
+                R.styleable.MaterialTimePickerView_fadeOutAlpha,
                 fadeOutAlpha
             )
 
@@ -153,11 +153,6 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
     private var timePeriod: TimePeriod = if(pickerTime.hour>=12) TimePeriod.PM else TimePeriod.AM
-
-    private var fadeInDuration=300L
-    private var fadeOutDuration=1000L
-    private var fadeInAlpha=.3f
-    private var fadeOutAlpha=.7f
 
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention

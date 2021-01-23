@@ -16,6 +16,11 @@ open class BaseMaterialDateTimePickerView:ConstraintLayout{
     constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet?, defAttributeSet: Int) : super(context, attributeSet, defAttributeSet)
 
+    var fadeInDuration=300L
+    var fadeOutDuration=1000L
+    var fadeInAlpha=.3f
+    var fadeOutAlpha=.7f
+
     /**
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
