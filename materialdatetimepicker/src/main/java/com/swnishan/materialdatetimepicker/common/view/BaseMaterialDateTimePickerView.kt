@@ -84,10 +84,10 @@ abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
     }
 
     fun setFadeAnimation(
-        fadeInDuration: Long,
-        fadeOutDuration: Long,
-        fadeInAlpha: Float,
-        fadeOutAlpha: Float
+        fadeInDuration: Long=300L,
+        fadeOutDuration: Long=1000L,
+        fadeInAlpha: Float=.3f,
+        fadeOutAlpha: Float=.7f
     ){
         this.fadeInDuration=fadeInDuration
         this.fadeOutDuration=fadeOutDuration
