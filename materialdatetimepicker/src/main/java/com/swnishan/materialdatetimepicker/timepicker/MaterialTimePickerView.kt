@@ -89,6 +89,26 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                 0
             )]
 
+            fadeInDuration=this.getInt(
+                R.styleable.MaterialDatePickerView_fadeInDuration,
+                fadeInDuration.toInt()
+            ).toLong()
+
+            fadeOutDuration=this.getInt(
+                R.styleable.MaterialDatePickerView_fadeOutDuration,
+                fadeOutDuration.toInt()
+            ).toLong()
+
+            fadeInAlpha=this.getFloat(
+                R.styleable.MaterialDatePickerView_fadeInAlpha,
+                fadeInAlpha
+            )
+
+            fadeOutAlpha=this.getFloat(
+                R.styleable.MaterialDatePickerView_fadeOutAlpha,
+                fadeOutAlpha
+            )
+
             val hour = this.getInt(R.styleable.MaterialTimePickerView_defaultHour, pickerTime.hour)
             if(hour>23 || hour<0) throw MaterialDateTimePickerException("Given default hour is invalid. Hour should be in between 0 to 23")
 
@@ -133,6 +153,11 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private var onTimePickedListener: OnTimePickedListener? = null
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
     private var timePeriod: TimePeriod = if(pickerTime.hour>=12) TimePeriod.PM else TimePeriod.AM
+
+    private var fadeInDuration=300L
+    private var fadeOutDuration=1000L
+    private var fadeInAlpha=.3f
+    private var fadeOutAlpha=.7f
 
     internal fun setTimeConvention(timeConvention: TimeConvention){
         this.timeConvention=timeConvention
@@ -215,11 +240,11 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
     private fun RecyclerView.addListeners(){
         addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                if (e.action == ACTION_DOWN) animateShadeView(rv, 300, .2f)
+                if (e.action == ACTION_DOWN) animateShadeView(rv, fadeInDuration, fadeInAlpha)
                 else if (e.action == ACTION_UP && rv.scrollState == SCROLL_STATE_IDLE) animateShadeView(
                     rv,
-                    1000,
-                    .7f
+                    fadeOutDuration,
+                    fadeOutAlpha
                 )
                 return false
             }
@@ -231,8 +256,8 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 when (newState) {
-                    SCROLL_STATE_DRAGGING -> animateShadeView(recyclerView, 300, .3f)
-                    SCROLL_STATE_IDLE -> animateShadeView(recyclerView, 1000, .7f)
+                    SCROLL_STATE_DRAGGING -> animateShadeView(recyclerView, fadeInDuration, fadeInAlpha)
+                    SCROLL_STATE_IDLE -> animateShadeView(recyclerView, fadeOutDuration, fadeOutAlpha)
                 }
 
                 if(newState==SCROLL_STATE_IDLE){
