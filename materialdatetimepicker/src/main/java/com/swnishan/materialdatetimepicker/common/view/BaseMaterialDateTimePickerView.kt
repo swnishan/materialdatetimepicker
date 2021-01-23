@@ -82,4 +82,16 @@ abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
             }
         })
     }
+
+    fun setFadeAnimation(
+        fadeInDuration: Long,
+        fadeOutDuration: Long,
+        fadeInAlpha: Float,
+        fadeOutAlpha: Float
+    ){
+        this.fadeInDuration=fadeInDuration
+        this.fadeOutDuration=fadeOutDuration
+        this.fadeInAlpha=fadeInAlpha
+        this.fadeOutAlpha=fadeOutAlpha
+    }
 }

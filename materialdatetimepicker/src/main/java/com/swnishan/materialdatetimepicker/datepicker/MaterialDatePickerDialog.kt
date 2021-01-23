@@ -6,16 +6,18 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import androidx.annotation.AttrRes
+import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swnishan.materialdatetimepicker.R
+import com.swnishan.materialdatetimepicker.common.dialog.BaseMaterialDateTimePickerDialog
 import com.swnishan.materialdatetimepicker.common.toLocalDate
 import com.swnishan.materialdatetimepicker.common.toLong
 import org.threeten.bp.*
 
-class MaterialDatePickerDialog : DialogFragment() {
+class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
 
     private var onDatePickedListener: MaterialDatePickerView.OnDatePickedListener? = null
     private var materialDatePickerView: MaterialDatePickerView? = null
@@ -30,6 +32,7 @@ class MaterialDatePickerDialog : DialogFragment() {
         materialDatePickerView = MaterialDatePickerView(context=datePickerThemeContext)
         materialDatePickerView?.setDate(pickerDate.toLong())
         materialDatePickerView?.setDateFormat(dateFormat)
+        materialDatePickerView?.setFadeAnimation(fadeInDuration, fadeOutDuration, fadeInAlpha, fadeOutAlpha)
         materialDatePickerView?.setOnTimePickedListener(onDatePickedListener)
 
         builder.apply {
@@ -61,6 +64,11 @@ class MaterialDatePickerDialog : DialogFragment() {
 
         this.dateFormat=MaterialDatePickerView.DateFormat.valueOf(bundle.getString(ARG_DATE_FORMAT, dateFormat.name))
 
+        fadeInDuration=bundle.getLong(ARG_FADE_IN_DURATION, fadeInDuration)
+        fadeOutDuration=bundle.getLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
+        fadeInAlpha=bundle.getFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
+        fadeOutAlpha=bundle.getFloat(ARG_FADE_OUT_ALPHA, fadeOutAlpha)
+
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
@@ -69,6 +77,10 @@ class MaterialDatePickerDialog : DialogFragment() {
         bundle.putInt(ARG_THEME, themeRes)
         bundle.putLong(ARG_DATE, materialDatePickerView?.getDate()?:pickerDate.toLong())
         bundle.putString(ARG_DATE_FORMAT, dateFormat.name)
+        bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
+        bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
+        bundle.putFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
+        bundle.putFloat(ARG_FADE_IN_ALPHA, fadeOutAlpha)
     }
 
      override fun setStyle(style: Int, theme: Int) {
@@ -119,6 +131,26 @@ class MaterialDatePickerDialog : DialogFragment() {
 
         fun setTheme(@StyleRes themeRes:Int): Builder {
             bundle.putInt(ARG_THEME, themeRes)
+            return this
+        }
+
+        fun fadeInDuration(duration:Long):Builder{
+            bundle.putLong(ARG_FADE_IN_DURATION, duration)
+            return this
+        }
+
+        fun fadeOutDuration(duration:Long):Builder{
+            bundle.putLong(ARG_FADE_OUT_DURATION, duration)
+            return this
+        }
+
+        fun fadeInAlpha(@FloatRange(from = 0.0 ,to = 1.0)alpha:Float):Builder{
+            bundle.putFloat(ARG_FADE_IN_ALPHA, alpha)
+            return this
+        }
+
+        fun fadeOutAlpha(@FloatRange(from = 0.0 ,to = 1.0)alpha:Float):Builder{
+            bundle.putFloat(ARG_FADE_IN_ALPHA, alpha)
             return this
         }
 
