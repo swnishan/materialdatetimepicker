@@ -97,15 +97,19 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
                 fadeOutDuration.toInt()
             ).toLong()
 
-            fadeInAlpha=this.getFloat(
+            val fadeInAlpha=this.getFloat(
                 R.styleable.MaterialDatePickerView_fadeInAlpha,
                 fadeInAlpha
             )
+            if(fadeInAlpha>1f || fadeInAlpha<0f) throw MaterialDateTimePickerException("Given fadeIn alpha is invalid ($fadeInAlpha). fadeIn value should be 0 to 1")
+            super.fadeInAlpha=fadeInAlpha
 
-            fadeOutAlpha=this.getFloat(
+            val fadeOutAlpha=this.getFloat(
                 R.styleable.MaterialDatePickerView_fadeOutAlpha,
                 fadeOutAlpha
             )
+            if(fadeOutAlpha>1f || fadeInAlpha<0f) throw MaterialDateTimePickerException("Given fadeOut alpha is invalid ($fadeOutAlpha). fadeOut value should be 0 to 1")
+            super.fadeOutAlpha=fadeOutAlpha
 
             val minYear=this.getInt(R.styleable.MaterialDatePickerView_minYear, 1950)
             val maxYear=this.getInt(R.styleable.MaterialDatePickerView_maxYear, 2100)

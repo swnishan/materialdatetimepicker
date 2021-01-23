@@ -92,15 +92,19 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                 fadeOutDuration.toInt()
             ).toLong()
 
-            fadeInAlpha=this.getFloat(
+            val fadeInAlpha=this.getFloat(
                 R.styleable.MaterialTimePickerView_fadeInAlpha,
                 fadeInAlpha
             )
+            if(fadeInAlpha>1f || fadeInAlpha<0f) throw MaterialDateTimePickerException("Given fadeIn alpha is invalid ($fadeInAlpha). fadeIn value should be 0 to 1")
+            super.fadeInAlpha=fadeInAlpha
 
-            fadeOutAlpha=this.getFloat(
+            val fadeOutAlpha=this.getFloat(
                 R.styleable.MaterialTimePickerView_fadeOutAlpha,
                 fadeOutAlpha
             )
+            if(fadeOutAlpha>1f || fadeInAlpha<0f) throw MaterialDateTimePickerException("Given fadeOut alpha is invalid ($fadeOutAlpha). fadeOut value should be 0 to 1")
+            super.fadeOutAlpha=fadeOutAlpha
 
             val hour = this.getInt(R.styleable.MaterialTimePickerView_defaultHour, pickerTime.hour)
             if(hour>23 || hour<0) throw MaterialDateTimePickerException("Given default hour is invalid. Hour should be in between 0 to 23")
