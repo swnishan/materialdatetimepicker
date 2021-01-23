@@ -3,10 +3,6 @@ package com.swnishan.materialdatetimepicker.timepicker
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.view.MotionEvent
-import android.view.MotionEvent.ACTION_DOWN
-import android.view.MotionEvent.ACTION_UP
-import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.IntRange
@@ -15,8 +11,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.MaterialDateTimePickerException
 import com.swnishan.materialdatetimepicker.common.SlowLinearLayoutManager
@@ -26,7 +20,6 @@ import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePicke
 import kotlinx.android.synthetic.main.view_time_picker.view.*
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
-import kotlin.math.min
 
 class MaterialTimePickerView: BaseMaterialDateTimePickerView{
 
@@ -200,7 +193,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
             adapter = hourAdapter
             layoutManager = SlowLinearLayoutManager(context)
             hourSnapHelper.attachToRecyclerView(this)
-            addListeners()
+            addListeners{viewId -> updateTimeWhenScroll(viewId) }
         }
 
         rvMinute.apply {
@@ -208,7 +201,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
             adapter = minuteAdapter
             layoutManager = SlowLinearLayoutManager(context)
             minuteSnapHelper.attachToRecyclerView(this)
-            addListeners()
+            addListeners{viewId -> updateTimeWhenScroll(viewId) }
         }
 
         rvTimePeriod.apply {
@@ -220,53 +213,26 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
             ){position-> onItemClicked(position, rvTimePeriod) }
             layoutManager=SlowLinearLayoutManager(context)
             timePeriodSnapHelper.attachToRecyclerView(this)
-            addListeners()
+            addListeners{viewId -> updateTimeWhenScroll(viewId) }
         }
     }
 
-    private fun animateShadeView(view: View, duration: Long, alpha: Float) {
+    override fun fadeView(view: RecyclerView, duration: Long, alpha: Float) {
         when(view.id){
-            R.id.rvHours -> super.animateShadeView(listOf(viewTopShadeHour, viewBottomShadeHour),duration, alpha)
-            R.id.rvMinute -> super.animateShadeView(listOf(viewTopShadeMinute, viewBottomShadeMinute),duration, alpha)
-            R.id.rvTimePeriod -> super.animateShadeView(listOf(viewTopShadeTimePeriod, viewBottomShadeTimePeriod),duration, alpha)
+            R.id.rvHours -> super.startFadeAnimation(listOf(viewTopShadeHour, viewBottomShadeHour),duration, alpha)
+            R.id.rvMinute -> super.startFadeAnimation(listOf(viewTopShadeMinute, viewBottomShadeMinute),duration, alpha)
+            R.id.rvTimePeriod -> super.startFadeAnimation(listOf(viewTopShadeTimePeriod, viewBottomShadeTimePeriod),duration, alpha)
         }
     }
 
-    private fun RecyclerView.addListeners(){
-        addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                if (e.action == ACTION_DOWN) animateShadeView(rv, fadeInDuration, fadeInAlpha)
-                else if (e.action == ACTION_UP && rv.scrollState == SCROLL_STATE_IDLE) animateShadeView(
-                    rv,
-                    fadeOutDuration,
-                    fadeOutAlpha
-                )
-                return false
-            }
-
-            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-        })
-        addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                when (newState) {
-                    SCROLL_STATE_DRAGGING -> animateShadeView(recyclerView, fadeInDuration, fadeInAlpha)
-                    SCROLL_STATE_IDLE -> animateShadeView(recyclerView, fadeOutDuration, fadeOutAlpha)
-                }
-
-                if(newState==SCROLL_STATE_IDLE){
-                    when(recyclerView.id){
-                        R.id.rvHours-> pickerTime=pickerTime.withHour(getHour())
-                        R.id.rvMinute-> pickerTime=pickerTime.withMinute(getMinute())
-                        R.id.rvTimePeriod-> {
-                            timePeriod=getTimePeriod()
-                            pickerTime=pickerTime.withHour(getHour())
-                        }
-                    }
-                }
-            }
-        })
+    private fun updateTimeWhenScroll(viewId:Int)=when(viewId){
+        R.id.rvHours-> pickerTime=pickerTime.withHour(getHour())
+        R.id.rvMinute-> pickerTime=pickerTime.withMinute(getMinute())
+        R.id.rvTimePeriod-> {
+            timePeriod=getTimePeriod()
+            pickerTime=pickerTime.withHour(getHour())
+        }
+        else->pickerTime=pickerTime
     }
 
     private fun scrollToTime() {
