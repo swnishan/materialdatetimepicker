@@ -18,6 +18,7 @@ import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.*
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
+import com.swnishan.materialdatetimepicker.timepicker.MaterialTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
@@ -41,6 +42,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialDatePicker)
         initDateSelectionView()
         updateYearsAdapter()
+        updateMonthsAdapter()
         updateDaysAdapter()
         scrollToDate()
     }
@@ -80,6 +82,11 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
                 R.styleable.MaterialDatePickerView_android_textAppearance,
                 R.style.TextAppearance_MaterialTimePicker
             )
+
+            dateFormat = DateFormat.values()[this.getInt(
+                R.styleable.MaterialDatePickerView_dateFormat,
+                0
+            )]
 
             val minYear=this.getInt(R.styleable.MaterialDatePickerView_minYear, 1950)
             val maxYear=this.getInt(R.styleable.MaterialDatePickerView_maxYear, 2100)
@@ -297,7 +304,6 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     fun setDateFormat(dateFormat: DateFormat){
         this.dateFormat=dateFormat
         updateMonthsAdapter()
-//        scrollToMonth()
     }
 
     fun interface OnDatePickedListener {

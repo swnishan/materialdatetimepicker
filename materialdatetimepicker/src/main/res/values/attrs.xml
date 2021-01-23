@@ -29,6 +29,11 @@
         <attr name="defaultDay" format="integer"/>
         <attr name="minYear" format="integer"/>
         <attr name="maxYear" format="integer"/>
+        <attr name="dateFormat" format="enum">
+            <enum name="DD_MMMM_YYYY" value="0"/>
+            <enum name="DD_MMM_YYYY" value="1"/>
+            <enum name="DD_MM_YYYY" value="2"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="MaterialTimePickerOverlay">
