@@ -14,6 +14,11 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.dialog.BaseMaterialDateTimePickerDialog
+import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
+import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_IN_ALPHA
+import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_IN_DURATION
+import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_OUT_ALPHA
+import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_OUT_DURATION
 import com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerDialog
 import org.threeten.bp.LocalTime
 
@@ -149,23 +154,16 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun fadeInDuration(duration:Long): Builder {
-            bundle.putLong(ARG_FADE_IN_DURATION, duration)
-            return this
-        }
-
-        fun fadeOutDuration(duration:Long): Builder {
-            bundle.putLong(ARG_FADE_OUT_DURATION, duration)
-            return this
-        }
-
-        fun fadeInAlpha(@FloatRange(from = 0.0 ,to = 1.0)alpha:Float): Builder {
-            bundle.putFloat(ARG_FADE_IN_ALPHA, alpha)
-            return this
-        }
-
-        fun fadeOutAlpha(@FloatRange(from = 0.0 ,to = 1.0)alpha:Float): Builder {
-            bundle.putFloat(ARG_FADE_IN_ALPHA, alpha)
+        fun setFadeAnimation(
+            fadeInDuration: Long= FADE_IN_DURATION,
+            fadeOutDuration: Long= FADE_OUT_DURATION,
+            @FloatRange(from = 0.0, to = 1.0) fadeInAlpha: Float= FADE_IN_ALPHA,
+            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float= FADE_OUT_ALPHA
+        ): Builder {
+            bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
+            bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
+            bundle.putFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
+            bundle.putFloat(ARG_FADE_OUT_ALPHA, fadeOutAlpha)
             return this
         }
 

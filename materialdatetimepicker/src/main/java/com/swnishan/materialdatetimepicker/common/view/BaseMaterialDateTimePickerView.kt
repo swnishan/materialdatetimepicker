@@ -16,10 +16,10 @@ abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
     constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet?, defAttributeSet: Int) : super(context, attributeSet, defAttributeSet)
 
-    internal var fadeInDuration=300L
-    internal var fadeOutDuration=1000L
-    internal var fadeInAlpha=.3f
-    internal var fadeOutAlpha=.7f
+    internal var fadeInDuration= FADE_IN_DURATION
+    internal var fadeOutDuration= FADE_OUT_DURATION
+    internal var fadeInAlpha= FADE_IN_ALPHA
+    internal var fadeOutAlpha= FADE_OUT_ALPHA
 
     /**
      * Here we get the scroll position with relative to middle position of list of items
@@ -84,14 +84,21 @@ abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
     }
 
     fun setFadeAnimation(
-        fadeInDuration: Long=300L,
-        fadeOutDuration: Long=1000L,
-        fadeInAlpha: Float=.3f,
-        fadeOutAlpha: Float=.7f
+        fadeInDuration: Long=this.fadeInDuration,
+        fadeOutDuration: Long=this.fadeOutDuration,
+        fadeInAlpha: Float=this.fadeInAlpha,
+        fadeOutAlpha: Float=this.fadeOutAlpha
     ){
         this.fadeInDuration=fadeInDuration
         this.fadeOutDuration=fadeOutDuration
         this.fadeInAlpha=fadeInAlpha
         this.fadeOutAlpha=fadeOutAlpha
+    }
+
+    companion object{
+        const val FADE_IN_DURATION = 300L
+        const val FADE_OUT_DURATION = 1000L
+        const val FADE_IN_ALPHA = .3f
+        const val FADE_OUT_ALPHA = .7f
     }
 }
