@@ -1,14 +1,17 @@
 package com.swnishan.materialdatetimepicker.common
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.View
+import android.view.View.MeasureSpec.AT_MOST
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 
-class LowFlingRecyclerView: RecyclerView {
+internal class LowFlingRecyclerView: RecyclerView {
 
-    private var onHeightUpdateListener: OnItemHeightUpdateListener?=null
-    var heightR:Int=0
+    private var isSetFixedHeight=false
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
@@ -21,18 +24,13 @@ class LowFlingRecyclerView: RecyclerView {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var measuredItemHeight = 0
-        if(childCount>0){
-            measuredItemHeight=children.first().measuredHeight
-            heightR=measuredItemHeight
-            if(measuredItemHeight>0)onHeightUpdateListener?.onUpdate(measuredItemHeight)
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        if(childCount>0 && !isSetFixedHeight){
+            isSetFixedHeight=true
+            val measuredItemHeight=children.first().height
             setPadding(paddingLeft, measuredItemHeight, paddingRight, measuredItemHeight)
-            measuredItemHeight = MeasureSpec.makeMeasureSpec(measuredItemHeight*3, MeasureSpec.EXACTLY)
+            measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(measuredItemHeight*3, MeasureSpec.EXACTLY))
         }
-        super.onMeasure(widthMeasureSpec, if(measuredItemHeight>0)measuredItemHeight else heightMeasureSpec)
     }
 
-    internal interface OnItemHeightUpdateListener{
-        fun onUpdate(measuredHeight:Int)
-    }
 }
