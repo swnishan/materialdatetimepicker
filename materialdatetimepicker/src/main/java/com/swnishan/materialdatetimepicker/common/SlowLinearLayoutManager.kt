@@ -1,8 +1,10 @@
 package com.swnishan.materialdatetimepicker.common
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.DisplayMetrics
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +30,16 @@ class SlowLinearLayoutManager : LinearLayoutManager {
         linearSmoothScroller.targetPosition = position
         startSmoothScroll(linearSmoothScroller)
     }
+
+    override fun setMeasuredDimension(childrenBounds: Rect?, wSpec: Int, hSpec: Int) {
+        var measuredItemHeight = 0
+        if (childCount > 0) {
+            measuredItemHeight = getChildAt(0)?.measuredHeight ?: return
+            measuredItemHeight = View.MeasureSpec.makeMeasureSpec(measuredItemHeight * 3, View.MeasureSpec.EXACTLY)
+        }
+        super.setMeasuredDimension(childrenBounds, wSpec, if(measuredItemHeight>0) measuredItemHeight else hSpec)
+    }
+
 
     companion object {
         private const val MILLISECONDS_PER_INCH = 400f
