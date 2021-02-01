@@ -8,7 +8,7 @@ import com.swnishan.materialdatetimepicker.common.PickerModel
 
 internal class PickerAdapter(
     private var items: List<PickerModel>,
-    private val textAppearance: Int,
+    private var textAppearance: Int,
     private val scrollOption: ScrollOptions = ScrollOptions.SCROLL_INT_MAX,
     private val onClickItem: (position:Int) -> Unit
 ) : RecyclerView.Adapter<PickerViewHolder>() {
@@ -35,6 +35,11 @@ internal class PickerAdapter(
 
     fun updateItems(items: List<PickerModel>){
         this.items = items
+        notifyDataSetChanged()
+    }
+
+    fun updateTextAppearance(textAppearance: Int){
+        this.textAppearance=textAppearance
         notifyDataSetChanged()
     }
 

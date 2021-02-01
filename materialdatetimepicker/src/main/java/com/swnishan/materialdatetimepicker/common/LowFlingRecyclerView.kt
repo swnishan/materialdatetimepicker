@@ -20,12 +20,4 @@ internal class LowFlingRecyclerView: RecyclerView {
         val velocityYNew=(velocityY*0.25).toInt()
         return super.fling(velocityX, velocityYNew)
     }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if(childCount>0 ){
-            setPadding(paddingLeft, children.first().height, paddingRight, children.first().height)
-        }
-    }
-
 }

@@ -81,6 +81,9 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
                 R.styleable.MaterialDatePickerView_android_textAppearance,
                 R.style.TextAppearance_MaterialTimePicker
             )
+            yearAdapter.updateTextAppearance(textAppearance)
+            monthAdapter.updateTextAppearance(textAppearance)
+            dayAdapter.updateTextAppearance(textAppearance)
 
             dateFormat = DateFormat.values()[this.getInt(
                 R.styleable.MaterialDatePickerView_dateFormat,

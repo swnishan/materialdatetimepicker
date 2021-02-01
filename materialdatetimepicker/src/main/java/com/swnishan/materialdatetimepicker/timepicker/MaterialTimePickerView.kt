@@ -76,6 +76,8 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                 R.styleable.MaterialTimePickerView_android_textAppearance,
                 R.style.TextAppearance_MaterialTimePicker
             )
+            hourAdapter.updateTextAppearance(textAppearance)
+            minuteAdapter.updateTextAppearance(textAppearance)
 
             timeConvention = TimeConvention.values()[this.getInt(
                 R.styleable.MaterialTimePickerView_timeConvention,
@@ -110,6 +112,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
             if(hour>23 || hour<0) throw MaterialDateTimePickerException("Given default hour is invalid. Hour should be in between 0 to 23")
 
             pickerTime=pickerTime.withHour(hour)
+            timePeriod=if(pickerTime.hour>=12) TimePeriod.PM else TimePeriod.AM
 
             val minute = this.getInt(R.styleable.MaterialTimePickerView_defaultMinute, pickerTime.minute)
             if(minute>59 || hour<0) throw MaterialDateTimePickerException("Given default minute is invalid. Minute should be in between 0 to 59")
@@ -195,7 +198,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         rvHours.apply {
             setHasFixedSize(true)
             adapter = hourAdapter
-            layoutManager = SlowLinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context, rvHours)
             hourSnapHelper.attachToRecyclerView(this)
             addListeners{viewId -> updateTimeWhenScroll(viewId) }
         }
@@ -203,7 +206,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
         rvMinute.apply {
             setHasFixedSize(true)
             adapter = minuteAdapter
-            layoutManager = SlowLinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context, rvMinute)
             minuteSnapHelper.attachToRecyclerView(this)
             addListeners{viewId -> updateTimeWhenScroll(viewId) }
         }
@@ -215,7 +218,7 @@ class MaterialTimePickerView: BaseMaterialDateTimePickerView{
                 textAppearance,
                 PickerAdapter.ScrollOptions.SCROLL_ITEM_LIMIT
             ){position-> onItemClicked(position, rvTimePeriod) }
-            layoutManager=SlowLinearLayoutManager(context)
+            layoutManager=SlowLinearLayoutManager(context, rvTimePeriod)
             timePeriodSnapHelper.attachToRecyclerView(this)
             addListeners{viewId -> updateTimeWhenScroll(viewId) }
         }
