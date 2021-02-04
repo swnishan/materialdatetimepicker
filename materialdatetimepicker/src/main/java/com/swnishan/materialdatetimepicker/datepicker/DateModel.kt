@@ -6,7 +6,7 @@ sealed class DateModel {
     data class Year(
         override val index: Int,
         override val displayValue: String,
-        val year: Int,
+        val year: Int
     ) : DateModel(), PickerModel
 
     data class Month(

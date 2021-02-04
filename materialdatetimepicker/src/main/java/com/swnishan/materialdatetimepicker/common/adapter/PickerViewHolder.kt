@@ -6,7 +6,6 @@ import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.common.PickerModel
 
-
 internal class PickerViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(

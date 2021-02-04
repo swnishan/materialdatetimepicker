@@ -1,16 +1,10 @@
 package com.swnishan.materialdatetimepicker.sample
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
-import com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerDialog
-import com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerView
-//import com.google.android.material.timepicker.MaterialTimePicker
-//import com.google.android.material.timepicker.MaterialTimePicker
-import com.swnishan.materialdatetimepicker.timepicker.MaterialTimePickerDialog
-import com.swnishan.materialdatetimepicker.timepicker.MaterialTimePickerView
+// import com.google.android.material.timepicker.MaterialTimePicker
+// import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_1.*
 import kotlinx.android.synthetic.main.activity_main_1.view.*
@@ -21,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_1)
 
-        viewPager.adapter=ViewPagerAdapter(supportFragmentManager, this.lifecycle)
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this.lifecycle)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = "Time Picker"

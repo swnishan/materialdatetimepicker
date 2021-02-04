@@ -11,22 +11,22 @@ import com.swnishan.materialdatetimepicker.common.PickerModel
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import kotlin.math.absoluteValue
 
-abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
+abstract class BaseMaterialDateTimePickerView : ConstraintLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet?, defAttributeSet: Int) : super(context, attributeSet, defAttributeSet)
 
-    internal var fadeInDuration= FADE_IN_DURATION
-    internal var fadeOutDuration= FADE_OUT_DURATION
-    internal var fadeInAlpha= FADE_IN_ALPHA
-    internal var fadeOutAlpha= FADE_OUT_ALPHA
+    internal var fadeInDuration = FADE_IN_DURATION
+    internal var fadeOutDuration = FADE_OUT_DURATION
+    internal var fadeInAlpha = FADE_IN_ALPHA
+    internal var fadeOutAlpha = FADE_OUT_ALPHA
 
     /**
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
      */
     internal fun getScrollPosition(adapter: PickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
-        var scrollPosition = adapter.itemCount/2
+        var scrollPosition = adapter.itemCount / 2
         val position = scrollPosition % list.size
 
         val diff = (model.index - position).absoluteValue
@@ -44,16 +44,16 @@ abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
 
     abstract fun fadeView(view: RecyclerView, duration: Long, alpha: Float)
 
-    internal open fun onItemClicked(position: Int, rv: RecyclerView){
+    internal open fun onItemClicked(position: Int, rv: RecyclerView) {
         rv.smoothScrollToPosition(position)
     }
 
-    internal fun LinearSnapHelper.getSnapPosition(rv:RecyclerView): Int {
-        val view=findSnapView(rv.layoutManager)?:return 0
+    internal fun LinearSnapHelper.getSnapPosition(rv: RecyclerView): Int {
+        val view = findSnapView(rv.layoutManager) ?: return 0
         return rv.getChildAdapterPosition(view)
     }
 
-    internal fun RecyclerView.addListeners(updateViewData:(viewId:Int)->Unit){
+    internal fun RecyclerView.addListeners(updateViewData: (viewId: Int) -> Unit) {
         addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                 if (e.action == MotionEvent.ACTION_DOWN) fadeView(rv, fadeInDuration, fadeInAlpha)
@@ -76,7 +76,7 @@ abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
                     RecyclerView.SCROLL_STATE_IDLE -> fadeView(recyclerView, fadeOutDuration, fadeOutAlpha)
                 }
 
-                if(newState== RecyclerView.SCROLL_STATE_IDLE){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     updateViewData.invoke(recyclerView.id)
                 }
             }
@@ -84,18 +84,18 @@ abstract class BaseMaterialDateTimePickerView:ConstraintLayout{
     }
 
     fun setFadeAnimation(
-        fadeInDuration: Long=this.fadeInDuration,
-        fadeOutDuration: Long=this.fadeOutDuration,
-        fadeInAlpha: Float=this.fadeInAlpha,
-        fadeOutAlpha: Float=this.fadeOutAlpha
-    ){
-        this.fadeInDuration=fadeInDuration
-        this.fadeOutDuration=fadeOutDuration
-        this.fadeInAlpha=fadeInAlpha
-        this.fadeOutAlpha=fadeOutAlpha
+        fadeInDuration: Long = this.fadeInDuration,
+        fadeOutDuration: Long = this.fadeOutDuration,
+        fadeInAlpha: Float = this.fadeInAlpha,
+        fadeOutAlpha: Float = this.fadeOutAlpha
+    ) {
+        this.fadeInDuration = fadeInDuration
+        this.fadeOutDuration = fadeOutDuration
+        this.fadeInAlpha = fadeInAlpha
+        this.fadeOutAlpha = fadeOutAlpha
     }
 
-    companion object{
+    companion object {
         const val FADE_IN_DURATION = 300L
         const val FADE_OUT_DURATION = 1000L
         const val FADE_IN_ALPHA = .3f

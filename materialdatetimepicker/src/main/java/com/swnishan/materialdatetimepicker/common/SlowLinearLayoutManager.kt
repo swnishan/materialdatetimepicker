@@ -5,18 +5,16 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.View
-import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 
-
 class SlowLinearLayoutManager : LinearLayoutManager {
 
-    private var recyclerView: RecyclerView?=null
+    private var recyclerView: RecyclerView? = null
 
-    constructor(context: Context?, recyclerView:RecyclerView) : this(context){
-        this.recyclerView=recyclerView
+    constructor(context: Context?, recyclerView: RecyclerView) : this(context) {
+        this.recyclerView = recyclerView
     }
     constructor(context: Context?) : super(context)
     constructor(context: Context?, orientation: Int, reverseLayout: Boolean) : super(context, orientation, reverseLayout)
@@ -44,9 +42,8 @@ class SlowLinearLayoutManager : LinearLayoutManager {
             recyclerView?.setPadding(paddingLeft, measuredItemHeight, paddingRight, measuredItemHeight)
             measuredItemHeight = View.MeasureSpec.makeMeasureSpec(measuredItemHeight * 3, View.MeasureSpec.EXACTLY)
         }
-        super.setMeasuredDimension(childrenBounds, wSpec, if(measuredItemHeight>0) measuredItemHeight else hSpec)
+        super.setMeasuredDimension(childrenBounds, wSpec, if (measuredItemHeight> 0) measuredItemHeight else hSpec)
     }
-
 
     companion object {
         private const val MILLISECONDS_PER_INCH = 400f

@@ -10,16 +10,13 @@ import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.annotation.StyleRes
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.dialog.BaseMaterialDateTimePickerDialog
-import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_IN_ALPHA
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_IN_DURATION
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_OUT_ALPHA
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_OUT_DURATION
-import com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerDialog
 import org.threeten.bp.LocalTime
 
 class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
@@ -29,13 +26,13 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
     private var timeConvention = MaterialTimePickerView.TimeConvention.HOURS_24
     private var timePeriod: MaterialTimePickerView.TimePeriod = MaterialTimePickerView.TimePeriod.AM
     private var pickerTime: LocalTime = LocalTime.now()
-    private var themeRes= R.style.ThemeOverlay_Dialog_MaterialTimePicker
+    private var themeRes = R.style.ThemeOverlay_Dialog_MaterialTimePicker
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireContext(), themeRes)
         val timePickerViewStyle = builder.context.resolveThemeAttr(R.attr.materialTimePickerViewStyle)
         val timePickerThemeContext = ContextThemeWrapper(builder.context, timePickerViewStyle)
-        materialTimePickerView = MaterialTimePickerView(context=timePickerThemeContext)
+        materialTimePickerView = MaterialTimePickerView(context = timePickerThemeContext)
         materialTimePickerView?.setTimeConvention(timeConvention)
         materialTimePickerView?.setHour(pickerTime.hour)
         materialTimePickerView?.setMinute(pickerTime.minute)
@@ -59,32 +56,32 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        restoreState(savedInstanceState?:arguments)
+        restoreState(savedInstanceState ?: arguments)
     }
 
     private fun restoreState(bundle: Bundle?) {
-        if (bundle==null) return
-        themeRes=bundle.getInt(ARG_THEME, themeRes)
+        if (bundle == null) return
+        themeRes = bundle.getInt(ARG_THEME, themeRes)
 
-        val hour =bundle.getInt(ARG_HOUR, pickerTime.hour)
-        val minute=bundle.getInt(ARG_MINUTE, pickerTime.minute)
-        pickerTime=pickerTime.withHour(hour).withMinute(minute)
+        val hour = bundle.getInt(ARG_HOUR, pickerTime.hour)
+        val minute = bundle.getInt(ARG_MINUTE, pickerTime.minute)
+        pickerTime = pickerTime.withHour(hour).withMinute(minute)
 
-        timeConvention= MaterialTimePickerView.TimeConvention.valueOf(bundle.getString(ARG_TIME_CONVENTION, timeConvention.name))
-        timePeriod= MaterialTimePickerView.TimePeriod.valueOf(bundle.getString(ARG_TIME_PERIOD, timePeriod.name))
+        timeConvention = MaterialTimePickerView.TimeConvention.valueOf(bundle.getString(ARG_TIME_CONVENTION, timeConvention.name))
+        timePeriod = MaterialTimePickerView.TimePeriod.valueOf(bundle.getString(ARG_TIME_PERIOD, timePeriod.name))
 
-        fadeInDuration=bundle.getLong(ARG_FADE_IN_DURATION, fadeInDuration)
-        fadeOutDuration=bundle.getLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
-        fadeInAlpha=bundle.getFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
-        fadeOutAlpha=bundle.getFloat(ARG_FADE_OUT_ALPHA, fadeOutAlpha)
+        fadeInDuration = bundle.getLong(ARG_FADE_IN_DURATION, fadeInDuration)
+        fadeOutDuration = bundle.getLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
+        fadeInAlpha = bundle.getFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
+        fadeOutAlpha = bundle.getFloat(ARG_FADE_OUT_ALPHA, fadeOutAlpha)
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
         super.onSaveInstanceState(bundle)
 
         bundle.putInt(ARG_THEME, themeRes)
-        bundle.putInt(ARG_HOUR, materialTimePickerView?.getHour()?:pickerTime.hour)
-        bundle.putInt(ARG_MINUTE, materialTimePickerView?.getMinute()?:pickerTime.minute)
+        bundle.putInt(ARG_HOUR, materialTimePickerView?.getHour() ?: pickerTime.hour)
+        bundle.putInt(ARG_MINUTE, materialTimePickerView?.getMinute() ?: pickerTime.minute)
         bundle.putString(ARG_TIME_CONVENTION, timeConvention.name)
         bundle.putString(ARG_TIME_PERIOD, timePeriod.name)
         bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
@@ -93,38 +90,38 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         bundle.putFloat(ARG_FADE_IN_ALPHA, fadeOutAlpha)
     }
 
-     override fun setStyle(style: Int, theme: Int) {
-        themeRes=theme
+    override fun setStyle(style: Int, theme: Int) {
+        themeRes = theme
         super.setStyle(style, theme)
     }
 
-    fun getHour()=materialTimePickerView?.getHour()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+    fun getHour() = materialTimePickerView?.getHour() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
-    fun getMinute()=materialTimePickerView?.getMinute()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+    fun getMinute() = materialTimePickerView?.getMinute() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
-    fun getTimePeriod()=materialTimePickerView?.getTimePeriod()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+    fun getTimePeriod() = materialTimePickerView?.getTimePeriod() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
-    fun getTime()=materialTimePickerView?.getTime()?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+    fun getTime() = materialTimePickerView?.getTime() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
     fun setOnTimePickListener(listener: MaterialTimePickerView.OnTimePickedListener?) {
-         onTimePickedListener=listener
+        onTimePickedListener = listener
     }
 
-    object Builder{
-        private val timePickerDialog=MaterialTimePickerDialog()
+    object Builder {
+        private val timePickerDialog = MaterialTimePickerDialog()
         private val bundle = bundleOf()
 
-        fun setTitle(title:String): Builder {
+        fun setTitle(title: String): Builder {
             bundle.putString(ARG_TITLE, title)
             return this
         }
 
-        fun setPositiveButtonText(text:String): Builder {
+        fun setPositiveButtonText(text: String): Builder {
             bundle.putString(ARG_POSITIVE_BUTTON_TEXT, text)
             return this
         }
 
-        fun setNegativeButtonText(text:String): Builder {
+        fun setNegativeButtonText(text: String): Builder {
             bundle.putString(ARG_NEGATIVE_BUTTON_TEXT, text)
             return this
         }
@@ -134,7 +131,7 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun setHour(@IntRange(from =0 ,to=23)hour: Int): Builder {
+        fun setHour(@IntRange(from = 0, to = 23)hour: Int): Builder {
             bundle.putInt(ARG_HOUR, hour)
             return this
         }
@@ -144,21 +141,21 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun setTimePeriod(timePeriod: MaterialTimePickerView.TimePeriod):Builder{
-            bundle.putString(ARG_TIME_PERIOD,timePeriod.name)
+        fun setTimePeriod(timePeriod: MaterialTimePickerView.TimePeriod): Builder {
+            bundle.putString(ARG_TIME_PERIOD, timePeriod.name)
             return this
         }
 
-        fun setTheme(@StyleRes themeRes:Int): Builder {
+        fun setTheme(@StyleRes themeRes: Int): Builder {
             bundle.putInt(ARG_THEME, themeRes)
             return this
         }
 
         fun setFadeAnimation(
-            fadeInDuration: Long= FADE_IN_DURATION,
-            fadeOutDuration: Long= FADE_OUT_DURATION,
-            @FloatRange(from = 0.0, to = 1.0) fadeInAlpha: Float= FADE_IN_ALPHA,
-            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float= FADE_OUT_ALPHA
+            fadeInDuration: Long = FADE_IN_DURATION,
+            fadeOutDuration: Long = FADE_OUT_DURATION,
+            @FloatRange(from = 0.0, to = 1.0) fadeInAlpha: Float = FADE_IN_ALPHA,
+            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float = FADE_OUT_ALPHA
         ): Builder {
             bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
             bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
@@ -167,8 +164,8 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun build():MaterialTimePickerDialog{
-            timePickerDialog.apply { arguments=bundle }
+        fun build(): MaterialTimePickerDialog {
+            timePickerDialog.apply { arguments = bundle }
             return timePickerDialog
         }
     }
@@ -183,5 +180,4 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         private const val ARG_MINUTE = "arg_minute"
         private const val ARG_TIME_PERIOD = "arg_time_period"
     }
-
 }

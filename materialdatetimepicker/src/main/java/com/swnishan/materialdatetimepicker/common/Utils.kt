@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.annotation.DimenRes
 
-class Utils{
-    companion object{
+class Utils {
+    companion object {
         fun dpToPx(dp: Float): Float {
             return (dp * Resources.getSystem().displayMetrics.density)
         }

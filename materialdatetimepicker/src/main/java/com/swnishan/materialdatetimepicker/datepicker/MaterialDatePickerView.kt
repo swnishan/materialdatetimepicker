@@ -3,29 +3,27 @@ package com.swnishan.materialdatetimepicker.datepicker
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.view.MotionEvent
-import android.view.MotionEvent.ACTION_DOWN
-import android.view.MotionEvent.ACTION_UP
-import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.swnishan.materialdatetimepicker.R
-import com.swnishan.materialdatetimepicker.common.*
+import com.swnishan.materialdatetimepicker.common.MaterialDateTimePickerException
+import com.swnishan.materialdatetimepicker.common.SlowLinearLayoutManager
+import com.swnishan.materialdatetimepicker.common.Utils
 import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
+import com.swnishan.materialdatetimepicker.common.toLocalDate
+import com.swnishan.materialdatetimepicker.common.toLong
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
 import org.threeten.bp.Month
 import org.threeten.bp.format.TextStyle
-import java.util.*
+import java.util.Locale
 
-class MaterialDatePickerView: BaseMaterialDateTimePickerView{
+class MaterialDatePickerView : BaseMaterialDateTimePickerView {
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attributeSet: AttributeSet?) : this(
@@ -37,7 +35,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         context,
         attributeSet,
         defAttributeSet
-    ){
+    ) {
         setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialDatePicker)
         initDateSelectionView()
         updateYearsAdapter()
@@ -49,7 +47,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     init {
         inflate(context, R.layout.view_date_picker, this)
         layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-        setPadding(0,Utils.dimenToPx(context,R.dimen.time_picker_view_padding_top),0, Utils.dimenToPx(context,R.dimen.time_picker_view_padding_bottom))
+        setPadding(0, Utils.dimenToPx(context, R.dimen.time_picker_view_padding_top), 0, Utils.dimenToPx(context, R.dimen.time_picker_view_padding_bottom))
     }
 
     private fun setCustomAttributes(
@@ -85,48 +83,50 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             monthAdapter.updateTextAppearance(textAppearance)
             dayAdapter.updateTextAppearance(textAppearance)
 
-            dateFormat = DateFormat.values()[this.getInt(
-                R.styleable.MaterialDatePickerView_dateFormat,
-                0
-            )]
+            dateFormat = DateFormat.values()[
+                this.getInt(
+                    R.styleable.MaterialDatePickerView_dateFormat,
+                    0
+                )
+            ]
 
-            fadeInDuration=this.getInt(
+            fadeInDuration = this.getInt(
                 R.styleable.MaterialDatePickerView_fadeInDuration,
                 fadeInDuration.toInt()
             ).toLong()
 
-            fadeOutDuration=this.getInt(
+            fadeOutDuration = this.getInt(
                 R.styleable.MaterialDatePickerView_fadeOutDuration,
                 fadeOutDuration.toInt()
             ).toLong()
 
-            val fadeInAlpha=this.getFloat(
+            val fadeInAlpha = this.getFloat(
                 R.styleable.MaterialDatePickerView_fadeInAlpha,
                 fadeInAlpha
             )
-            if(fadeInAlpha>1f || fadeInAlpha<0f) throw MaterialDateTimePickerException("Given fadeIn alpha is invalid ($fadeInAlpha). fadeIn value should be 0 to 1")
-            super.fadeInAlpha=fadeInAlpha
+            if (fadeInAlpha> 1f || fadeInAlpha <0f) throw MaterialDateTimePickerException("Given fadeIn alpha is invalid ($fadeInAlpha). fadeIn value should be 0 to 1")
+            super.fadeInAlpha = fadeInAlpha
 
-            val fadeOutAlpha=this.getFloat(
+            val fadeOutAlpha = this.getFloat(
                 R.styleable.MaterialDatePickerView_fadeOutAlpha,
                 fadeOutAlpha
             )
-            if(fadeOutAlpha>1f || fadeInAlpha<0f) throw MaterialDateTimePickerException("Given fadeOut alpha is invalid ($fadeOutAlpha). fadeOut value should be 0 to 1")
-            super.fadeOutAlpha=fadeOutAlpha
+            if (fadeOutAlpha> 1f || fadeInAlpha <0f) throw MaterialDateTimePickerException("Given fadeOut alpha is invalid ($fadeOutAlpha). fadeOut value should be 0 to 1")
+            super.fadeOutAlpha = fadeOutAlpha
 
-            val minYear=this.getInt(R.styleable.MaterialDatePickerView_minYear, 1950)
-            val maxYear=this.getInt(R.styleable.MaterialDatePickerView_maxYear, 2100)
-            yearsRange=(minYear..maxYear)
+            val minYear = this.getInt(R.styleable.MaterialDatePickerView_minYear, 1950)
+            val maxYear = this.getInt(R.styleable.MaterialDatePickerView_maxYear, 2100)
+            yearsRange = (minYear..maxYear)
 
-            val year=this.getInt(R.styleable.MaterialDatePickerView_defaultYear, pickerDate.year)
-            if(year<minYear || year>maxYear) throw MaterialDateTimePickerException("Default year ($year) out of the year range. It should be in between $minYear to $maxYear")
+            val year = this.getInt(R.styleable.MaterialDatePickerView_defaultYear, pickerDate.year)
+            if (year <minYear || year> maxYear) throw MaterialDateTimePickerException("Default year ($year) out of the year range. It should be in between $minYear to $maxYear")
 
-            pickerDate=pickerDate.withYear(year)
-            pickerDate=pickerDate.withMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultMonth, pickerDate.monthValue))
-            pickerDate=pickerDate.withDayOfMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultDay, pickerDate.dayOfMonth))
+            pickerDate = pickerDate.withYear(year)
+            pickerDate = pickerDate.withMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultMonth, pickerDate.monthValue))
+            pickerDate = pickerDate.withDayOfMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultDay, pickerDate.dayOfMonth))
 
             viewCenter.setBackgroundColor(highlighterColor)
-            viewCenter.layoutParams.height=highlighterHeight.toInt()
+            viewCenter.layoutParams.height = highlighterHeight.toInt()
 
             if (background is ColorDrawable) {
                 val backgroundColor = background.color
@@ -138,23 +138,22 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
                 viewBottomShadeTimeDay.setBackgroundColor(backgroundColor)
                 setBackgroundColor(backgroundColor)
             }
-
         }.recycle()
     }
 
-    private var dateFormat=DateFormat.DD_MMMM_YYYY
-    private var textAppearance:Int= R.style.TextAppearance_MaterialDatePicker
+    private var dateFormat = DateFormat.DD_MMMM_YYYY
+    private var textAppearance: Int = R.style.TextAppearance_MaterialDatePicker
     private var pickerDate: LocalDate = LocalDate.now()
     private var onDatePickedListener: OnDatePickedListener? = null
 
-    private var yearsRange=(1950..2100)
-    private var years = yearsRange.mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
-    private var months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, getMonthDisplayText(value), value)}
-    private var days = (1..31).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
+    private var yearsRange = (1950..2100)
+    private var years = yearsRange.mapIndexed { index, value -> DateModel.Year(index, String.format("%02d", value), value) }
+    private var months = (1..12).mapIndexed { index, value -> DateModel.Month(index, getMonthDisplayText(value), value) }
+    private var days = (1..31).mapIndexed { index, value -> DateModel.Day(index, String.format("%02d", value), value) }
 
-    private val yearAdapter = PickerAdapter(years, textAppearance){position-> onItemClicked(position, rvYears) }
-    private val monthAdapter = PickerAdapter(months, textAppearance){position-> onItemClicked(position, rvMonths) }
-    private val dayAdapter = PickerAdapter(days, textAppearance){position-> onItemClicked(position, rvDays) }
+    private val yearAdapter = PickerAdapter(years, textAppearance) { position -> onItemClicked(position, rvYears) }
+    private val monthAdapter = PickerAdapter(months, textAppearance) { position -> onItemClicked(position, rvMonths) }
+    private val dayAdapter = PickerAdapter(days, textAppearance) { position -> onItemClicked(position, rvDays) }
 
     private val yearSnapHelper = LinearSnapHelper()
     private val monthSnapHelper = LinearSnapHelper()
@@ -164,8 +163,8 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         onDatePickedListener?.onDatePicked(pickerDate.toLong())
     }
 
-    fun getDate():Long{
-        val hourView=yearSnapHelper.findSnapView(rvYears.layoutManager)?:return 0
+    fun getDate(): Long {
+        val hourView = yearSnapHelper.findSnapView(rvYears.layoutManager) ?: return 0
         return rvYears.getChildAdapterPosition(hourView).toLong()
     }
 
@@ -173,9 +172,9 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         rvYears.apply {
             setHasFixedSize(true)
             adapter = yearAdapter
-            layoutManager = SlowLinearLayoutManager(context,rvYears)
+            layoutManager = SlowLinearLayoutManager(context, rvYears)
             yearSnapHelper.attachToRecyclerView(this)
-            addListeners{viewId -> updateDateWhenScroll(viewId) }
+            addListeners { viewId -> updateDateWhenScroll(viewId) }
         }
 
         rvMonths.apply {
@@ -183,61 +182,61 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
             adapter = monthAdapter
             layoutManager = SlowLinearLayoutManager(context, rvMonths)
             monthSnapHelper.attachToRecyclerView(this)
-            addListeners{viewId -> updateDateWhenScroll(viewId) }
+            addListeners { viewId -> updateDateWhenScroll(viewId) }
         }
 
         rvDays.apply {
             setHasFixedSize(true)
-            adapter= dayAdapter
-            layoutManager=SlowLinearLayoutManager(context, rvDays)
+            adapter = dayAdapter
+            layoutManager = SlowLinearLayoutManager(context, rvDays)
             daySnapHelper.attachToRecyclerView(this)
-            addListeners{viewId -> updateDateWhenScroll(viewId) }
+            addListeners { viewId -> updateDateWhenScroll(viewId) }
         }
     }
 
-    private fun updateYearsAdapter(){
-        years=yearsRange.mapIndexed { index, value ->  DateModel.Year(index, String.format("%02d", value),value)}
+    private fun updateYearsAdapter() {
+        years = yearsRange.mapIndexed { index, value -> DateModel.Year(index, String.format("%02d", value), value) }
         yearAdapter.updateItems(years)
     }
 
-    private fun updateMonthsAdapter(){
-        months = (1..12).mapIndexed { index, value ->  DateModel.Month(index, getMonthDisplayText(value), value)}
+    private fun updateMonthsAdapter() {
+        months = (1..12).mapIndexed { index, value -> DateModel.Month(index, getMonthDisplayText(value), value) }
         monthAdapter.updateItems(months)
     }
 
     private fun updateDaysAdapter() {
-        days=(1..pickerDate.month.length(pickerDate.isLeapYear)).mapIndexed { index, value ->  DateModel.Day(index, String.format("%02d", value),value)}
+        days = (1..pickerDate.month.length(pickerDate.isLeapYear)).mapIndexed { index, value -> DateModel.Day(index, String.format("%02d", value), value) }
         dayAdapter.updateItems(days)
     }
 
     override fun fadeView(view: RecyclerView, duration: Long, alpha: Float) {
-        when(view.id){
-            R.id.rvYears -> super.startFadeAnimation(listOf(viewTopShadeYear, viewBottomShadeYear),duration, alpha)
-            R.id.rvMonths -> super.startFadeAnimation(listOf(viewTopShadeMonth, viewBottomShadeMonth),duration, alpha)
-            R.id.rvDays -> super.startFadeAnimation(listOf(viewTopShadeTimeDay, viewBottomShadeTimeDay),duration, alpha)
+        when (view.id) {
+            R.id.rvYears -> super.startFadeAnimation(listOf(viewTopShadeYear, viewBottomShadeYear), duration, alpha)
+            R.id.rvMonths -> super.startFadeAnimation(listOf(viewTopShadeMonth, viewBottomShadeMonth), duration, alpha)
+            R.id.rvDays -> super.startFadeAnimation(listOf(viewTopShadeTimeDay, viewBottomShadeTimeDay), duration, alpha)
         }
     }
 
-    private fun updateDateWhenScroll(viewId:Int){
-        when(viewId){
-            R.id.rvYears->{
-                pickerDate=pickerDate.withYear(getYear())
-                if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size){
+    private fun updateDateWhenScroll(viewId: Int) {
+        when (viewId) {
+            R.id.rvYears -> {
+                pickerDate = pickerDate.withYear(getYear())
+                if (pickerDate.month.length(pickerDate.isLeapYear) != days.size) {
                     updateDaysAdapter()
                     scrollToDay()
                 }
             }
 
-            R.id.rvMonths->{
-                pickerDate=pickerDate.withMonth(getMonth())
-                if(pickerDate.month.length(pickerDate.isLeapYear)!=days.size) {
+            R.id.rvMonths -> {
+                pickerDate = pickerDate.withMonth(getMonth())
+                if (pickerDate.month.length(pickerDate.isLeapYear) != days.size) {
                     updateDaysAdapter()
                     scrollToDay()
                 }
             }
 
-            R.id.rvDays->{
-                pickerDate=pickerDate.withDayOfMonth(getDayOfMonth())
+            R.id.rvDays -> {
+                pickerDate = pickerDate.withDayOfMonth(getDayOfMonth())
             }
         }
     }
@@ -248,13 +247,13 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
     }
 
     fun getMonth(): Int {
-        val view=monthSnapHelper.findSnapView(rvMonths.layoutManager)?:return 0
-        return months[(rvMonths.getChildAdapterPosition(view)%months.size)].month
+        val view = monthSnapHelper.findSnapView(rvMonths.layoutManager) ?: return 0
+        return months[(rvMonths.getChildAdapterPosition(view) % months.size)].month
     }
 
     fun getYear(): Int {
-        val view=yearSnapHelper.findSnapView(rvYears.layoutManager)?:return 0
-        return years[(rvYears.getChildAdapterPosition(view)%years.size)].year
+        val view = yearSnapHelper.findSnapView(rvYears.layoutManager) ?: return 0
+        return years[(rvYears.getChildAdapterPosition(view) % years.size)].year
     }
 
     private fun scrollToDate() {
@@ -263,25 +262,25 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         scrollToDay()
     }
 
-    private fun getMonthDisplayText(month:Int): String {
-        return when(dateFormat){
-            DateFormat.DD_MMMM_YYYY->{
+    private fun getMonthDisplayText(month: Int): String {
+        return when (dateFormat) {
+            DateFormat.DD_MMMM_YYYY -> {
                 Month.of(month).getDisplayName(TextStyle.FULL, Locale.getDefault())
             }
-            DateFormat.DD_MMM_YYYY->{
+            DateFormat.DD_MMM_YYYY -> {
                 Month.of(month).getDisplayName(TextStyle.SHORT, Locale.getDefault())
             }
-            DateFormat.DD_MM_YYYY->{
+            DateFormat.DD_MM_YYYY -> {
                 String.format("%02d", month)
             }
         }
     }
 
-    private fun scrollToYear()=rvYears.scrollToPosition(getScrollPosition(yearAdapter,years, getYearModel(pickerDate.year)))
+    private fun scrollToYear() = rvYears.scrollToPosition(getScrollPosition(yearAdapter, years, getYearModel(pickerDate.year)))
 
-    private fun scrollToMonth()=rvMonths.scrollToPosition(getScrollPosition(monthAdapter,months, getMonthModel(pickerDate.monthValue)))
+    private fun scrollToMonth() = rvMonths.scrollToPosition(getScrollPosition(monthAdapter, months, getMonthModel(pickerDate.monthValue)))
 
-    private fun scrollToDay()=rvDays.scrollToPosition(getScrollPosition(dayAdapter,days, getDayModel(pickerDate.dayOfMonth)))
+    private fun scrollToDay() = rvDays.scrollToPosition(getScrollPosition(dayAdapter, days, getDayModel(pickerDate.dayOfMonth)))
 
     private fun getYearModel(year: Int) = years.firstOrNull { it.year == year }
         ?: throw MaterialDateTimePickerException("Cannot find given Year in given years range (size: ${years.size} index: $year)")
@@ -296,13 +295,13 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         this.onDatePickedListener = onDatePickedListener
     }
 
-    fun setDate(date:Long) {
+    fun setDate(date: Long) {
         pickerDate = date.toLocalDate()
         scrollToDate()
     }
 
-    fun setDateFormat(dateFormat: DateFormat){
-        this.dateFormat=dateFormat
+    fun setDateFormat(dateFormat: DateFormat) {
+        this.dateFormat = dateFormat
         updateMonthsAdapter()
     }
 
@@ -310,7 +309,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         fun onDatePicked(date: Long)
     }
 
-    enum class DateFormat{
+    enum class DateFormat {
         DD_MMMM_YYYY, DD_MMM_YYYY, DD_MM_YYYY
     }
 }

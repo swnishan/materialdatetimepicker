@@ -9,7 +9,6 @@ import androidx.annotation.AttrRes
 import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swnishan.materialdatetimepicker.R
 import com.swnishan.materialdatetimepicker.common.dialog.BaseMaterialDateTimePickerDialog
@@ -19,21 +18,21 @@ import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePicke
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_IN_DURATION
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_OUT_ALPHA
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_OUT_DURATION
-import org.threeten.bp.*
+import org.threeten.bp.LocalDate
 
 class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
 
     private var onDatePickedListener: MaterialDatePickerView.OnDatePickedListener? = null
     private var materialDatePickerView: MaterialDatePickerView? = null
     private var pickerDate: LocalDate = LocalDate.now()
-    private var themeRes= R.style.ThemeOverlay_Dialog_MaterialDatePicker
-    private var dateFormat= MaterialDatePickerView.DateFormat.DD_MMMM_YYYY
+    private var themeRes = R.style.ThemeOverlay_Dialog_MaterialDatePicker
+    private var dateFormat = MaterialDatePickerView.DateFormat.DD_MMMM_YYYY
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireContext(), themeRes)
         val datePickerViewStyle = builder.context.resolveThemeAttr(R.attr.materialTimePickerViewStyle)
         val datePickerThemeContext = ContextThemeWrapper(builder.context, datePickerViewStyle)
-        materialDatePickerView = MaterialDatePickerView(context=datePickerThemeContext)
+        materialDatePickerView = MaterialDatePickerView(context = datePickerThemeContext)
         materialDatePickerView?.setDate(pickerDate.toLong())
         materialDatePickerView?.setDateFormat(dateFormat)
         materialDatePickerView?.setFadeAnimation(fadeInDuration, fadeOutDuration, fadeInAlpha, fadeOutAlpha)
@@ -56,30 +55,29 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        restoreState(savedInstanceState?:arguments)
+        restoreState(savedInstanceState ?: arguments)
     }
 
     private fun restoreState(bundle: Bundle?) {
-        if (bundle==null) return
-        themeRes=bundle.getInt(ARG_THEME, themeRes)
+        if (bundle == null) return
+        themeRes = bundle.getInt(ARG_THEME, themeRes)
 
-        val date =bundle.getLong(ARG_DATE,pickerDate.toLong())
-        pickerDate=date.toLocalDate()
+        val date = bundle.getLong(ARG_DATE, pickerDate.toLong())
+        pickerDate = date.toLocalDate()
 
-        this.dateFormat=MaterialDatePickerView.DateFormat.valueOf(bundle.getString(ARG_DATE_FORMAT, dateFormat.name))
+        this.dateFormat = MaterialDatePickerView.DateFormat.valueOf(bundle.getString(ARG_DATE_FORMAT, dateFormat.name))
 
-        fadeInDuration=bundle.getLong(ARG_FADE_IN_DURATION, fadeInDuration)
-        fadeOutDuration=bundle.getLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
-        fadeInAlpha=bundle.getFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
-        fadeOutAlpha=bundle.getFloat(ARG_FADE_OUT_ALPHA, fadeOutAlpha)
-
+        fadeInDuration = bundle.getLong(ARG_FADE_IN_DURATION, fadeInDuration)
+        fadeOutDuration = bundle.getLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
+        fadeInAlpha = bundle.getFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
+        fadeOutAlpha = bundle.getFloat(ARG_FADE_OUT_ALPHA, fadeOutAlpha)
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
         super.onSaveInstanceState(bundle)
 
         bundle.putInt(ARG_THEME, themeRes)
-        bundle.putLong(ARG_DATE, materialDatePickerView?.getDate()?:pickerDate.toLong())
+        bundle.putLong(ARG_DATE, materialDatePickerView?.getDate() ?: pickerDate.toLong())
         bundle.putString(ARG_DATE_FORMAT, dateFormat.name)
         bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
         bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
@@ -87,43 +85,43 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
         bundle.putFloat(ARG_FADE_IN_ALPHA, fadeOutAlpha)
     }
 
-     override fun setStyle(style: Int, theme: Int) {
-        themeRes=theme
+    override fun setStyle(style: Int, theme: Int) {
+        themeRes = theme
         super.setStyle(style, theme)
     }
 
-    fun getDate()=materialDatePickerView?.getDate()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+    fun getDate() = materialDatePickerView?.getDate() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
-    fun getYear()=materialDatePickerView?.getYear()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+    fun getYear() = materialDatePickerView?.getYear() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
-    fun getMonth()=materialDatePickerView?.getMonth()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+    fun getMonth() = materialDatePickerView?.getMonth() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
-    fun getDayOfMonth()=materialDatePickerView?.getDayOfMonth()?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+    fun getDayOfMonth() = materialDatePickerView?.getDayOfMonth() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
     fun setOnDatePickListener(listener: MaterialDatePickerView.OnDatePickedListener?) {
-         onDatePickedListener=listener
+        onDatePickedListener = listener
     }
 
-    object Builder{
-        private val timePickerDialog=MaterialDatePickerDialog()
+    object Builder {
+        private val timePickerDialog = MaterialDatePickerDialog()
         private val bundle = bundleOf()
 
-        fun setTitle(title:String): Builder {
+        fun setTitle(title: String): Builder {
             bundle.putString(ARG_TITLE, title)
             return this
         }
 
-        fun setPositiveButtonText(text:String): Builder {
+        fun setPositiveButtonText(text: String): Builder {
             bundle.putString(ARG_POSITIVE_BUTTON_TEXT, text)
             return this
         }
 
-        fun setNegativeButtonText(text:String): Builder {
+        fun setNegativeButtonText(text: String): Builder {
             bundle.putString(ARG_NEGATIVE_BUTTON_TEXT, text)
             return this
         }
 
-        fun setDate(date:Long): Builder {
+        fun setDate(date: Long): Builder {
             bundle.putLong(ARG_DATE, date)
             return this
         }
@@ -133,16 +131,16 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun setTheme(@StyleRes themeRes:Int): Builder {
+        fun setTheme(@StyleRes themeRes: Int): Builder {
             bundle.putInt(ARG_THEME, themeRes)
             return this
         }
 
         fun setFadeAnimation(
-            fadeInDuration: Long=FADE_IN_DURATION,
-            fadeOutDuration: Long=FADE_OUT_DURATION,
-            @FloatRange(from = 0.0, to = 1.0) fadeInAlpha: Float= FADE_IN_ALPHA,
-            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float= FADE_OUT_ALPHA
+            fadeInDuration: Long = FADE_IN_DURATION,
+            fadeOutDuration: Long = FADE_OUT_DURATION,
+            @FloatRange(from = 0.0, to = 1.0) fadeInAlpha: Float = FADE_IN_ALPHA,
+            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float = FADE_OUT_ALPHA
         ): Builder {
             bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
             bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
@@ -151,8 +149,8 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun build():MaterialDatePickerDialog{
-            timePickerDialog.apply { arguments=bundle }
+        fun build(): MaterialDatePickerDialog {
+            timePickerDialog.apply { arguments = bundle }
             return timePickerDialog
         }
     }
@@ -165,5 +163,4 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
         private const val ARG_DATE = "arg_date"
         private const val ARG_DATE_FORMAT = "arg_date_format"
     }
-
 }

@@ -2,7 +2,6 @@ package com.swnishan.materialdatetimepicker.timepicker
 
 import com.swnishan.materialdatetimepicker.common.PickerModel
 
-
 sealed class TimeModel {
     data class Hour(
         override val index: Int,
