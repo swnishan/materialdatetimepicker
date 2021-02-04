@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.Header" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="TextAppearance.SubHeader" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/G500</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">24dp</item>
+    </style>
+
+    <style name="TextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+    <!--    You can use @style/Base.Widget.MaterialDateTimePicker as parent if the same style to be set both Date and Time picker widgets
+    instead of creating two separate styles for both-->
+    <style name="TimePickerStyle" parent="Widget.MaterialTimePicker">
+        <item name="android:textAppearance">@style/TextAppearance.TimePicker</item>
+        <item name="android:background">?attr/pickerBackgroundColor</item>
+        <item name="highlighterColor">?attr/colorPrimary</item>
+        <item name="highlighterHeight">60dp</item>
+        <item name="timeConvention">HOURS_12</item>
+        <item name="fadeInAlpha">.3</item>
+        <item name="fadeOutAlpha">.7</item>
+        <item name="fadeInDuration">300</item>
+        <item name="fadeOutDuration">1000</item>
+<!--        <item name="defaultHour">10</item>-->
+<!--        <item name="defaultMinute">30</item>-->
+    </style>
+
+    <style name="DatePickerStyle" parent="Widget.MaterialDatePicker">
+        <item name="android:textAppearance">@style/TextAppearance.DatePicker</item>
+        <item name="android:background">?attr/pickerBackgroundColor</item>
+        <item name="highlighterColor">?attr/colorPrimary</item>
+        <item name="highlighterHeight">55dp</item>
+        <item name="fadeInAlpha">.3</item>
+        <item name="fadeOutAlpha">.7</item>
+        <item name="fadeInDuration">300</item>
+        <item name="fadeOutDuration">1000</item>
+        <item name="minYear">1995</item>
+        <item name="maxYear">2050</item>
+        <item name="defaultYear">2021</item>
+        <item name="defaultMonth">1</item>
+        <item name="defaultDay">1</item>
+        <item name="dateFormat">DD_MMM_YYYY</item>
+    </style>
+
+    <!--    Set text appearance for Time Picker widget. Alternatively, @style/Base.TextAppearance.MaterialDateTimePicker
+    can be used as parent if you need to set the same text appearance for both Date and Time picker widgets-->
+    <style name="TextAppearance.TimePicker" parent="@style/TextAppearance.MaterialTimePicker">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">?attr/pickerTextColor</item>
+    </style>
+
+    <style name="TextAppearance.DatePicker" parent="@style/TextAppearance.MaterialDatePicker">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">?attr/pickerTextColor</item>
+    </style>
+
+    <!--    Set style for Time Picker dialog-->
+    <style name="ThemeOverlay.Dialog.TimePicker" parent="@style/ThemeOverlay.Dialog.MaterialTimePicker">
+        <item name="materialTimePickerViewStyle">@style/TimePickerStyle</item>
+        <item name="android:background">?attr/dialogBackgroundColor</item>
+        <!--     You can customize the MaterialAlertDialog as needed. Ex title, positive and negative button style-->
+        <item name="materialAlertDialogTitleTextStyle">@style/Picker.Dialog.Title</item>
+    </style>
+
+    <!--    Set style for Date Picker dialog-->
+    <style name="ThemeOverlay.Dialog.DatePicker" parent="@style/ThemeOverlay.Dialog.MaterialDatePicker">
+        <item name="materialTimePickerViewStyle">@style/DatePickerStyle</item>
+        <item name="android:background">?attr/dialogBackgroundColor</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/Picker.Dialog.Title</item>
+    </style>
+
+    <style name="Picker.Dialog.Title" parent="@style/Base.MaterialDateTimePicker.Dialog.Title">
+        <item name="android:textAppearance">@style/TextAppearance.Picker.Dialog.Title</item>
+    </style>
+
+    <style name="TextAppearance.Picker.Dialog.Title" parent="@style/Base.TextAppearance.MaterialDateTimePicker.Dialog.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TimePickerStyle.Second" parent="TimePickerStyle">
+        <item name="highlighterColor">@color/G200</item>
+        <item name="timeConvention">HOURS_24</item>
+    </style>
+
+    <style name="DatePickerStyle.Second" parent="Widget.MaterialDatePicker">
+        <item name="highlighterColor">@color/O400</item>
+        <item name="highlighterHeight">55dp</item>
+        <item name="dateFormat">DD_MMMM_YYYY</item>
+    </style>
+
+    <style name="DatePickerStyle.Third" parent="DatePickerStyle">
+        <item name="highlighterColor">@color/white</item>
+        <item name="dateFormat">DD_MM_YYYY</item>
+    </style>
+
+</resources>

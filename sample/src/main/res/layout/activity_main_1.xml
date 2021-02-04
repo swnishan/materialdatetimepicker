@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/topBackgroundColor">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/gap_2"
+                    android:layout_marginBottom="@dimen/gap_2">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/gap_2"
+                        android:layout_marginEnd="@dimen/gap_2"
+                        android:text="Material Date &amp; Time Picker"
+                        android:textAppearance="@style/TextAppearance.Header" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/subHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/gap_2"
+                        android:layout_marginEnd="@dimen/gap_2"
+                        android:layout_marginTop="@dimen/gap_1"
+                        android:text="This is a simple example for showcase the Material Date and Time Pickers"
+                        android:textAppearance="@style/TextAppearance.SubHeader" />
+
+                </LinearLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:background="?attr/topBackgroundColor"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/gap_2"
+            android:layout_marginEnd="@dimen/gap_2"
+            app:layout_collapseMode="pin">
+
+            <com.google.android.material.tabs.TabItem
+                android:text="Time Picker"
+                android:id="@+id/tabTimePicker"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <com.google.android.material.tabs.TabItem
+                android:text="Date Picker"
+                android:id="@+id/tabDatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

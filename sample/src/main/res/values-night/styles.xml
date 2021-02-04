@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.Header" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TimePickerStyle.Second" parent="TimePickerStyle">
+        <item name="highlighterColor">@color/G1000</item>
+        <item name="timeConvention">HOURS_24</item>
+    </style>
+
+    <style name="DatePickerStyle.Second" parent="Widget.MaterialDatePicker">
+        <item name="highlighterColor">@color/O400</item>
+        <item name="highlighterHeight">55dp</item>
+        <item name="dateFormat">DD_MMMM_YYYY</item>
+    </style>
+
+    <style name="DatePickerStyle.Third" parent="DatePickerStyle">
+        <item name="highlighterColor">@color/lightBlack</item>
+        <item name="dateFormat">DD_MM_YYYY</item>
+    </style>
+
+</resources>

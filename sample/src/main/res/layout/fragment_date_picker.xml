@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true"
+    android:background="?attr/bottomBackgroundColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/gap_2">
+
+        <com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerView
+            android:id="@+id/datePicker"
+            style="@style/DatePickerStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerView
+            android:id="@+id/datePicker2"
+            style="@style/DatePickerStyle.Second"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_2"
+            app:layout_constraintTop_toBottomOf="@id/datePicker"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerView
+            android:id="@+id/datePicker3"
+            style="@style/DatePickerStyle.Third"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/gap_2"
+            app:layout_constraintTop_toBottomOf="@id/datePicker2"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDatePickerDialog"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="Date picker dialog"
+            style="@style/TextAppearance.Button"
+            android:layout_marginTop="@dimen/gap_2"
+            app:layout_constraintTop_toBottomOf="@id/datePicker3"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/gap_2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/gap_2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

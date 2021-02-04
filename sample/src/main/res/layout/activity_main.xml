@@ -1,16 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="?attr/topBackgroundColor">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/show"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="show time picker"
-        app:layout_constraintTop_toTopOf="parent"/>
+        tools:context=".MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/header1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Material Picker Dialog"
+            android:textAppearance="@style/TextAppearance.Header"
+            android:layout_marginTop="@dimen/gap_3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTimePickerDialog"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Time picker dialog"
+            android:textAllCaps="false"
+            style="@style/TextAppearance.Button"
+            android:layout_marginTop="@dimen/gap_1"
+            app:layout_constraintTop_toBottomOf="@id/header1"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDatePickerDialog"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Date picker dialog"
+            android:textAllCaps="false"
+            style="@style/TextAppearance.Button"
+            android:layout_marginTop="@dimen/gap_2"
+            app:layout_constraintTop_toBottomOf="@id/btnTimePickerDialog"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/header2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Time Picker View"
+            android:textAppearance="@style/TextAppearance.Header"
+            android:layout_marginTop="@dimen/gap_3"
+            app:layout_constraintTop_toBottomOf="@id/btnDatePickerDialog"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.swnishan.materialdatetimepicker.timepicker.MaterialTimePickerView
+            android:id="@+id/timePicker"
+            style="@style/TimePickerStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/header2"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/header3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Date Picker View"
+            android:textAppearance="@style/TextAppearance.Header"
+            android:layout_marginTop="@dimen/gap_3"
+            app:layout_constraintTop_toBottomOf="@id/timePicker"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerView
+            android:id="@+id/datePicker"
+            style="@style/DatePickerStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/header3"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/gap_2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/gap_2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>
