@@ -173,7 +173,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         rvYears.apply {
             setHasFixedSize(true)
             adapter = yearAdapter
-            layoutManager = SlowLinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context,rvYears)
             yearSnapHelper.attachToRecyclerView(this)
             addListeners{viewId -> updateDateWhenScroll(viewId) }
         }
@@ -181,7 +181,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         rvMonths.apply {
             setHasFixedSize(true)
             adapter = monthAdapter
-            layoutManager = SlowLinearLayoutManager(context)
+            layoutManager = SlowLinearLayoutManager(context, rvMonths)
             monthSnapHelper.attachToRecyclerView(this)
             addListeners{viewId -> updateDateWhenScroll(viewId) }
         }
@@ -189,7 +189,7 @@ class MaterialDatePickerView: BaseMaterialDateTimePickerView{
         rvDays.apply {
             setHasFixedSize(true)
             adapter= dayAdapter
-            layoutManager=SlowLinearLayoutManager(context)
+            layoutManager=SlowLinearLayoutManager(context, rvDays)
             daySnapHelper.attachToRecyclerView(this)
             addListeners{viewId -> updateDateWhenScroll(viewId) }
         }
