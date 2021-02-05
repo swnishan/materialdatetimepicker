@@ -10,6 +10,7 @@ import com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerDialog
 import com.swnishan.materialdatetimepicker.datepicker.MaterialDatePickerView
 import com.swnishan.materialdatetimepicker.sample.R
 import kotlinx.android.synthetic.main.fragment_date_picker.*
+import org.threeten.bp.OffsetDateTime
 
 class DatePickerFragment : Fragment() {
 
@@ -25,18 +26,20 @@ class DatePickerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnDatePickerDialog.setOnClickListener {
-            val builder = MaterialDatePickerDialog.Builder.setTitle("Set start date")
-                .setNegativeButtonText("Cancel")
-                .setPositiveButtonText("Ok")
-//                .setDate(OffsetDateTime.now().toInstant().toEpochMilli())
-                .setTheme(R.style.ThemeOverlay_Dialog_DatePicker)
-                .setDateFormat(MaterialDatePickerView.DateFormat.DD_MMM_YYYY)
+            val builder = MaterialDatePickerDialog.Builder.setTitle(getString(R.string.set_start_date))
+                .setNegativeButtonText(getString(R.string.cancel))
+                .setPositiveButtonText(getString(R.string.ok))
+                // Below values can be set from the style as well (materialDatePickerViewStyle)
+                .setDate(OffsetDateTime.now().plusDays(10).toInstant().toEpochMilli()) // default current date
+                .setDateFormat(MaterialDatePickerView.DateFormat.DD_MMMM_YYYY) // default DateFormat.DD_MMM_YYYY (05 Feb 2021)
+                .setTheme(R.style.ThemeOverlay_Dialog_DatePicker) // default R.style.ThemeOverlay_Dialog_MaterialDatePicker
+                .setFadeAnimation(350L, 1050L, .3f, .7f)
                 .build()
 
-            builder.setOnDatePickListener { date ->
+            builder.setOnDatePickListener { selectedDate -> //selected date as long value
                 Toast.makeText(
                     it.context,
-                    date.toString(),
+                    "${builder.getDayOfMonth()}-${builder.getMonth()}-${builder.getYear()}",
                     Toast.LENGTH_SHORT
                 ).show()
             }

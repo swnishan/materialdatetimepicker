@@ -25,17 +25,22 @@ class TimePickerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnTimePickerDialog.setOnClickListener {
-            val builder = MaterialTimePickerDialog.Builder.setTitle("Set start time")
-                .setNegativeButtonText("Cancel")
-                .setPositiveButtonText("Ok")
-                .setTimeConvention(MaterialTimePickerView.TimeConvention.HOURS_12)
-                .setTheme(R.style.ThemeOverlay_Dialog_TimePicker)
+            val builder = MaterialTimePickerDialog.Builder.setTitle(getString(R.string.set_start_time))
+                .setNegativeButtonText(getString(R.string.cancel))
+                .setPositiveButtonText(getString(R.string.ok))
+                // Below values can be set from the style as well (materialTimePickerViewStyle)
+                .setTimeConvention(MaterialTimePickerView.TimeConvention.HOURS_12) // default 12 hours
+                .setHour(13) // default current hour
+                .setMinute(34) // default current minute
+                .setTimePeriod(MaterialTimePickerView.TimePeriod.AM) // default based on the current time
+                .setFadeAnimation(350L, 1050L, .3f, .7f)
+                .setTheme(R.style.ThemeOverlay_Dialog_TimePicker) // default [R.style.ThemeOverlay_Dialog_MaterialTimePicker]
                 .build()
 
-            builder.setOnTimePickListener {
+            builder.setOnTimePickListener {selectedTime -> //Selected time as long value
                 Toast.makeText(
                     requireContext(),
-                    builder.getHour().toString(),
+                    "${builder.getHour()} : ${builder.getMinute()} ${builder.getTimePeriod().name}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
