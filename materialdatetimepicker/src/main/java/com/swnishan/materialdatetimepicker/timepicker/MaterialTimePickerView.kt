@@ -359,6 +359,66 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         scrollToTime()
     }
 
+    override fun onSaveInstanceState(): Parcelable? {
+        val superState: Parcelable? = super.onSaveInstanceState()
+        superState?.let {
+            val state = SavedState(superState)
+            state.selectedHour = pickerTime.hour
+            state.selectedMinute = pickerTime.minute
+            state.selectedTimePeriod = timePeriod.name
+            return state
+        } ?: run {
+            return superState
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        when (state) {
+            is SavedState -> {
+                super.onRestoreInstanceState(state.superState)
+                pickerTime=pickerTime.withHour(state.selectedHour).withMinute(state.selectedMinute)
+                timePeriod=TimePeriod.valueOf(state.selectedTimePeriod)
+            }
+            else -> {
+                super.onRestoreInstanceState(state)
+            }
+        }
+    }
+
+    internal class SavedState : BaseSavedState {
+        var selectedHour: Int = OffsetDateTime.now().hour
+        var selectedMinute: Int = OffsetDateTime.now().minute
+        var selectedTimePeriod: String = TimePeriod.AM.name
+
+        constructor(superState: Parcelable) : super(superState)
+
+        constructor(source: Parcel) : super(source) {
+            selectedHour = source.readInt()
+            selectedHour = source.readInt()
+            selectedTimePeriod = source.readString()?:TimePeriod.AM.name
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeInt(selectedHour)
+            out.writeInt(selectedMinute)
+            out.writeString(selectedTimePeriod)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState> {
+                    return newArray(size)
+                }
+            }
+        }
+    }
+
     fun interface OnTimePickedListener {
         fun onTimePicked(time: Long)
     }

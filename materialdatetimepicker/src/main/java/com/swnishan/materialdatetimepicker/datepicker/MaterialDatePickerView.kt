@@ -2,6 +2,8 @@ package com.swnishan.materialdatetimepicker.datepicker
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -16,6 +18,7 @@ import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.toLocalDate
 import com.swnishan.materialdatetimepicker.common.toLong
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
+import com.swnishan.materialdatetimepicker.timepicker.MaterialTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
@@ -141,7 +144,7 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
         }.recycle()
     }
 
-    private var dateFormat = DateFormat.DD_MMMM_YYYY
+    private var dateFormat = DateFormat.DD_MMM_YYYY
     private var textAppearance: Int = R.style.TextAppearance_MaterialDatePicker
     private var pickerDate: LocalDate = LocalDate.now()
     private var onDatePickedListener: OnDatePickedListener? = null
@@ -338,6 +341,65 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
     fun setDateFormat(dateFormat: DateFormat) {
         this.dateFormat = dateFormat
         updateMonthsAdapter()
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val superState: Parcelable? = super.onSaveInstanceState()
+        superState?.let {
+            val state = SavedState(superState)
+            state.selectedYear = pickerDate.year
+            state.selectedMonth = pickerDate.monthValue
+            state.selectedDayOfMonth = pickerDate.dayOfMonth
+            return state
+        } ?: run {
+            return superState
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        when (state) {
+            is SavedState -> {
+                super.onRestoreInstanceState(state.superState)
+                pickerDate=pickerDate.withYear(state.selectedYear).withMonth(state.selectedMonth).withDayOfMonth(state.selectedDayOfMonth)
+            }
+            else -> {
+                super.onRestoreInstanceState(state)
+            }
+        }
+    }
+
+    internal class SavedState : BaseSavedState {
+        var selectedYear: Int = OffsetDateTime.now().year
+        var selectedMonth: Int = OffsetDateTime.now().monthValue
+        var selectedDayOfMonth: Int = OffsetDateTime.now().dayOfMonth
+
+        constructor(superState: Parcelable) : super(superState)
+
+        constructor(source: Parcel) : super(source) {
+            selectedYear = source.readInt()
+            selectedMonth = source.readInt()
+            selectedDayOfMonth = source.readInt()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeInt(selectedYear)
+            out.writeInt(selectedMonth)
+            out.writeInt(selectedDayOfMonth)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR: Parcelable.Creator<SavedState> = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState> {
+                    return newArray(size)
+                }
+            }
+        }
     }
 
     fun interface OnDatePickedListener {
