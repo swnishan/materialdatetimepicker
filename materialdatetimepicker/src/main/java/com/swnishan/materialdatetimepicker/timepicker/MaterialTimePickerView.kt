@@ -2,6 +2,8 @@ package com.swnishan.materialdatetimepicker.timepicker
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -154,17 +156,15 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
     private var timeConvention: TimeConvention = TimeConvention.HOURS_24
     private var timePeriod: TimePeriod = if (pickerTime.hour >= 12) TimePeriod.PM else TimePeriod.AM
 
-    internal fun setTimeConvention(timeConvention: TimeConvention) {
-        this.timeConvention = timeConvention
-        updateHoursAdapter()
-        toggleTimePeriodView()
-        scrollToTime()
-    }
-
     internal fun onTimePicked() {
         onTimePickedListener?.onTimePicked(getTime())
     }
 
+    /**
+     * Get selected hour
+     *
+     * @return
+     */
     fun getHour(): Int {
         val position = hourSnapHelper.getSnapPosition(rvHours)
         return when (timeConvention) {
@@ -175,10 +175,25 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         }
     }
 
+    /**
+     * Get selected minute
+     *
+     * @return
+     */
     fun getMinute(): Int = minuteSnapHelper.getSnapPosition(rvMinute) % minutes.size
 
+    /**
+     * Get selected time period
+     *
+     * @return
+     */
     fun getTimePeriod(): TimePeriod = TimePeriod.values()[timePeriodSnapHelper.getSnapPosition(rvTimePeriod)]
 
+    /**
+     * get selected time as Long value
+     *
+     * @return
+     */
     fun getTime() = OffsetDateTime.now().withHour(pickerTime.hour).withMinute(pickerTime.minute).withSecond(0)
         .withNano(0).toInstant().toEpochMilli()
 
@@ -284,6 +299,14 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         this.onTimePickedListener = onTimePickedListener
     }
 
+    /**
+     * Set selected hour. The range should be 0 to 23
+     * The time period will be updated based on the set [hour].
+     * Ex: If current selected time period is [TimePeriod.AM] and set hour is 14
+     * the time period will be updated to [TimePeriod.PM]
+     *
+     * @param hour
+     */
     fun setHour(@IntRange(from = 0, to = 23)hour: Int) {
         setTimePeriod(if (hour >= 12)TimePeriod.PM else TimePeriod.AM)
         val setHour = when (timeConvention) {
@@ -294,11 +317,24 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         scrollToHour()
     }
 
+    /**
+     * Set selected minute. The range should be 0 to 60
+     *
+     * @param minute
+     */
     fun setMinute(@IntRange(from = 0, to = 60) minute: Int) {
         pickerTime = pickerTime.withMinute(minute)
         scrollToMinute()
     }
 
+    /**
+     * Set selected time period [TimePeriod.AM] or [TimePeriod.PM]
+     * The selected hour will be updated base on set [timePeriod].
+     * Ex: If current hour is 01:00 and set time period is [TimePeriod.PM],
+     * the hour will be updated to 13:00
+     *
+     * @param timePeriod
+     */
     fun setTimePeriod(timePeriod: TimePeriod) {
         if (timePeriod == this.timePeriod) return
         this.timePeriod = timePeriod
@@ -308,6 +344,19 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
             else -> pickerTime
         }
         scrollToTimePeriod()
+    }
+
+    /**
+     * Set preferred time conversion to be displayed
+     * [TimeConvention.HOURS_12] or [TimeConvention.HOURS_24]
+     *
+     * @param timeConvention
+     */
+    fun setTimeConvention(timeConvention: TimeConvention) {
+        this.timeConvention = timeConvention
+        updateHoursAdapter()
+        toggleTimePeriodView()
+        scrollToTime()
     }
 
     fun interface OnTimePickedListener {

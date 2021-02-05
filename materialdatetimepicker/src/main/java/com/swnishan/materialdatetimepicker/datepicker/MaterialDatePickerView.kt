@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
 import org.threeten.bp.Month
+import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.format.TextStyle
 import java.util.Locale
 
@@ -159,12 +160,7 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
     private val daySnapHelper = LinearSnapHelper()
 
     internal fun onTimePicked() {
-        onDatePickedListener?.onDatePicked(pickerDate.toLong())
-    }
-
-    fun getDate(): Long {
-        val hourView = yearSnapHelper.findSnapView(rvYears.layoutManager) ?: return 0
-        return rvYears.getChildAdapterPosition(hourView).toLong()
+        onDatePickedListener?.onDatePicked(getDate())
     }
 
     private fun initDateSelectionView() {
@@ -240,16 +236,38 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
         }
     }
 
+    /**
+     * Return selected date as a Long value
+     *
+     * @return
+     */
+    fun getDate(): Long = pickerDate.toLong()
+
+    /**
+     * Return selected day of month
+     *
+     * @return
+     */
     fun getDayOfMonth(): Int {
         val view = daySnapHelper.findSnapView(rvDays.layoutManager) ?: return 0
         return days[(rvDays.getChildAdapterPosition(view) % days.size)].day
     }
 
+    /**
+     * Return selected month
+     *
+     * @return
+     */
     fun getMonth(): Int {
         val view = monthSnapHelper.findSnapView(rvMonths.layoutManager) ?: return 0
         return months[(rvMonths.getChildAdapterPosition(view) % months.size)].month
     }
 
+    /**
+     * Return selected year
+     *
+     * @return
+     */
     fun getYear(): Int {
         val view = yearSnapHelper.findSnapView(rvYears.layoutManager) ?: return 0
         return years[(rvYears.getChildAdapterPosition(view) % years.size)].year
@@ -290,15 +308,33 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
     private fun getDayModel(day: Int) = days.firstOrNull { it.day == day }
         ?: throw MaterialDateTimePickerException("Cannot find given Day in given days range (size: ${days.size} index: $day)")
 
+
+    /**
+     * Set callback listener in order to get the selected time
+     * any event such as button click
+     *
+     * @param onDatePickedListener
+     */
     fun setOnTimePickedListener(onDatePickedListener: OnDatePickedListener?) {
         this.onDatePickedListener = onDatePickedListener
     }
 
+    /**
+     * Set selected time. Given time should be in between MAX and MIN year range
+     *
+     * @param date
+     */
     fun setDate(date: Long) {
         pickerDate = date.toLocalDate()
         scrollToDate()
     }
 
+    /**
+     * Set preferred time format to be displayed.
+     * [DateFormat.DD_MMMM_YYYY] or [DateFormat.DD_MMM_YYYY] or [DateFormat.DD_MM_YYYY]
+     *
+     * @param dateFormat
+     */
     fun setDateFormat(dateFormat: DateFormat) {
         this.dateFormat = dateFormat
         updateMonthsAdapter()
