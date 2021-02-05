@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.swnishan.materialdatetimepicker.R
@@ -127,6 +128,7 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
             pickerDate = pickerDate.withMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultMonth, pickerDate.monthValue))
             pickerDate = pickerDate.withDayOfMonth(this.getInt(R.styleable.MaterialDatePickerView_defaultDay, pickerDate.dayOfMonth))
 
+            viewCenter.isInvisible = !this.getBoolean(R.styleable.MaterialDatePickerView_isShowHighlighter, true)
             viewCenter.setBackgroundColor(highlighterColor)
             viewCenter.layoutParams.height = highlighterHeight.toInt()
 

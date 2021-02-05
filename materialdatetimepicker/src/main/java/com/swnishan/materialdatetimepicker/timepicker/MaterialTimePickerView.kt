@@ -9,6 +9,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -122,6 +123,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
 
             pickerTime = pickerTime.withMinute(minute)
 
+            viewCenter.isInvisible = !this.getBoolean(R.styleable.MaterialTimePickerView_isShowHighlighter, true)
             viewCenter.setBackgroundColor(highlighterColor)
             viewCenter.layoutParams.height = highlighterHeight.toInt()
             TextViewCompat.setTextAppearance(tvHourTimeSeparator, textAppearance)
