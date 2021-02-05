@@ -24,8 +24,8 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
     private var onTimePickedListener: MaterialTimePickerView.OnTimePickedListener? = null
     private var materialTimePickerView: MaterialTimePickerView? = null
     private var timeConvention = MaterialTimePickerView.TimeConvention.HOURS_24
-    private var timePeriod: MaterialTimePickerView.TimePeriod = MaterialTimePickerView.TimePeriod.AM
     private var pickerTime: LocalTime = LocalTime.now()
+    private var timePeriod: MaterialTimePickerView.TimePeriod = if (pickerTime.hour >= 12) MaterialTimePickerView.TimePeriod.PM else MaterialTimePickerView.TimePeriod.AM
     private var themeRes = R.style.ThemeOverlay_Dialog_MaterialTimePicker
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -36,6 +36,7 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         materialTimePickerView?.setTimeConvention(timeConvention)
         materialTimePickerView?.setHour(pickerTime.hour)
         materialTimePickerView?.setMinute(pickerTime.minute)
+        materialTimePickerView?.setTimePeriod(timePeriod)
         materialTimePickerView?.setFadeAnimation(fadeInDuration, fadeOutDuration, fadeInAlpha, fadeOutAlpha)
         materialTimePickerView?.setOnTimePickedListener(onTimePickedListener)
 
@@ -83,7 +84,7 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         bundle.putInt(ARG_HOUR, materialTimePickerView?.getHour() ?: pickerTime.hour)
         bundle.putInt(ARG_MINUTE, materialTimePickerView?.getMinute() ?: pickerTime.minute)
         bundle.putString(ARG_TIME_CONVENTION, timeConvention.name)
-        bundle.putString(ARG_TIME_PERIOD, timePeriod.name)
+        bundle.putString(ARG_TIME_PERIOD, materialTimePickerView?.getTimePeriod()?.name?:timePeriod.name)
         bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
         bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
         bundle.putFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
@@ -107,8 +108,17 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         onTimePickedListener = listener
     }
 
-    object Builder {
-        private val timePickerDialog = MaterialTimePickerDialog()
+
+    companion object Builder {
+        private const val ARG_POSITIVE_BUTTON_TEXT = "arg_positive_button_text"
+        private const val ARG_NEGATIVE_BUTTON_TEXT = "arg_negative_button_text"
+        private const val ARG_TITLE = "arg_title"
+        private const val ARG_THEME = "arg_theme"
+        private const val ARG_TIME_CONVENTION = "arg_time_convention"
+        private const val ARG_HOUR = "arg_hour"
+        private const val ARG_MINUTE = "arg_minute"
+        private const val ARG_TIME_PERIOD = "arg_time_period"
+
         private val bundle = bundleOf()
 
         fun setTitle(title: String): Builder {
@@ -165,19 +175,9 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         }
 
         fun build(): MaterialTimePickerDialog {
+            val timePickerDialog = MaterialTimePickerDialog()
             timePickerDialog.apply { arguments = bundle }
             return timePickerDialog
         }
-    }
-
-    companion object {
-        private const val ARG_POSITIVE_BUTTON_TEXT = "arg_positive_button_text"
-        private const val ARG_NEGATIVE_BUTTON_TEXT = "arg_negative_button_text"
-        private const val ARG_TITLE = "arg_title"
-        private const val ARG_THEME = "arg_theme"
-        private const val ARG_TIME_CONVENTION = "arg_time_convention"
-        private const val ARG_HOUR = "arg_hour"
-        private const val ARG_MINUTE = "arg_minute"
-        private const val ARG_TIME_PERIOD = "arg_time_period"
     }
 }

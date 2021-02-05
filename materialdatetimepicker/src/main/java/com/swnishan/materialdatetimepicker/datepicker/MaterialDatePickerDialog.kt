@@ -102,8 +102,14 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
         onDatePickedListener = listener
     }
 
-    object Builder {
-        private val timePickerDialog = MaterialDatePickerDialog()
+    companion object Builder {
+        private const val ARG_POSITIVE_BUTTON_TEXT = "arg_positive_button_text"
+        private const val ARG_NEGATIVE_BUTTON_TEXT = "arg_negative_button_text"
+        private const val ARG_TITLE = "arg_title"
+        private const val ARG_THEME = "arg_theme"
+        private const val ARG_DATE = "arg_date"
+        private const val ARG_DATE_FORMAT = "arg_date_format"
+
         private val bundle = bundleOf()
 
         fun setTitle(title: String): Builder {
@@ -150,17 +156,9 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
         }
 
         fun build(): MaterialDatePickerDialog {
+            val timePickerDialog = MaterialDatePickerDialog()
             timePickerDialog.apply { arguments = bundle }
             return timePickerDialog
         }
-    }
-
-    companion object {
-        private const val ARG_POSITIVE_BUTTON_TEXT = "arg_positive_button_text"
-        private const val ARG_NEGATIVE_BUTTON_TEXT = "arg_negative_button_text"
-        private const val ARG_TITLE = "arg_title"
-        private const val ARG_THEME = "arg_theme"
-        private const val ARG_DATE = "arg_date"
-        private const val ARG_DATE_FORMAT = "arg_date_format"
     }
 }
