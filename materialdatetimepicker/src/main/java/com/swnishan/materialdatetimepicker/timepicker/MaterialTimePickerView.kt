@@ -36,9 +36,8 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
     ) {
         setCustomAttributes(attributeSet, defAttributeSet, R.style.Widget_MaterialTimePicker)
         updateHoursAdapter()
-        toggleTimePeriodView()
         initTimeSelectionView()
-        scrollToTime()
+        toggleTimePeriodView()
     }
 
     init {
@@ -199,7 +198,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         rvHours.apply {
             setHasFixedSize(true)
             adapter = hourAdapter
-            layoutManager = SlowLinearLayoutManager(context, rvHours)
+            layoutManager = SlowLinearLayoutManager(context, rvHours){ scrollToHour() }
             hourSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateTimeWhenScroll(viewId) }
         }
@@ -207,7 +206,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         rvMinute.apply {
             setHasFixedSize(true)
             adapter = minuteAdapter
-            layoutManager = SlowLinearLayoutManager(context, rvMinute)
+            layoutManager = SlowLinearLayoutManager(context, rvMinute){scrollToMinute()}
             minuteSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateTimeWhenScroll(viewId) }
         }
@@ -219,7 +218,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
                 textAppearance,
                 PickerAdapter.ScrollOptions.SCROLL_ITEM_LIMIT
             ) { position -> onItemClicked(position, rvTimePeriod) }
-            layoutManager = SlowLinearLayoutManager(context, rvTimePeriod)
+            layoutManager = SlowLinearLayoutManager(context, rvTimePeriod){scrollToTimePeriod()}
             timePeriodSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateTimeWhenScroll(viewId) }
         }
