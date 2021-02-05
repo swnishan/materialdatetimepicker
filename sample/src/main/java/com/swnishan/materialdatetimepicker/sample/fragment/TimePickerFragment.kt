@@ -37,7 +37,7 @@ class TimePickerFragment : Fragment() {
                 .setTheme(R.style.ThemeOverlay_Dialog_TimePicker) // default [R.style.ThemeOverlay_Dialog_MaterialTimePicker]
                 .build()
 
-            builder.setOnTimePickListener {selectedTime -> //Selected time as long value
+            builder.setOnTimePickListener { selectedTime -> // Selected time as long value
                 Toast.makeText(
                     requireContext(),
                     "${builder.getHour()} : ${builder.getMinute()} ${builder.getTimePeriod().name}",

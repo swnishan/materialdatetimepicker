@@ -36,7 +36,7 @@ class DatePickerFragment : Fragment() {
                 .setFadeAnimation(350L, 1050L, .3f, .7f)
                 .build()
 
-            builder.setOnDatePickListener { selectedDate -> //selected date as long value
+            builder.setOnDatePickListener { selectedDate -> // selected date as long value
                 Toast.makeText(
                     it.context,
                     "${builder.getDayOfMonth()}-${builder.getMonth()}-${builder.getYear()}",

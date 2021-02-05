@@ -2,9 +2,12 @@
     <string name="app_name">Material Date Time Picker</string>
     <string name="title_activity_main">Material Date Time Picker</string>
 
+    <string name="time_picker">Time picker</string>
+    <string name="date_picker">Date picker</string>
+
     <string name="set_start_time">Set start time</string>
     <string name="set_start_date">Set start date</string>
     <string name="ok">OK</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
