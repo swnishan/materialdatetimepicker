@@ -213,7 +213,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         rvHours.apply {
             setHasFixedSize(true)
             adapter = hourAdapter
-            layoutManager = SlowLinearLayoutManager(context, rvHours){ scrollToHour() }
+            layoutManager = SlowLinearLayoutManager(context, rvHours) { scrollToHour() }
             hourSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateTimeWhenScroll(viewId) }
         }
@@ -221,7 +221,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         rvMinute.apply {
             setHasFixedSize(true)
             adapter = minuteAdapter
-            layoutManager = SlowLinearLayoutManager(context, rvMinute){scrollToMinute()}
+            layoutManager = SlowLinearLayoutManager(context, rvMinute) { scrollToMinute() }
             minuteSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateTimeWhenScroll(viewId) }
         }
@@ -233,7 +233,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
                 textAppearance,
                 PickerAdapter.ScrollOptions.SCROLL_ITEM_LIMIT
             ) { position -> onItemClicked(position, rvTimePeriod) }
-            layoutManager = SlowLinearLayoutManager(context, rvTimePeriod){scrollToTimePeriod()}
+            layoutManager = SlowLinearLayoutManager(context, rvTimePeriod) { scrollToTimePeriod() }
             timePeriodSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateTimeWhenScroll(viewId) }
         }
@@ -376,8 +376,8 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         when (state) {
             is SavedState -> {
                 super.onRestoreInstanceState(state.superState)
-                pickerTime=pickerTime.withHour(state.selectedHour).withMinute(state.selectedMinute)
-                timePeriod=TimePeriod.valueOf(state.selectedTimePeriod)
+                pickerTime = pickerTime.withHour(state.selectedHour).withMinute(state.selectedMinute)
+                timePeriod = TimePeriod.valueOf(state.selectedTimePeriod)
             }
             else -> {
                 super.onRestoreInstanceState(state)
@@ -395,7 +395,7 @@ class MaterialTimePickerView : BaseMaterialDateTimePickerView {
         constructor(source: Parcel) : super(source) {
             selectedHour = source.readInt()
             selectedHour = source.readInt()
-            selectedTimePeriod = source.readString()?:TimePeriod.AM.name
+            selectedTimePeriod = source.readString() ?: TimePeriod.AM.name
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

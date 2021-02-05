@@ -84,7 +84,7 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         bundle.putInt(ARG_HOUR, materialTimePickerView?.getHour() ?: pickerTime.hour)
         bundle.putInt(ARG_MINUTE, materialTimePickerView?.getMinute() ?: pickerTime.minute)
         bundle.putString(ARG_TIME_CONVENTION, timeConvention.name)
-        bundle.putString(ARG_TIME_PERIOD, materialTimePickerView?.getTimePeriod()?.name?:timePeriod.name)
+        bundle.putString(ARG_TIME_PERIOD, materialTimePickerView?.getTimePeriod()?.name ?: timePeriod.name)
         bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
         bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
         bundle.putFloat(ARG_FADE_IN_ALPHA, fadeInAlpha)
@@ -107,7 +107,6 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
     fun setOnTimePickListener(listener: MaterialTimePickerView.OnTimePickedListener?) {
         onTimePickedListener = listener
     }
-
 
     companion object Builder {
         private const val ARG_POSITIVE_BUTTON_TEXT = "arg_positive_button_text"

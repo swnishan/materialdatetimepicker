@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 class SlowLinearLayoutManager : LinearLayoutManager {
 
     private var recyclerView: RecyclerView? = null
-    private var onPaddingUpdateListener:OnPaddingUpdateListener? = null
+    private var onPaddingUpdateListener: OnPaddingUpdateListener? = null
 
-    constructor(context: Context?, recyclerView: RecyclerView, onPaddingUpdateListener: OnPaddingUpdateListener?=null) : this(context) {
+    constructor(context: Context?, recyclerView: RecyclerView, onPaddingUpdateListener: OnPaddingUpdateListener? = null) : this(context) {
         this.recyclerView = recyclerView
-        this.onPaddingUpdateListener=onPaddingUpdateListener
+        this.onPaddingUpdateListener = onPaddingUpdateListener
     }
     constructor(context: Context?) : super(context)
     constructor(context: Context?, orientation: Int, reverseLayout: Boolean) : super(context, orientation, reverseLayout)
@@ -52,7 +52,7 @@ class SlowLinearLayoutManager : LinearLayoutManager {
         private const val MILLISECONDS_PER_INCH = 400f
     }
 
-    fun interface OnPaddingUpdateListener{
+    fun interface OnPaddingUpdateListener {
         fun onPaddingUpdate()
     }
 }

@@ -18,7 +18,6 @@ import com.swnishan.materialdatetimepicker.common.adapter.PickerAdapter
 import com.swnishan.materialdatetimepicker.common.toLocalDate
 import com.swnishan.materialdatetimepicker.common.toLong
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView
-import com.swnishan.materialdatetimepicker.timepicker.MaterialTimePickerView
 import kotlinx.android.synthetic.main.view_date_picker.view.*
 import kotlinx.android.synthetic.main.view_date_picker.view.viewCenter
 import org.threeten.bp.LocalDate
@@ -170,7 +169,7 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
         rvYears.apply {
             setHasFixedSize(true)
             adapter = yearAdapter
-            layoutManager = SlowLinearLayoutManager(context, rvYears){scrollToYear()}
+            layoutManager = SlowLinearLayoutManager(context, rvYears) { scrollToYear() }
             yearSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateDateWhenScroll(viewId) }
         }
@@ -178,7 +177,7 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
         rvMonths.apply {
             setHasFixedSize(true)
             adapter = monthAdapter
-            layoutManager = SlowLinearLayoutManager(context, rvMonths){scrollToMonth()}
+            layoutManager = SlowLinearLayoutManager(context, rvMonths) { scrollToMonth() }
             monthSnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateDateWhenScroll(viewId) }
         }
@@ -186,7 +185,7 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
         rvDays.apply {
             setHasFixedSize(true)
             adapter = dayAdapter
-            layoutManager = SlowLinearLayoutManager(context, rvDays){scrollToDay()}
+            layoutManager = SlowLinearLayoutManager(context, rvDays) { scrollToDay() }
             daySnapHelper.attachToRecyclerView(this)
             addListeners { viewId -> updateDateWhenScroll(viewId) }
         }
@@ -311,7 +310,6 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
     private fun getDayModel(day: Int) = days.firstOrNull { it.day == day }
         ?: throw MaterialDateTimePickerException("Cannot find given Day in given days range (size: ${days.size} index: $day)")
 
-
     /**
      * Set callback listener in order to get the selected time
      * any event such as button click
@@ -360,7 +358,7 @@ class MaterialDatePickerView : BaseMaterialDateTimePickerView {
         when (state) {
             is SavedState -> {
                 super.onRestoreInstanceState(state.superState)
-                pickerDate=pickerDate.withYear(state.selectedYear).withMonth(state.selectedMonth).withDayOfMonth(state.selectedDayOfMonth)
+                pickerDate = pickerDate.withYear(state.selectedYear).withMonth(state.selectedMonth).withDayOfMonth(state.selectedDayOfMonth)
             }
             else -> {
                 super.onRestoreInstanceState(state)
