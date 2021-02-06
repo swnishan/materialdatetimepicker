@@ -44,7 +44,7 @@ class TimePickerFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            builder.show(this.parentFragmentManager, MaterialTimePickerDialog::class.simpleName)
+            builder.show(requireNotNull(this.fragmentManager), MaterialTimePickerDialog::class.simpleName)
         }
     }
 }

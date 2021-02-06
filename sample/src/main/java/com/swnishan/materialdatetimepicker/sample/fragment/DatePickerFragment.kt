@@ -43,7 +43,7 @@ class DatePickerFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            builder.show(this.parentFragmentManager, MaterialDatePickerDialog::class.simpleName)
+            builder.show(requireNotNull(this.fragmentManager), MaterialDatePickerDialog::class.simpleName)
         }
     }
 }
