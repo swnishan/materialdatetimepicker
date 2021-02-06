@@ -29,7 +29,7 @@ internal class PickerAdapter(
      * To make recycler view repeatable here set the item count as Int.MAX_VALUE.
      * So, it seems there's lots of items but the actual item count is items.size
      */
-    override fun getItemCount(): Int = if (scrollOption == ScrollOptions.SCROLL_INT_MAX) Int.MAX_VALUE else items.size
+    override fun getItemCount(): Int = if (scrollOption == ScrollOptions.SCROLL_INT_MAX) 2000 else items.size
 
     fun getModelAtPosition(position: Int) = items[position % items.size]
 
