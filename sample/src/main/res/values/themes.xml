@@ -19,7 +19,9 @@
         <item name="pickerTextColor">@color/black</item>
         <item name="dialogBackgroundColor">@color/white</item>
 
+        <!-- If you need to have same Date/Time picker style in whole app. You can set in the Theme       -->
         <item name="materialTimePickerViewStyle">@style/TimePickerStyle</item>
+        <item name="materialDatePickerViewStyle">@style/DatePickerStyle</item>
 
 
     </style>
