@@ -108,6 +108,9 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         onTimePickedListener = listener
     }
 
+    /**
+     * Builder class for configure the [MaterialTimePickerDialog]
+     */
     companion object Builder {
         private const val ARG_POSITIVE_BUTTON_TEXT = "arg_positive_button_text"
         private const val ARG_NEGATIVE_BUTTON_TEXT = "arg_negative_button_text"
