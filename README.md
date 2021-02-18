@@ -183,4 +183,4 @@ Followings are some of the cool features hope to be added
 
 ## License
 
-Konfetti is released under the MIT license. See [LICENSE](https://github.com/swnishan/materialdatetimepicker/blob/master/LICENSE) for details.
+MeterialDateTimePicker is released under the MIT license. See [LICENSE](https://github.com/swnishan/materialdatetimepicker/blob/master/LICENSE) for details.
