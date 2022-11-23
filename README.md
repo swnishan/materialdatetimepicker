@@ -37,7 +37,7 @@ Add the following dependency in your app's build.gradle
 
 ```groovy
 dependencies {
-      implementation 'com.github.swnishan:materialdatetimepicker:1:0:0'
+      implementation 'com.github.swnishan:materialdatetimepicker:1.0.0'
 }
 ```
 
