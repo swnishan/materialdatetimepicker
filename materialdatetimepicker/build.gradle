@@ -1,17 +1,15 @@
 plugins {
     id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'com.diffplug.spotless'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    namespace = 'com.swnishan.materialdatetimepicker'
+    compileSdk 36
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0.0"
 
@@ -29,9 +27,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 spotless {
@@ -47,12 +42,12 @@ spotless {
         }
 
         trimTrailingWhitespace()
-        indentWithSpaces()
+        leadingTabsToSpaces()
         endWithNewline()
     }
 
     kotlin {
-        ktlint("0.40.0")
+        ktlint("1.8.0")
         target "**/*.kt"
         endWithNewline()
     }
@@ -65,7 +60,6 @@ spotless {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'org.threeten:threetenbp:1.5.0'

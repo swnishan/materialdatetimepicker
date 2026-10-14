@@ -7,7 +7,6 @@ import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePicke
 import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePickerView.Companion.FADE_OUT_DURATION
 
 open class BaseMaterialDateTimePickerDialog : DialogFragment() {
-
     internal var fadeInDuration = FADE_IN_DURATION
     internal var fadeOutDuration = FADE_OUT_DURATION
     internal var fadeInAlpha = FADE_IN_ALPHA

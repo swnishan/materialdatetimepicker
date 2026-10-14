@@ -6,12 +6,11 @@ import androidx.annotation.DimenRes
 
 class Utils {
     companion object {
-        fun dpToPx(dp: Float): Float {
-            return (dp * Resources.getSystem().displayMetrics.density)
-        }
+        fun dpToPx(dp: Float): Float = (dp * Resources.getSystem().displayMetrics.density)
 
-        fun dimenToPx(context: Context, @DimenRes dimenRes: Int): Int {
-            return context.resources.getDimensionPixelSize(dimenRes)
-        }
+        fun dimenToPx(
+            context: Context,
+            @DimenRes dimenRes: Int,
+        ): Int = context.resources.getDimensionPixelSize(dimenRes)
     }
 }
