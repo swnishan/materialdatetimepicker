@@ -58,13 +58,11 @@
 
             <com.google.android.material.tabs.TabItem
                 android:text="Time Picker"
-                android:id="@+id/tabTimePicker"
                 android:layout_width="match_parent"
                 android:layout_height="40dp" />
 
             <com.google.android.material.tabs.TabItem
                 android:text="Date Picker"
-                android:id="@+id/tabDatePicker"
                 android:layout_width="match_parent"
                 android:layout_height="40dp" />
 
