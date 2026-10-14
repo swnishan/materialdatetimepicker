@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 
 class SlowLinearLayoutManager : LinearLayoutManager {
-
     private var recyclerView: RecyclerView? = null
     private var onPaddingUpdateListener: OnPaddingUpdateListener? = null
 
@@ -20,24 +19,32 @@ class SlowLinearLayoutManager : LinearLayoutManager {
     }
     constructor(context: Context?) : super(context)
     constructor(context: Context?, orientation: Int, reverseLayout: Boolean) : super(context, orientation, reverseLayout)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
+    constructor(
+        context: Context?,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int,
+    ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun smoothScrollToPosition(
         recyclerView: RecyclerView,
         state: RecyclerView.State,
-        position: Int
+        position: Int,
     ) {
         val linearSmoothScroller: LinearSmoothScroller =
             object : LinearSmoothScroller(recyclerView.context) {
-                override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
-                    return MILLISECONDS_PER_INCH / displayMetrics.densityDpi
-                }
+                override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float =
+                    MILLISECONDS_PER_INCH / displayMetrics.densityDpi
             }
         linearSmoothScroller.targetPosition = position
         startSmoothScroll(linearSmoothScroller)
     }
 
-    override fun setMeasuredDimension(childrenBounds: Rect?, wSpec: Int, hSpec: Int) {
+    override fun setMeasuredDimension(
+        childrenBounds: Rect?,
+        wSpec: Int,
+        hSpec: Int,
+    ) {
         var measuredItemHeight = 0
         if (childCount > 0) {
             measuredItemHeight = getChildAt(0)?.measuredHeight ?: return
@@ -45,7 +52,7 @@ class SlowLinearLayoutManager : LinearLayoutManager {
             measuredItemHeight = View.MeasureSpec.makeMeasureSpec(measuredItemHeight * 3, View.MeasureSpec.EXACTLY)
             onPaddingUpdateListener?.onPaddingUpdate()
         }
-        super.setMeasuredDimension(childrenBounds, wSpec, if (measuredItemHeight> 0) measuredItemHeight else hSpec)
+        super.setMeasuredDimension(childrenBounds, wSpec, if (measuredItemHeight > 0) measuredItemHeight else hSpec)
     }
 
     companion object {

@@ -20,12 +20,18 @@ import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePicke
 import org.threeten.bp.LocalTime
 
 class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
-
     private var onTimePickedListener: MaterialTimePickerView.OnTimePickedListener? = null
     private var materialTimePickerView: MaterialTimePickerView? = null
     private var timeConvention = MaterialTimePickerView.TimeConvention.HOURS_24
     private var pickerTime: LocalTime = LocalTime.now()
-    private var timePeriod: MaterialTimePickerView.TimePeriod = if (pickerTime.hour >= 12) MaterialTimePickerView.TimePeriod.PM else MaterialTimePickerView.TimePeriod.AM
+    private var timePeriod: MaterialTimePickerView.TimePeriod =
+        if (pickerTime.hour >=
+            12
+        ) {
+            MaterialTimePickerView.TimePeriod.PM
+        } else {
+            MaterialTimePickerView.TimePeriod.AM
+        }
     private var themeRes = R.style.ThemeOverlay_Dialog_MaterialTimePicker
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -50,10 +56,13 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         return builder.create()
     }
 
-    private fun Context.resolveThemeAttr(@AttrRes attr: Int): Int = TypedValue().let { typedValue ->
-        theme.resolveAttribute(attr, typedValue, true)
-        typedValue.resourceId
-    }
+    private fun Context.resolveThemeAttr(
+        @AttrRes attr: Int,
+    ): Int =
+        TypedValue().let { typedValue ->
+            theme.resolveAttribute(attr, typedValue, true)
+            typedValue.resourceId
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,16 +100,21 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
         bundle.putFloat(ARG_FADE_IN_ALPHA, fadeOutAlpha)
     }
 
-    override fun setStyle(style: Int, theme: Int) {
+    override fun setStyle(
+        style: Int,
+        theme: Int,
+    ) {
         themeRes = theme
         super.setStyle(style, theme)
     }
 
     fun getHour() = materialTimePickerView?.getHour() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
-    fun getMinute() = materialTimePickerView?.getMinute() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+    fun getMinute() =
+        materialTimePickerView?.getMinute() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
-    fun getTimePeriod() = materialTimePickerView?.getTimePeriod() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
+    fun getTimePeriod() =
+        materialTimePickerView?.getTimePeriod() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
     fun getTime() = materialTimePickerView?.getTime() ?: throw ExceptionInInitializerError("Material time picker view not been initialized")
 
@@ -143,12 +157,16 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun setHour(@IntRange(from = 0, to = 23)hour: Int): Builder {
+        fun setHour(
+            @IntRange(from = 0, to = 23)hour: Int,
+        ): Builder {
             bundle.putInt(ARG_HOUR, hour)
             return this
         }
 
-        fun setMinute(@IntRange(from = 0, to = 60) minute: Int): Builder {
+        fun setMinute(
+            @IntRange(from = 0, to = 60) minute: Int,
+        ): Builder {
             bundle.putInt(ARG_MINUTE, minute)
             return this
         }
@@ -158,7 +176,9 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun setTheme(@StyleRes themeRes: Int): Builder {
+        fun setTheme(
+            @StyleRes themeRes: Int,
+        ): Builder {
             bundle.putInt(ARG_THEME, themeRes)
             return this
         }
@@ -167,7 +187,7 @@ class MaterialTimePickerDialog : BaseMaterialDateTimePickerDialog() {
             fadeInDuration: Long = FADE_IN_DURATION,
             fadeOutDuration: Long = FADE_OUT_DURATION,
             @FloatRange(from = 0.0, to = 1.0) fadeInAlpha: Float = FADE_IN_ALPHA,
-            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float = FADE_OUT_ALPHA
+            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float = FADE_OUT_ALPHA,
         ): Builder {
             bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
             bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)

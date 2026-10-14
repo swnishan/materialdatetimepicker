@@ -10,17 +10,22 @@ internal class PickerAdapter(
     private var items: List<PickerModel>,
     private var textAppearance: Int,
     private val scrollOption: ScrollOptions = ScrollOptions.SCROLL_INT_MAX,
-    private val onClickItem: (position: Int) -> Unit
+    private val onClickItem: (position: Int) -> Unit,
 ) : RecyclerView.Adapter<PickerViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PickerViewHolder {
-        return PickerViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_picker, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): PickerViewHolder =
+        PickerViewHolder(
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.item_picker, parent, false),
         )
-    }
 
-    override fun onBindViewHolder(holder: PickerViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: PickerViewHolder,
+        position: Int,
+    ) {
         // Here get actual element from the items by position%items.size
         holder.bind(items[position % items.size], textAppearance, position, onClickItem)
     }
@@ -44,6 +49,7 @@ internal class PickerAdapter(
     }
 
     enum class ScrollOptions {
-        SCROLL_INT_MAX, SCROLL_ITEM_LIMIT
+        SCROLL_INT_MAX,
+        SCROLL_ITEM_LIMIT,
     }
 }

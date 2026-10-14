@@ -7,17 +7,20 @@ sealed class TimeModel {
         override val index: Int,
         override val displayValue: String,
         val hour: Int,
-    ) : TimeModel(), PickerModel
+    ) : TimeModel(),
+        PickerModel
 
     data class Minute(
         override val index: Int,
         override val displayValue: String,
-        val minute: Int
-    ) : TimeModel(), PickerModel
+        val minute: Int,
+    ) : TimeModel(),
+        PickerModel
 
     data class TimePeriod(
         override val index: Int,
         override val displayValue: String,
-        val timePeriod: Int
-    ) : TimeModel(), PickerModel
+        val timePeriod: Int,
+    ) : TimeModel(),
+        PickerModel
 }

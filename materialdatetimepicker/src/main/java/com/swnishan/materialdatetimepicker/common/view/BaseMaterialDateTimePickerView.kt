@@ -25,7 +25,11 @@ abstract class BaseMaterialDateTimePickerView : ConstraintLayout {
      * Here we get the scroll position with relative to middle position of list of items
      * since we set the adapter count as Int.MAX_VALUE
      */
-    internal fun getScrollPosition(adapter: PickerAdapter, list: List<PickerModel>, model: PickerModel): Int {
+    internal fun getScrollPosition(
+        adapter: PickerAdapter,
+        list: List<PickerModel>,
+        model: PickerModel,
+    ): Int {
         var scrollPosition = adapter.itemCount / 2
         val position = scrollPosition % list.size
 
@@ -35,16 +39,31 @@ abstract class BaseMaterialDateTimePickerView : ConstraintLayout {
         return scrollPosition
     }
 
-    internal fun startFadeAnimation(views: List<View>, duration: Long, alpha: Float) {
+    internal fun startFadeAnimation(
+        views: List<View>,
+        duration: Long,
+        alpha: Float,
+    ) {
         views.forEach {
-            it.animate().alpha(alpha).setDuration(duration)
-                .withEndAction { it.alpha = alpha }.start()
+            it
+                .animate()
+                .alpha(alpha)
+                .setDuration(duration)
+                .withEndAction { it.alpha = alpha }
+                .start()
         }
     }
 
-    abstract fun fadeView(view: RecyclerView, duration: Long, alpha: Float)
+    abstract fun fadeView(
+        view: RecyclerView,
+        duration: Long,
+        alpha: Float,
+    )
 
-    internal open fun onItemClicked(position: Int, rv: RecyclerView) {
+    internal open fun onItemClicked(
+        position: Int,
+        rv: RecyclerView,
+    ) {
         rv.smoothScrollToPosition(position)
     }
 
@@ -54,40 +73,56 @@ abstract class BaseMaterialDateTimePickerView : ConstraintLayout {
     }
 
     internal fun RecyclerView.addListeners(updateViewData: (viewId: Int) -> Unit) {
-        addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                if (e.action == MotionEvent.ACTION_DOWN) fadeView(rv, fadeInDuration, fadeInAlpha)
-                else if (e.action == MotionEvent.ACTION_UP && rv.scrollState == RecyclerView.SCROLL_STATE_IDLE) fadeView(
-                    rv,
-                    fadeOutDuration,
-                    fadeOutAlpha
-                )
-                return false
-            }
-
-            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-        })
-        addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                when (newState) {
-                    RecyclerView.SCROLL_STATE_DRAGGING -> fadeView(recyclerView, fadeInDuration, fadeInAlpha)
-                    RecyclerView.SCROLL_STATE_IDLE -> fadeView(recyclerView, fadeOutDuration, fadeOutAlpha)
+        addOnItemTouchListener(
+            object : RecyclerView.OnItemTouchListener {
+                override fun onInterceptTouchEvent(
+                    rv: RecyclerView,
+                    e: MotionEvent,
+                ): Boolean {
+                    if (e.action == MotionEvent.ACTION_DOWN) {
+                        fadeView(rv, fadeInDuration, fadeInAlpha)
+                    } else if (e.action == MotionEvent.ACTION_UP && rv.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                        fadeView(
+                            rv,
+                            fadeOutDuration,
+                            fadeOutAlpha,
+                        )
+                    }
+                    return false
                 }
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    updateViewData.invoke(recyclerView.id)
+                override fun onTouchEvent(
+                    rv: RecyclerView,
+                    e: MotionEvent,
+                ) {}
+
+                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+            },
+        )
+        addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(
+                    recyclerView: RecyclerView,
+                    newState: Int,
+                ) {
+                    when (newState) {
+                        RecyclerView.SCROLL_STATE_DRAGGING -> fadeView(recyclerView, fadeInDuration, fadeInAlpha)
+                        RecyclerView.SCROLL_STATE_IDLE -> fadeView(recyclerView, fadeOutDuration, fadeOutAlpha)
+                    }
+
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        updateViewData.invoke(recyclerView.id)
+                    }
                 }
-            }
-        })
+            },
+        )
     }
 
     fun setFadeAnimation(
         fadeInDuration: Long = this.fadeInDuration,
         fadeOutDuration: Long = this.fadeOutDuration,
         fadeInAlpha: Float = this.fadeInAlpha,
-        fadeOutAlpha: Float = this.fadeOutAlpha
+        fadeOutAlpha: Float = this.fadeOutAlpha,
     ) {
         this.fadeInDuration = fadeInDuration
         this.fadeOutDuration = fadeOutDuration

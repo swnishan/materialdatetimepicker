@@ -21,7 +21,6 @@ import com.swnishan.materialdatetimepicker.common.view.BaseMaterialDateTimePicke
 import org.threeten.bp.LocalDate
 
 class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
-
     private var onDatePickedListener: MaterialDatePickerView.OnDatePickedListener? = null
     private var materialDatePickerView: MaterialDatePickerView? = null
     private var pickerDate: LocalDate = LocalDate.now()
@@ -48,10 +47,13 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
         return builder.create()
     }
 
-    private fun Context.resolveThemeAttr(@AttrRes attr: Int): Int = TypedValue().let { typedValue ->
-        theme.resolveAttribute(attr, typedValue, true)
-        typedValue.resourceId
-    }
+    private fun Context.resolveThemeAttr(
+        @AttrRes attr: Int,
+    ): Int =
+        TypedValue().let { typedValue ->
+            theme.resolveAttribute(attr, typedValue, true)
+            typedValue.resourceId
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +87,10 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
         bundle.putFloat(ARG_FADE_IN_ALPHA, fadeOutAlpha)
     }
 
-    override fun setStyle(style: Int, theme: Int) {
+    override fun setStyle(
+        style: Int,
+        theme: Int,
+    ) {
         themeRes = theme
         super.setStyle(style, theme)
     }
@@ -94,9 +99,11 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
 
     fun getYear() = materialDatePickerView?.getYear() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
-    fun getMonth() = materialDatePickerView?.getMonth() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+    fun getMonth() =
+        materialDatePickerView?.getMonth() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
-    fun getDayOfMonth() = materialDatePickerView?.getDayOfMonth() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
+    fun getDayOfMonth() =
+        materialDatePickerView?.getDayOfMonth() ?: throw ExceptionInInitializerError("Material date picker view not been initialized")
 
     fun setOnDatePickListener(listener: MaterialDatePickerView.OnDatePickedListener?) {
         onDatePickedListener = listener
@@ -140,7 +147,9 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
             return this
         }
 
-        fun setTheme(@StyleRes themeRes: Int): Builder {
+        fun setTheme(
+            @StyleRes themeRes: Int,
+        ): Builder {
             bundle.putInt(ARG_THEME, themeRes)
             return this
         }
@@ -149,7 +158,7 @@ class MaterialDatePickerDialog : BaseMaterialDateTimePickerDialog() {
             fadeInDuration: Long = FADE_IN_DURATION,
             fadeOutDuration: Long = FADE_OUT_DURATION,
             @FloatRange(from = 0.0, to = 1.0) fadeInAlpha: Float = FADE_IN_ALPHA,
-            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float = FADE_OUT_ALPHA
+            @FloatRange(from = 0.0, to = 1.0) fadeOutAlpha: Float = FADE_OUT_ALPHA,
         ): Builder {
             bundle.putLong(ARG_FADE_IN_DURATION, fadeInDuration)
             bundle.putLong(ARG_FADE_OUT_DURATION, fadeOutDuration)
